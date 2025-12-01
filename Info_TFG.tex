@@ -1,0 +1,70 @@
+% Plantilla mínima para TFG (TFG / Trabajo Fin de Grado)
+% Archivo: Info_TFG.tex
+% Cómo usar: editar título/autor y dividir en capítulos con \include o \input si se desea.
+% Compilar (recomendado): usar latexmk o pdflatex + biber/bibtex según bibliografía.
+% Ejemplo PowerShell (TeX Live / MiKTeX instalado):
+%   latexmk -pdf Info_TFG.tex
+% o, paso a paso:
+%   pdflatex Info_TFG.tex; biber Info_TFG; pdflatex Info_TFG.tex; pdflatex Info_TFG.tex
+
+\documentclass[12pt,a4paper,oneside]{report}
+
+% Codificación y idioma
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+
+% Márgenes y microtipografía
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{microtype}
+
+% Gráficos, tablas y matemáticas
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb}
+
+% Hipervínculos
+\usepackage[hidelinks]{hyperref}
+
+% Configuración del título/portada (personaliza según la normativa de tu universidad)
+\title{Comparación de Nariz Electrónica con olfato de Agentes Caninos para la detección de Drogas}
+\author{Raúl Martín-Romo Sánchez\\
+	\textit{Grado en Ingeniería Informática del Software}\\
+	\textbf{Tutor:} Pablo García Rodríguez\\
+    \textbf{Co-tutor:} Jesús Lozano Rogado}
+\date{\today}
+
+\begin{document}
+
+% Portada simple
+\maketitle
+
+% Capítulos de ejemplo
+\chapter{Idea del proyecto}
+\label{ch:idea_proyecto}
+Desarrollar una nariz electrónica capaz de detectar un tipo de droga ilegal y compararla con el olfato de los agentes caninos entrenados del cuerpo de detección de drogas de la Guardia Civil de Cáceres.
+
+\chapter{Motivación}
+\label{ch:motivacion}
+Revisión bibliográfica y trabajos relacionados.
+
+\chapter{Objetivos}
+\label{ch:objetivos}
+Describe los métodos, herramientas y procedimientos empleados.
+
+\chapter{Materiales}
+\label{ch:materiales}
+Sensores MOX (Sensores de óxidos metálicos) y materiales por identificar tras la formación con Jesús Lozano Rogado.
+
+\chapter{Planificación}
+\label{ch:planificacion}
+Describe la planificación temporal y las fases del proyecto.
+
+\chapter{Resultados}
+\label{ch:resultados}
+Presenta resultados, tablas, figuras y su discusión.
+
+\end{document}
+
