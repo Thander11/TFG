@@ -3,6 +3,8 @@
 %\usepackage{parskip} % Quitar comentario si se quieren distinguir los párrafos con saltos y quitar las sangrías
 
 \usepackage{lipsum} % Este paquete es para poner texto genérico en los capítulos, quitar cuando ya se hayan redactado
+% Paquete para tipografía química (fórmulas con subíndices/superíndices)
+\usepackage[version=4]{mhchem}
 
 % Rellenar con los datos del estudiante y el trabajo
 \estudiante{Raúl Martín-Romo Sánchez}{Grado}{Ingeniería Informática en Ingeniería del Software}
@@ -99,6 +101,8 @@ EL RESUMEN EN INGLÉS
 
 
 \pagenumbering{arabic}
+% Aumentar la altura del encabezado para evitar la advertencia de fancyhdr
+\setlength{\headheight}{14.49998pt}
 \pagestyle{fancy}
 \setcounter{page}{1}
 
