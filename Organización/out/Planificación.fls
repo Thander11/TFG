@@ -1,8 +1,8 @@
-PWD c:/Users/raulm/OneDrive - Universidad de Extremadura/TFG
+PWD c:/Users/raulm/OneDrive - Universidad de Extremadura/TFG/Organización
 INPUT c:/texlive/2025/texmf.cnf
 INPUT c:/texlive/2025/texmf-dist/web2c/texmf.cnf
 INPUT c:/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt
-INPUT c:/Users/raulm/OneDrive - Universidad de Extremadura/TFG/Planificación.tex
+INPUT c:/Users/raulm/OneDrive - Universidad de Extremadura/TFG/Organización/Planificación.tex
 OUTPUT out/Planificación.log
 INPUT c:/texlive/2025/texmf-dist/tex/latex/base/report.cls
 INPUT c:/texlive/2025/texmf-dist/tex/latex/base/report.cls
