@@ -99,10 +99,58 @@ Dióxido de Titanio (\ce{TiO2}) & Compuesto generalizado, no tóxico, barato y r
 \caption{Materiales comunes en sensores MOX y sus aplicaciones.}\label{tab:materiales_mox}
 \end{table}
 
-\subsubsection{Desafíos y Mantenimiento}
+Estos son ejemplos comerciales, pero en el laboratorio de sensores de la escuela de ingenierías industriales se están desarrollando sesnsores para usar en vez de los comerciales con una mejor capacidad de reacción a gases concretos.
 
 \subsection{Procesamiento de Datos (Quimiometría)}
+Una vez que la matriz de sensores de la Nariz Electrónica ha capturado las respuestas a los Compuestos Orgánicos Volátiles (COV), es indispensable someter los datos a un riguroso proceso de interpretación para obtener un resultado significativo. Cada sensor aporta un valor de conductividad, generando una matriz de datos compleja que debe ser analizada.
 
-\subsection{Aplicaciones y Desafíos de E-Noses}
+Para interpretar estos conjuntos de datos generados por la matriz de sensores, son esenciales las técnicas estadísticas y de aprendizaje automático multivariantes avanzadas. Este campo de estudio se conoce como quimiometría o sistema de reconocimiento de patrones. Mediante estas técnicas, el sistema transforma la simple respuesta eléctrica de los sensores en un resultado clasificable o identificable, cumpliendo así con uno de los criterios esenciales de una nariz electrónica.
+
+\subsubsection{Técnicas de Análisis de Datos}
+Las respuestas de las señales son analizadas mediante diversos métodos analíticos. Los más reconocidos incluyen:
+\begin{itemize}
+    \item \textbf{Análisis Gráfico: }Utilizado para la visualización básica de los datos (como los diagramas de barras y los diagramas polares).
+    \item \textbf{Análisis Estadístico Multivariado: }Métodos como el Análisis de Componentes Principales (PCA) se emplean comúnmente para visualizar y clasificar la estructura de los datos multivariados. Otras técnicas incluyen el Análisis de Función de Discriminantes (DFA) y el Análisis de Clusters (CA).
+    \item \textbf{Análisis de Redes: }Algoritmos avanzados de aprendizaje automático como las Redes Neuronales Artificiales (ANN) y las Máquinas Vectoriales de Soporte (SVM) han demostrado ser altamente eficaces en la extracción de patrones significativos y en la mejora de la precisión de clasificación y cuantificación.
+\end{itemize}
+La elección del método de análisis adecuado siempre dependerá de los datos disponibles y del tipo específico de resultado que se requiera para la aplicación.
+
+\subsection{Aplicaciones}
+Los sistemas de olfato electrónico han evolucionado desde su aplicación inicial en laboratorios de control de calidad para el análisis de alimentos hasta convertirse en una técnica de análisis no destructiva y de gran aplicabilidad en diversos sectores como seguridad y defensa (detección de drogas y explosivos), detección de enfermedades, control de la calidad del ambiente (por ejemplo, para detectar incendios) o para diversos estudios, por ejemplo, un estudio que buscar comparar la calidad de las cervezas artesanales frente a las cervezas industriales.
+
+
+
+\subsection{Desafíos y Limitaciones}
+A pesar de sus notables ventajas en rapidez y portabilidad, las narices electrónicas aún enfrentan importantes desafíos técnicos y de estandarización que han limitado la expansión de su uso como herramienta de monitoreo.
+
+Una de las principales limitaciones radica en los propios sensores de gas, especialmente aquellos de bajo coste. Se observa una baja selectividad, lo que significa que los sensores a menudo reaccionan a múltiples compuestos, un fenómeno conocido como sensibilidad cruzada. Esta falta de especificidad inherente a un solo sensor limita la consecución de un alto rendimiento en la detección. Para abordar esta limitación, la solución más efectiva es el enfoque multisensorial, que combina una matriz de sensores con algoritmos de aprendizaje automático para extraer patrones distintivos.
+
+Otro problema crucial se relaciona con la dependencia ambiental, ya que la presencia de factores como la temperatura y el vapor de agua puede alterar las características del sensor. Además, los sensores enfrentan problemas intrínsecos como la respuesta no lineal y la deriva de la señal, que obligan a realizar calibraciones cíclicas.
+
+La estabilidad a largo plazo se ve comprometida por la susceptibilidad de los sensores a la intoxicación permanente (envenenamiento). Este fenómeno ocurre cuando los centros activos del sensor son ocupados por contaminantes de alta concentración, causando cambios irreversibles en sus características. Para contrarrestar esta degradación y aumentar la vida útil, se recomienda reducir el tiempo de exposición del sensor a los contaminantes, empleando un muestreo secuencial y un lavado con aire limpio.
+
+En el ámbito de la aplicación, existe una dificultad inherente al análisis de olores compuestos por más de una fuente, ya que la identificación precisa depende no solo del tipo de sensor, sino también de la calidad de la base de datos y de los algoritmos de reconocimiento utilizados. Por último, la falta de estándares específicos en la industria es una de las principales limitaciones que dificultan la expansión y homogeneización del uso de las E-Noses como una herramienta de monitoreo confiable.
+
+Las narices electrónicas puedes acoplarse a otros sistemas, como por ejemplo un dron, dependiendo de la aplicación que se le quiera dar. Otro ejemplo es una nariz electrónica en un reloj de pulsera cuyo objetivo es medir constantemente la calidad del aire.
 
 \section{Agentes caninos}
+Los perros detectores representan el método tradicional y ampliamente utilizado para la detección de sustancias como drogas o explosivos. Su trabajo se basa en la asombrosa capacidad de su sistema olfativo.
+
+En los cuerpos de seguridad en España, el servicio canino está altamente especializado. Aunque los perros son los que huelen, el proceso es un trabajo en equipo con el guía.
+
+El servicio cinológico cuenta con varias especialidades principales:
+\begin{itemize}
+    \item \textbf{Detectores de Droga: }Se encargan de la búsqueda de sustancias estupefacientes ilegales en diversos escenarios, como el control de vuelos en aeropuertos, equipajes en puertos, y dispositivos operativos en carreteras o domicilios.
+    \item \textbf{Detectores de Explosivos: }Su función es vital en lugares públicos, edificios oficiales, y zonas de visita de personalidades, inspeccionando paquetería y equipajes ante amenazas reales de explosivos.
+    \item \textbf{Seguridad: }Incluye la protección de personas y edificios públicos, así como el control de masas.
+    \item \textbf{Rescate: }Dedicados al salvamento de personas desaparecidas en áreas extensas, catástrofes, avalanchas, o la detección de personas ocultas en vehículos y edificios.
+\end{itemize}
+Además, en la actualidad, el servicio amplía su especialización a la localización de cebos envenenados, la protección de especies y la detección de tráfico de marfil.\\
+
+El entrenamiento de estos perros se basa en el juego. Inicialmente, la sustancia objetivo se pone a la vista y el perro es premiado al acercarse a olerla. El entrenamiento consiste en incrementar gradualmente la complejidad del ``juego'', enseñándole al perro a marcar la ubicación de la sustancia para recibir una recompensa.
+
+La eficacia del perro se debe a su capacidad para detectar sustancias incluso cuando se ha intentado eliminarlas. Por ejemplo, pueden detectar una mancha de sangre en el suelo que ha sido limpiada con lejía u otros productos de limpieza fuertes.\\
+
+A pesar de su increíble sensibilidad, el uso de perros detectores no está exento de limitaciones. Por ejemplo, el estado de ánimo del perro puede variar dependiendo del estado de ánimo del guía o de la cantidad de estimulos que pueda haber en la zona, lo que puede resultar en distracción o falta de motivación para el ``juego''. Además, los perros requieren descansos regulares para mantener su eficacia y evitar la fatiga. Es fundamental el trabajo constante del guía para asegurar que el perro se mantenga concentrado en la tarea. Por otro lado la detección canina es un método que consume mucho tiempo, es costoso y requiere un amplio entrenamiento.\\
+
+En el contexto de la Nariz Electrónica, las E-Noses se presentan como una tecnología con ventajas logísticas (rapidez, portabilidad y coste-efectividad) que buscan complementar los métodos tradicionales de detección canina.
