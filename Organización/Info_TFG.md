@@ -1,4 +1,4 @@
-# Comparación de Nariz Electrónica con olfato de Agentes Caninos para la detección de sustancias
+# Estudio de viabilidad de una Nariz Electrónica como herramienta de apoyo para los Agentes Caninos
 
 **Autor:** Raúl Martín-Romo Sánchez  
 **Grado:** Grado en Ingeniería Informática del Software  
@@ -9,7 +9,7 @@
 
 ## Idea del proyecto
 
-Desarrollar una nariz electrónica capaz de detectar un tipo de sustancia y compararla con el olfato de los agentes caninos entrenados del cuerpo de detección de sustancias de la Guardia Civil de Cáceres.
+Desarrollar una nariz electrónica capaz de detectar un tipo de sustancia y compararla con el olfato de los agentes caninos entrenados del cuerpo de detección de sustancias de la Guardia Civil.
 
 ## Motivación
 
@@ -22,9 +22,8 @@ Las principales motivaciones de este trabajo son las siguientes:
 
 A continuación se mencionan los objetivos principales del proyecto:
 - Estudio de la nariz electrónica y sus diferentes aplicaciones.
-- Creación de una nariz electrónica capaz de detectar un tipo de sustancia.
-- Formación y entrenamiento de la nariz electrónica para la detección de la sustancia.
-- Comparación de la nariz electrónica con el olfato de los agentes caninos entrenados del cuerpo de detección de sustancias de la Guardia Civil de Cáceres.
+- Formación y entrenamiento de la nariz electrónica para la detección de una sustancia.
+- Comparación de la nariz electrónica con el olfato de los agentes caninos entrenados del cuerpo de detección de sustancias de la Guardia Civil.
 
 Se busca crear una nariz electrónica que, aunque no iguale el rendimiento de los agentes caninos, ofrezca una ayuda viable en términos de costo, mantenimiento y disponibilidad.
 
@@ -34,4 +33,4 @@ Sensores MOX (Sensores de óxidos metálicos) y materiales por identificar tras 
 
 ## Resultados
 
-Tras la finalización del proyecto se espera obtener una nariz electrónica capaz de detectar un tipo de sustancia y que su rendimiento sea comparable al de los agentes caninos entrenados del cuerpo de detección de sustancias de la Guardia Civil de Cáceres. No obstante, se espera que el olfato canino siga siendo superior en términos de precisión y rapidez, pero la nariz electrónica podría ofrecer ventajas en términos de costo, mantenimiento y disponibilidad, siendo una buena herramienta de apoyo para este trabajo, pero no como sustitución total de los miembros de este cuerpo.
+Tras la finalización del proyecto se espera obtener una nariz electrónica capaz de detectar un tipo de sustancia y que su rendimiento sea comparable al de los agentes caninos entrenados del cuerpo de detección de sustancias de la Guardia Civil. No obstante, se espera que el olfato canino siga siendo superior en términos de precisión y rapidez, pero la nariz electrónica podría ofrecer ventajas en términos de costo, mantenimiento y disponibilidad, siendo una buena herramienta de apoyo para este trabajo, pero no como sustitución total de los miembros de este cuerpo.

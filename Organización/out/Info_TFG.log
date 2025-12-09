@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.12.1)  4 DEC 2025 10:42
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.12.1)  9 DEC 2025 11:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -464,14 +464,14 @@ Package rerunfilecheck Info: File `Info_TFG.out' has not changed.
  ) 
 Here is how much of TeX's memory you used:
  15159 strings out of 467538
- 241132 string characters out of 5423725
+ 241130 string characters out of 5423725
  706263 words of memory out of 5000000
  43872 multiletter control sequences out of 15000+600000
  635561 words of font info for 70 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,5n,79p,1078b,482s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfbx1095.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfbx1728.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfbx2074.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfrm1440.pfb>
-Output written on out/Info_TFG.pdf (2 pages, 106415 bytes).
+Output written on out/Info_TFG.pdf (2 pages, 108017 bytes).
 PDF statistics:
  71 PDF objects out of 1000 (max. 8388607)
  54 compressed objects within 1 object stream
