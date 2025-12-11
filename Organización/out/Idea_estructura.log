@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.12.1)  11 DEC 2025 12:19
+This is pdfTeX, Version 3.141592653-2.6-1.40.28 (TeX Live 2025) (preloaded format=pdflatex 2025.12.1)  11 DEC 2025 13:08
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -460,7 +460,7 @@ LaTeX2e <2025-11-01>
 L3 programming layer <2025-11-14>
  ***********
 Package rerunfilecheck Info: File `Idea_estructura.out' has not changed.
-(rerunfilecheck)             Checksum: EB90FE1CE4BBB597AA2217C4107E50FF;1776.
+(rerunfilecheck)             Checksum: 788C2D0C281C2A2BDDC17CEDA49D0495;1781.
  ) 
 Here is how much of TeX's memory you used:
  15167 strings out of 467538
@@ -471,7 +471,7 @@ Here is how much of TeX's memory you used:
  1141 hyphenation exceptions out of 8191
  75i,5n,79p,1085b,482s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfbx1095.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfbx1440.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfbx1728.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfbx2074.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfrm1095.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb><c:/texlive/2025/texmf-dist/fonts/type1/public/cm-super/sfrm1440.pfb>
-Output written on out/Idea_estructura.pdf (2 pages, 121203 bytes).
+Output written on out/Idea_estructura.pdf (2 pages, 121189 bytes).
 PDF statistics:
  97 PDF objects out of 1000 (max. 8388607)
  78 compressed objects within 1 object stream
