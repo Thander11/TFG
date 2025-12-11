@@ -9,14 +9,14 @@ Es imprescindible que ofrezca repetibilidad y estabilidad en sus mediciones a lo
 Las principales ventajas de las narices electrónicas es que son rápidas, portatiles y económicas en comparación con metodos tradicionales para ciertas aplicaciones como la detección de sustancias, o técnicas cromatográficas para controles de calidad.
 
 \subsection{Antecedentes y Evolución de la Nariz Electrónica}
-La base tecnológica de la Nariz Electrónica (E-Nose) se encuentra en la investigación de los sensores de gas de semiconductores de óxido metálico (MOS), cuyo desarrollo se remonta a mediados del siglo XX.\@ Un hito temprano fue la descripción de las propiedades sensibles al gas del óxido de germanio en 1953. Los primeros sensores de gas se fabricaron utilizando óxido de zinc (\ce{ZnO}) y, a lo largo del tiempo, la tecnología evolucionó para incorporar materiales como el dióxido de estaño (\ce{SnO2}), el dióxido de titanio (\ce{TiO2}) y el óxido de tungsteno (\ce{WO3}). De estos, el dióxido de estaño granular es el material más ampliamente estudiado y empleado en la actualidad.
+La base tecnológica de la nariz electrónica (e-nose) se encuentra en la investigación de los sensores de gas de semiconductores de óxido metálico (MOS), cuyo desarrollo se remonta a mediados del siglo XX.\@ Un hito temprano fue la descripción de las propiedades sensibles al gas del óxido de germanio en 1953. Los primeros sensores de gas se fabricaron utilizando óxido de zinc (\ce{ZnO}) y, a lo largo del tiempo, la tecnología evolucionó para incorporar materiales como el dióxido de estaño (\ce{SnO2}), el dióxido de titanio (\ce{TiO2}) y el óxido de tungsteno (\ce{WO3}). De estos, el dióxido de estaño granular es el material más ampliamente estudiado y empleado en la actualidad.
 
 A pesar de que existen registros de sistemas de nariz electrónica reportados desde 1974, sus primeras aplicaciones prácticas se dieron en los laboratorios de control de calidad para el testeo de alimentos procesados. La formalización y comercialización de esta tecnología se materializó a principios de los años 90 con la aparición de los sistemas de reconocimiento de aroma en el mercado. Un sistema pionero fue el Modular Sensor System (MOSES I), marcando el inicio de la disponibilidad de estos instrumentos para una variedad de aplicaciones.
 
 En la actualidad, esta tecnología ha evolucionado hasta convertirse en un instrumento capaz de reconocer y comparar olores complejos, un logro que la enmarca dentro del campo de la biomímesis al buscar imitar el olfato humano.
 
 \subsection{Funcionamiento}
-El funcionamiento de una Nariz Electrónica se basa en el principio de la biomímesis, buscando replicar el proceso del olfato humano mediante la combinación de hardware (la matriz de sensores) y software (el sistema de reconocimiento de patrones). El objetivo fundamental es la detección de moléculas volátiles en el aire y su posterior comparación con muestras de referencia calibradas.
+El funcionamiento de una nariz electrónica se basa en el principio de la biomímesis, buscando replicar el proceso del olfato humano mediante la combinación de hardware (la matriz de sensores) y software (el sistema de reconocimiento de patrones). El objetivo fundamental es la detección de moléculas volátiles en el aire y su posterior comparación con muestras de referencia calibradas.
 
 El sistema completo se divide en tres partes esenciales que trabajan de forma secuencial: la toma de muestra (equipo de muestreo), la matriz de sensores y el sistema de tratamiento de datos.
 
@@ -30,16 +30,24 @@ El proceso se inicia con la preparación de la muestra, donde los Compuestos Org
 Los sensores de gas, principalmente los semiconductores de óxido metálico (MOS), miden las diferentes propiedades físico-químicas de los componentes del aroma. Esta interacción modifica las propiedades eléctricas del sensor (como su conductividad), convirtiendo el olor en una señal eléctrica mensurable.
 
 \subsubsection{Generación de la Huella Olfativa}
-La E-Nose requiere una matriz de múltiples sensores de gas para funcionar. Cada sensor posee una cierta especificidad para un grupo de compuestos químicos. Debido a que los olores suelen estar compuestos por más de una fuente, cada sensor de la matriz reacciona de forma única, generando un valor de conductividad individual.
+La e-nose requiere una matriz de múltiples sensores de gas para funcionar. Cada sensor posee una cierta especificidad para un grupo de compuestos químicos. Debido a que los olores suelen estar compuestos por más de una fuente, cada sensor de la matriz reacciona de forma única, generando un valor de conductividad individual.
 
 El resultado de esta matriz de respuestas es una matriz de datos compleja, que constituye la ``huella digital'' o ``huella olfativa'' del olor percibido. Esta huella es esencial para la identificación y clasificación de los olores, ya que cada combinación de respuestas de los sensores corresponde a un aroma específico.
 
 \subsubsection{Procesamiento y Reconocimiento de Patrones}
 La etapa final y definitoria del sistema es el procesamiento de datos. El ordenador se encarga de procesar la matriz de datos mediante técnicas quimiométricas (estadísticas multivariadas y algoritmos de aprendizaje automático).
 
-Métodos avanzados como el Análisis de Componentes Principales (PCA), el Análisis de Función de Discriminantes (DFA) o las Redes Neuronales Artificiales (ANN) son esenciales para la extracción de patrones significativos y la clasificación del olor. Es precisamente este procesamiento algorítmico lo que cumple el criterio de ``producir un resultado que es diferente a solo las respuestas de los sensores de gas'', ya que permite a la E-Nose clasificar los diferentes elementos en función de su similitud aromática e Identificar si el olor se ajusta a un patrón conocido.
+Métodos avanzados como el Análisis de Componentes Principales (PCA), el Análisis de Función de Discriminantes (DFA) o las Redes Neuronales Artificiales (ANN) son esenciales para la extracción de patrones significativos y la clasificación del olor. Es precisamente este procesamiento algorítmico lo que cumple el criterio de ``producir un resultado que es diferente a solo las respuestas de los sensores de gas'', ya que permite a la e-nose clasificar los diferentes elementos en función de su similitud aromática e Identificar si el olor se ajusta a un patrón conocido.
 
-De esta forma, la nariz electrónica es capaz de procesar la fracción volátil de forma global, al igual que la nariz humana, y proporciona una interpretación sobre la naturaleza del aroma.
+De esta forma, la nariz electrónica es capaz de procesar la fracción volátil de forma global, al igual que la nariz humana, y proporciona una interpretación sobre la naturaleza del aroma.\\
+
+En la figura~\ref{fig:funcionamiento_enose} se muestra un diagrama de flujo que ilustra el funcionamiento general de una nariz electrónica, desde la toma de muestra hasta la generación de resultados interpretativos mediante el procesamiento de datos.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{pictures/Funcionamiento_e-nose.png}
+    \caption{Funcionamiento general de una e-nose.}\label{fig:funcionamiento_enose}
+\end{figure}
 
 \subsection{Tipos de sensores}
 Para la detección de olores, las narices electrónicas emplean diversos tipos de sensores, cada uno con sus propias características y aplicaciones. Los tipos de sensores más comunes son:
@@ -99,8 +107,16 @@ Dióxido de Titanio (\ce{TiO2}) & Compuesto generalizado, no tóxico, barato y r
 
 Estos son ejemplos comerciales, pero en el laboratorio de sensores de la escuela de ingenierías industriales se están desarrollando sesnsores para usar en vez de los comerciales con una mejor capacidad de reacción a gases concretos.
 
+En la figura~\ref{fig:sensor_MOS} se muestra un esquema de un sensor MOS típico. El sensor consta de un sustrato aislante (como alúmina o vidrio) sobre el cual se deposita una capa delgada de óxido metálico. Encima de esta capa se colocan electrodos metálicos para medir la resistencia eléctrica del óxido. Un calentador integrado mantiene la temperatura óptima para la operación del sensor, ya que la sensibilidad y selectividad dependen en gran medida de la temperatura de funcionamiento.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{pictures/Sensor_MOS.png}
+    \caption{Presentación esquemática de un sensor MOX.}\label{fig:sensor_MOS}
+\end{figure}
+
 \subsection{Procesamiento de Datos (Quimiometría)}
-Una vez que la matriz de sensores de la Nariz Electrónica ha capturado las respuestas a los Compuestos Orgánicos Volátiles (COV), es indispensable someter los datos a un riguroso proceso de interpretación para obtener un resultado significativo. Cada sensor aporta un valor de conductividad, generando una matriz de datos compleja que debe ser analizada.
+Una vez que la matriz de sensores de la nariz electrónica ha capturado las respuestas a los Compuestos Orgánicos Volátiles (COV), es indispensable someter los datos a un riguroso proceso de interpretación para obtener un resultado significativo. Cada sensor aporta un valor de conductividad, generando una matriz de datos compleja que debe ser analizada.
 
 Para interpretar estos conjuntos de datos generados por la matriz de sensores, son esenciales las técnicas estadísticas y de aprendizaje automático multivariantes avanzadas. Este campo de estudio se conoce como quimiometría o sistema de reconocimiento de patrones. Mediante estas técnicas, el sistema transforma la simple respuesta eléctrica de los sensores en un resultado clasificable o identificable, cumpliendo así con uno de los criterios esenciales de una nariz electrónica.
 
@@ -125,7 +141,7 @@ Otro problema crucial se relaciona con la dependencia ambiental, ya que la prese
 
 La estabilidad a largo plazo se ve comprometida por la susceptibilidad de los sensores a la intoxicación permanente (envenenamiento). Este fenómeno ocurre cuando los centros activos del sensor son ocupados por contaminantes de alta concentración, causando cambios irreversibles en sus características. Para contrarrestar esta degradación y aumentar la vida útil, se recomienda reducir el tiempo de exposición del sensor a los contaminantes, empleando un muestreo secuencial y un lavado con aire limpio.
 
-En el ámbito de la aplicación, existe una dificultad inherente al análisis de olores compuestos por más de una fuente, ya que la identificación precisa depende no solo del tipo de sensor, sino también de la calidad de la base de datos y de los algoritmos de reconocimiento utilizados. Por último, la falta de estándares específicos en la industria es una de las principales limitaciones que dificultan la expansión y homogeneización del uso de las E-Noses como una herramienta de monitoreo confiable.
+En el ámbito de la aplicación, existe una dificultad inherente al análisis de olores compuestos por más de una fuente, ya que la identificación precisa depende no solo del tipo de sensor, sino también de la calidad de la base de datos y de los algoritmos de reconocimiento utilizados. Por último, la falta de estándares específicos en la industria es una de las principales limitaciones que dificultan la expansión y homogeneización del uso de las e-noses como una herramienta de monitoreo confiable.
 
 Las narices electrónicas puedes acoplarse a otros sistemas, como por ejemplo un dron, dependiendo de la aplicación que se le quiera dar. Otro ejemplo es una nariz electrónica en un reloj de pulsera cuyo objetivo es medir constantemente la calidad del aire.
 
@@ -149,4 +165,4 @@ La eficacia del perro se debe a su capacidad para detectar sustancias incluso cu
 
 A pesar de su increíble sensibilidad, el uso de perros detectores no está exento de limitaciones. Por ejemplo, el estado de ánimo del perro puede variar dependiendo del estado de ánimo del guía o de la cantidad de estimulos que pueda haber en la zona, lo que puede resultar en distracción o falta de motivación para el ``juego''. Además, los perros requieren descansos regulares para mantener su eficacia y evitar la fatiga. Es fundamental el trabajo constante del guía para asegurar que el perro se mantenga concentrado en la tarea. Por otro lado la detección canina es un método que consume mucho tiempo, es costoso y requiere un amplio entrenamiento.\\
 
-En el contexto de la Nariz Electrónica, las E-Noses se presentan como una tecnología con ventajas logísticas (rapidez, portabilidad y coste-efectividad) que buscan complementar los métodos tradicionales de detección canina.
+En el contexto de la nariz electrónica, las e-noses se presentan como una tecnología con ventajas logísticas (rapidez, portabilidad y coste-efectividad) que buscan complementar los métodos tradicionales de detección canina.
