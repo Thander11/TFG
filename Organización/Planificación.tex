@@ -1,0 +1,129 @@
+\documentclass[12pt,a4paper,oneside]{report}
+
+% Codificación y idioma
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+
+% Márgenes y microtipografía
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{microtype}
+
+% Gráficos, tablas y matemáticas
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{tabularx}
+\usepackage{amsmath,amssymb}
+
+% Hipervínculos
+\usepackage[hidelinks]{hyperref}
+
+% Numeración de secciones sin dependencia de capítulos (1,2,3... en vez de 0.1,0.2)
+\usepackage{chngcntr}
+\counterwithout{section}{chapter}
+
+\begin{document}
+
+
+\begin{table}[ht]
+    % Portada en la misma primera página (sin página separada)
+\begingroup
+\begin{center}
+	{\LARGE \textbf{Cronograma final del TFG}\par}
+	\vspace{1em}
+	{\large Raúl Martín-Romo Sánchez\par}
+    {\noindent\textbf{Entrega:} última semana de enero}
+\end{center}
+\bigskip
+\endgroup
+
+  \centering
+  \small
+  \begin{tabularx}{\textwidth}{@{}p{4.5cm} p{3.2cm} X@{}}
+    \toprule
+    	\textbf{Fase} & \textbf{Fechas} & \textbf{Actividades} \\
+    \midrule
+
+    1. Reuniones iniciales y elección del tema
+      & 6 - 14 de noviembre
+      & \begin{minipage}[t]{\linewidth}
+          \begin{itemize}
+            \item 6/11: Primera reunión con los guías caninos. Discusión de líneas de trabajo.
+            \item 14/11: Elección definitiva del tema del TFG.\end{itemize}
+        \end{minipage} \\
+
+    \midrule
+
+    2. Revisión bibliográfica y estado del arte
+      & 20 de noviembre - 4 de diciembre
+      & \begin{minipage}[t]{\linewidth}
+          \begin{itemize}
+            \item Revisión de literatura sobre narices electrónicas.
+            \item Revisión de trabajos de Jesús Lozano Rogado.
+            \item Revisión sobre detección canina.
+            \item Redacción del marco teórico.
+          \end{itemize}
+        \end{minipage} \\
+
+    \midrule
+
+    3. Formación y entrenamiento de la nariz electrónica
+      & 5 de diciembre - 10 de enero
+      & \begin{minipage}[t]{\linewidth}
+          \begin{itemize}
+            \item 5/12 Reunión con Jesús Lozano Rogado.
+            \item Formación con Jesús Lozano Rogado.
+            \item Entrenamiento de la nariz electrónica.
+            \begin{itemize}
+              \item Crear dataset.
+              \item Entrenar red neuronal.
+              \item Crear aplicación Bluetooth.
+            \end{itemize}
+          \end{itemize}
+        \end{minipage} \\
+
+    \midrule
+
+    4. Diseño del enfoque experimental, comparación y analisis de datos
+      & 11 - 18 de enero
+      & \begin{minipage}[t]{\linewidth}
+          \begin{itemize}
+            \item Definición final de la metodología comparativa.
+            \item Coordinación con guías caninos.
+            \item Pruebas comparativas (nariz electrónica vs perros) y recogida de datos.
+            \item Limpieza y análisis de datos.
+            \item Comparación entre ambos sistemas.
+            \item Elaboración de gráficas y tablas.
+          \end{itemize}
+        \end{minipage} \\
+
+    \midrule
+
+    5. Redacción final del TFG
+      & 19 - 31 de enero
+      & \begin{minipage}[t]{\linewidth}
+          \begin{itemize}
+            \item Finalizar redacción.
+            \item Integración completa del documento.
+            \item Correcciones finales.
+          \end{itemize}
+        \end{minipage} \\
+
+    \midrule
+
+    6. Preparación de la presentación
+      & Hasta el dia de la presentación
+      & \begin{minipage}[t]{\linewidth}
+          \begin{itemize}
+            \item Diseño de las diapositivas para la presentación.
+            \item Preparación de la exposición oral (15--20 minutos).
+          \end{itemize}
+        \end{minipage} \\
+
+    \bottomrule
+    \end{tabularx}
+    \end{table}
+
+\end{document}

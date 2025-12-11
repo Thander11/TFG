@@ -1,0 +1,93 @@
+% Plantilla mínima para TFG (TFG / Trabajo Fin de Grado)
+% Archivo: Info_TFG.tex
+% Cómo usar: editar título/autor y dividir en capítulos con \include o \input si se desea.
+% Compilar (recomendado): usar latexmk o pdflatex + biber/bibtex según bibliografía.
+% Ejemplo PowerShell (TeX Live / MiKTeX instalado):
+%   latexmk -pdf Info_TFG.tex
+% o, paso a paso:
+%   pdflatex Info_TFG.tex; biber Info_TFG; pdflatex Info_TFG.tex; pdflatex Info_TFG.tex
+
+\documentclass[12pt,a4paper,oneside]{report}
+
+% Codificación y idioma
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+
+% Márgenes y microtipografía
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{microtype}
+
+% Gráficos, tablas y matemáticas
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb}
+
+% Hipervínculos
+\usepackage[hidelinks]{hyperref}
+
+% Numeración de secciones sin dependencia de capítulos (1,2,3... en vez de 0.1,0.2)
+\usepackage{chngcntr}
+\counterwithout{section}{chapter}
+
+% Configuración del título/portada (personaliza según la normativa de tu universidad)
+\title{Comparación de Nariz Electrónica con olfato de Agentes Caninos para la detección de Drogas}
+\author{Raúl Martín-Romo Sánchez\\
+	\textit{Grado en Ingeniería Informática del Software}\\
+	\textbf{Tutor:} Pablo García Rodríguez\\
+    \textbf{Co-tutor:} Jesús Lozano Rogado}
+\date{\today}
+
+\begin{document}
+
+% Portada en la misma primera página (sin página separada)
+\begingroup
+\begin{center}
+	{\LARGE \textbf{Comparación de Nariz Electrónica con olfato de Agentes Caninos para la detección de Drogas}\par}
+	\vspace{1em}
+	{\large Raúl Martín-Romo Sánchez\par}
+	{\small Grado en Ingeniería Informática del Software\par}
+	\vspace{0.5em}
+	{\small \textbf{Tutor:} Pablo García Rodríguez \quad \textbf{Co-tutor:} Jesús Lozano Rogado\par}
+	\vspace{1em}
+	{\small \today\par}
+\end{center}
+\bigskip
+\endgroup
+
+% Capítulos de ejemplo
+\section{Introduccion}
+Hablar sobre la idea del proyecto y la motivación.
+
+\section{Alcane y objetivos}
+Describir los objetivos principales.
+
+\section{Estado del arte}
+Exponer la inforamación recogida acerca de las narices electrónicas, los sensores y algunos estudios de los diferentes artículos. Además hablar del cuerpo canino de la guardia civil, las funciones que desempeñan y como trabajan.
+
+\section{Metodología y herramientas}
+Planificación del proyecto con metodología Scrum, explicar los diferentes sprints y tareas a realizar añadiendo el diagrama de Gantt.
+Explicar que materiales se han usado y para qué.
+
+\section{Implementacion, desarrollo y pruebas comparativas}
+
+\subsection{Entrenamiento de la e-nose}
+Explicar como se ha creado el dataset y como se ha entradado la red neuronal.
+
+\subsection{Desarrollo de aplicación Bluetooth}
+Describir el desarrollo de la aplicación Bluetooth para la comunicación entre la nariz electrónica y el smartphone.
+
+\subsection{Pruebas de comparación}
+Describir que tipos de pruebas van a hacer.
+
+\section{Resultados}
+Descripción de los resultados esperados y de los datos obtenidos.
+Discusión de los resultados obtenidos en comparación con los esperados.
+
+\section{Conclusiones y futuras mejoras}
+Describir la coclusiones sobre los resultados obtenidos, las posibles aplicaciones de la nariz electrónica y las futuras mejoras que se podrían implementar.
+
+\end{document}
+

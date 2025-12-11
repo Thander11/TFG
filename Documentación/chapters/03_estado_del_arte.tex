@@ -1,0 +1,168 @@
+\chapter{Estado del Arte}
+\section{Narices Electrónicas (E-Noses)}
+Anteriormente se ha descrito qué es una nariz electrónica, pero es importante definir qué características debe tener una nariz electrónica para ser considerada como tal.
+
+Para que un dispositivo pueda considerarse una nariz electrónica debe cumplir varios requisitos fundamentales. En primer lugar, ha de ser capaz de detectar y diferenciar de forma simultánea múltiples compuestos volátiles; además, debe generar patrones de respuesta característicos que permitan su identificación mediante técnicas de análisis de datos.
+
+Es imprescindible que ofrezca repetibilidad y estabilidad en sus mediciones a lo largo del tiempo y frente a distintas condiciones ambientales, y que pueda adaptarse a variaciones de temperatura, humedad y presión. Finalmente, la nariz electrónica no debe limitarse a proporcionar lecturas crudas de los sensores, debe entregar una salida procesada (mediante preprocesado y reconocimiento de patrones) que interprete y clasifique las señales para producir identificaciones o decisiones útiles y robustas.\\
+
+Las principales ventajas de las narices electrónicas es que son rápidas, portatiles y económicas en comparación con metodos tradicionales para ciertas aplicaciones como la detección de sustancias, o técnicas cromatográficas para controles de calidad.
+
+\subsection{Antecedentes y Evolución de la Nariz Electrónica}
+La base tecnológica de la nariz electrónica (e-nose) se encuentra en la investigación de los sensores de gas de semiconductores de óxido metálico (MOS), cuyo desarrollo se remonta a mediados del siglo XX.\@ Un hito temprano fue la descripción de las propiedades sensibles al gas del óxido de germanio en 1953. Los primeros sensores de gas se fabricaron utilizando óxido de zinc (\ce{ZnO}) y, a lo largo del tiempo, la tecnología evolucionó para incorporar materiales como el dióxido de estaño (\ce{SnO2}), el dióxido de titanio (\ce{TiO2}) y el óxido de tungsteno (\ce{WO3}). De estos, el dióxido de estaño granular es el material más ampliamente estudiado y empleado en la actualidad.
+
+A pesar de que existen registros de sistemas de nariz electrónica reportados desde 1974, sus primeras aplicaciones prácticas se dieron en los laboratorios de control de calidad para el testeo de alimentos procesados. La formalización y comercialización de esta tecnología se materializó a principios de los años 90 con la aparición de los sistemas de reconocimiento de aroma en el mercado. Un sistema pionero fue el Modular Sensor System (MOSES I), marcando el inicio de la disponibilidad de estos instrumentos para una variedad de aplicaciones.
+
+En la actualidad, esta tecnología ha evolucionado hasta convertirse en un instrumento capaz de reconocer y comparar olores complejos, un logro que la enmarca dentro del campo de la biomímesis al buscar imitar el olfato humano.
+
+\subsection{Funcionamiento}
+El funcionamiento de una nariz electrónica se basa en el principio de la biomímesis, buscando replicar el proceso del olfato humano mediante la combinación de hardware (la matriz de sensores) y software (el sistema de reconocimiento de patrones). El objetivo fundamental es la detección de moléculas volátiles en el aire y su posterior comparación con muestras de referencia calibradas.
+
+El sistema completo se divide en tres partes esenciales que trabajan de forma secuencial: la toma de muestra (equipo de muestreo), la matriz de sensores y el sistema de tratamiento de datos.
+
+\subsubsection{Ciclo de Medición y Detección}
+El proceso se inicia con la preparación de la muestra, donde los Compuestos Orgánicos Volátiles (COV) son concentrados por calentamiento en la fase de vapor sobre la muestra (lo que se conoce como espacio de cabeza). Estos volátiles son introducidos en el sistema de detección a través de un ciclo de medición bien definido:
+\begin{itemize}
+    \item \textbf{Fase de Adsorción (Exposición):} Los sensores se exponen directamente a la atmósfera de la muestra contaminada (o espacio de cabeza), permitiendo que las moléculas de olor se adsorban sobre la superficie de los sensores. Durante esta fase, los sensores registran sus respuestas continuamente.
+    \item \textbf{Fase de Desorción (Línea Base):} A continuación, los sensores son expuestos a aire limpio. Esto permite que las moléculas de olor se desorban, lo que restablece la línea base del sensor para la siguiente medición y es crucial para la posterior diferenciación de olores.
+\end{itemize}
+
+Los sensores de gas, principalmente los semiconductores de óxido metálico (MOS), miden las diferentes propiedades físico-químicas de los componentes del aroma. Esta interacción modifica las propiedades eléctricas del sensor (como su conductividad), convirtiendo el olor en una señal eléctrica mensurable.
+
+\subsubsection{Generación de la Huella Olfativa}
+La e-nose requiere una matriz de múltiples sensores de gas para funcionar. Cada sensor posee una cierta especificidad para un grupo de compuestos químicos. Debido a que los olores suelen estar compuestos por más de una fuente, cada sensor de la matriz reacciona de forma única, generando un valor de conductividad individual.
+
+El resultado de esta matriz de respuestas es una matriz de datos compleja, que constituye la ``huella digital'' o ``huella olfativa'' del olor percibido. Esta huella es esencial para la identificación y clasificación de los olores, ya que cada combinación de respuestas de los sensores corresponde a un aroma específico.
+
+\subsubsection{Procesamiento y Reconocimiento de Patrones}
+La etapa final y definitoria del sistema es el procesamiento de datos. El ordenador se encarga de procesar la matriz de datos mediante técnicas quimiométricas (estadísticas multivariadas y algoritmos de aprendizaje automático).
+
+Métodos avanzados como el Análisis de Componentes Principales (PCA), el Análisis de Función de Discriminantes (DFA) o las Redes Neuronales Artificiales (ANN) son esenciales para la extracción de patrones significativos y la clasificación del olor. Es precisamente este procesamiento algorítmico lo que cumple el criterio de ``producir un resultado que es diferente a solo las respuestas de los sensores de gas'', ya que permite a la e-nose clasificar los diferentes elementos en función de su similitud aromática e Identificar si el olor se ajusta a un patrón conocido.
+
+De esta forma, la nariz electrónica es capaz de procesar la fracción volátil de forma global, al igual que la nariz humana, y proporciona una interpretación sobre la naturaleza del aroma.\\
+
+En la figura~\ref{fig:funcionamiento_enose} se muestra un diagrama de flujo que ilustra el funcionamiento general de una nariz electrónica, desde la toma de muestra hasta la generación de resultados interpretativos mediante el procesamiento de datos.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\textwidth]{pictures/Funcionamiento_e-nose.png}
+    \caption{Funcionamiento general de una e-nose.}\label{fig:funcionamiento_enose}
+\end{figure}
+
+\subsection{Tipos de sensores}
+Para la detección de olores, las narices electrónicas emplean diversos tipos de sensores, cada uno con sus propias características y aplicaciones. Los tipos de sensores más comunes son:
+\begin{itemize}
+    \item Semiconductores de óxido metálico (MOS o MOX).
+    \item Transistores de campo eléctrico con semiconductores de óxido metálico (MOSFET).
+    \item Conductores de polímero orgánico (CP).
+    \item Cristales piezoeléctricos (BAW).
+    \item Detectores de fotoionización, biosensores y nanotecnología.
+\end{itemize}
+
+La vida útil de los sensores MOSFET y CP, típicamente de 1 a 3 años, se ve limitada por su alta dependencia de la temperatura y la humedad, a pesar de ofrecer una sensibilidad aceptable.
+
+Los cristales piezoeléctricos (BAW), que funcionan como microbalanzas de alta precisión, ofrecen una gran sensibilidad a la masa de las moléculas adsorbidas, pero su rendimiento se ve comprometido por la humedad y la temperatura. Por otro lado, los detectores de fotoionización proporcionan una respuesta casi instantánea y son muy sensibles a compuestos orgánicos volátiles, aunque carecen de selectividad. En un intento por maximizar la especificidad, los biosensores integran elementos biológicos (como enzimas o anticuerpos), pero su fragilidad y corta vida útil limitan su aplicación práctica fuera del laboratorio. Finalmente, la nanotecnología, mediante el uso de materiales como nanotubos de carbono o grafeno, promete una sensibilidad sin precedentes y un consumo energético mínimo, si bien la reproducibilidad en su fabricación a gran escala sigue siendo un desafío.
+
+La clase de sensores mas utilizada son los sensores semiconductores de óxido metálico (MOS). De hecho, más del 35\% de los sistemas de nariz electrónica reportados desde 1974 se basan en la tecnología MOS.\@ Los sensores MOS tienen selectividad y reproducibilidad pobres, pero son poco dependientes de la humedad, lo que les da una vida útil de entre 3 y 5 años. Funcionan cambiando la conductividad eléctrica del semiconductor (como \ce{SnO2} o \ce{TiO2}) cuando interacciona con los compuestos volátiles. 
+
+El principio radica en un proceso de quimisorción, que es la formación de enlaces químicos entre las moléculas de gas y el semiconductor.La quimisorción altera la concentración de los portadores de corriente en la superficie del semiconductor, lo que resulta en un cambio en su conductividad eléctrica. Finalmente, cuando el sensor se encuentra en una atmósfera de impurezas gaseosas reductoras, la barrera de energía disminuye. Esto, desde un punto de vista práctico, significa que la resistencia (R) disminuye cuando el sensor se expone a aire contaminado.
+
+La resistencia del sensor puede expresarse mediante la fórmula:
+
+\begin{equation}
+    R = R_Z \cdot \exp\left(\frac{W_G}{k_B T}\right)
+    \label{eq:resistencia_sensor}
+\end{equation}
+
+Donde $R_Z$ representa la resistencia interna al grano ($\Omega$), $W_G$ es la barrera energética (eV), $k_B$ es la constante de Boltzmann ($eV \cdot K^{-1}$), y T es la temperatura absoluta (K).`\\
+
+Los sensores MOS se clasifican según la técnica utilizada para producir la capa sensible al gas. Por un lado están los sensores de película delgada (Thin-Film), cuyo espesor de la capa oscila entre 5nm y 2$\mu$m. Por otra parte están los sensores de película gruesa (Thick-Film), cuyo espesor de la capa es de 10 a 300 $\mu$m. En comparación con los de película delgada, son menos susceptibles al envenenamiento, son más duraderos y exhiben una mayor sensibilidad.
+
+\subsubsection{Tipos de materiales MOS}
+Los sensores MOS originales estaban hechos de óxido de zinc (\ce{ZnO}) y fueron seguidos por el uso de otros materiales. Los óxidos de metal que se han utilizado o propuesto se muestran en la Tabla~\ref{tab:materiales_MOS}.
+
+\begin{table}[htbp]
+\centering
+\begin{tabularx}{\textwidth}{lX}
+\toprule
+\textbf{Material} & \textbf{Aplicaciones y Notas Clave} \\
+\midrule
+Dióxido de Estaño (\ce{SnO2}) & El más ampliamente estudiado y utilizado. Se usa en sensores de película porosa y gruesa con una alta relación superficie-volumen. \\
+\midrule 
+Dióxido de Titanio (\ce{TiO2}) & Compuesto generalizado, no tóxico, barato y respetuoso con el medio ambiente. Junto con \ce{SnO2}, puede dar lugar a sensores de alta selectividad. \\
+\midrule 
+Óxido de Zinc (\ce{ZnO}) & Utilizado para la detección de gases, monitoreo ambiental, procesos industriales y análisis de respiración. Se utiliza para monitorear la calidad del aire interior. \\
+\midrule 
+Óxido de Tungsteno (\ce{WO3}) & Utilizado en detección de gas, monitoreo ambiental, procesos industriales y en el desarrollo de ventanas inteligentes. \\
+\midrule 
+Óxido de Indio (\ce{In2O3}) & Se utiliza para monitorear y regular contaminantes como óxidos de nitrógeno (\ce{NO_x}), óxidos de azufre (\ce{SO_x}) y Compuestos Orgánicos Volátiles (COV). \\
+\midrule 
+Óxido Cúprico (\ce{CuO}) & Ha sido utilizado para diversas aplicaciones como baterías, biosensores, células solares y sensores de gas. \\
+\midrule 
+Óxido Cuproso (\ce{Cu2O}) & Abordado menos en aplicaciones de detección de gas en comparación con \ce{CuO}. \\
+\bottomrule
+\end{tabularx}
+\caption{Materiales comunes en sensores MOS y sus aplicaciones.}\label{tab:materiales_MOS}
+\end{table}
+
+Estos son ejemplos comerciales, pero en el laboratorio de sensores de la escuela de ingenierías industriales se están desarrollando sesnsores para usar en vez de los comerciales con una mejor capacidad de reacción a gases concretos.
+
+En la figura~\ref{fig:sensor_MOS} se muestra un esquema de un sensor MOS típico. El sensor consta de un sustrato aislante (como alúmina o vidrio) sobre el cual se deposita una capa delgada de óxido metálico. Encima de esta capa se colocan electrodos metálicos para medir la resistencia eléctrica del óxido. Un calentador integrado mantiene la temperatura óptima para la operación del sensor, ya que la sensibilidad y selectividad dependen en gran medida de la temperatura de funcionamiento.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{pictures/Sensor_MOS.png}
+    \caption{Presentación esquemática de un sensor MOX.}\label{fig:sensor_MOS}
+\end{figure}
+
+\subsection{Procesamiento de Datos (Quimiometría)}
+Una vez que la matriz de sensores de la nariz electrónica ha capturado las respuestas a los Compuestos Orgánicos Volátiles (COV), es indispensable someter los datos a un riguroso proceso de interpretación para obtener un resultado significativo. Cada sensor aporta un valor de conductividad, generando una matriz de datos compleja que debe ser analizada.
+
+Para interpretar estos conjuntos de datos generados por la matriz de sensores, son esenciales las técnicas estadísticas y de aprendizaje automático multivariantes avanzadas. Este campo de estudio se conoce como quimiometría o sistema de reconocimiento de patrones. Mediante estas técnicas, el sistema transforma la simple respuesta eléctrica de los sensores en un resultado clasificable o identificable, cumpliendo así con uno de los criterios esenciales de una nariz electrónica.
+
+\subsubsection{Técnicas de Análisis de Datos}
+Las respuestas de las señales son analizadas mediante diversos métodos analíticos. Los más reconocidos incluyen:
+\begin{itemize}
+    \item \textbf{Análisis Gráfico: }Utilizado para la visualización básica de los datos (como los diagramas de barras y los diagramas polares).
+    \item \textbf{Análisis Estadístico Multivariado: }Métodos como el Análisis de Componentes Principales (PCA) se emplean comúnmente para visualizar y clasificar la estructura de los datos multivariados. Otras técnicas incluyen el Análisis de Función de Discriminantes (DFA) y el Análisis de Clusters (CA).
+    \item \textbf{Análisis de Redes: }Algoritmos avanzados de aprendizaje automático como las Redes Neuronales Artificiales (ANN) y las Máquinas Vectoriales de Soporte (SVM) han demostrado ser altamente eficaces en la extracción de patrones significativos y en la mejora de la precisión de clasificación y cuantificación.
+\end{itemize}
+La elección del método de análisis adecuado siempre dependerá de los datos disponibles y del tipo específico de resultado que se requiera para la aplicación.
+
+\subsection{Aplicaciones}
+Los sistemas de olfato electrónico han evolucionado desde su aplicación inicial en laboratorios de control de calidad para el análisis de alimentos hasta convertirse en una técnica de análisis no destructiva y de gran aplicabilidad en diversos sectores como seguridad y defensa (detección de drogas y explosivos), detección de enfermedades, control de la calidad del ambiente (por ejemplo, para detectar incendios) o para diversos estudios, por ejemplo, un estudio que buscar comparar la calidad de las cervezas artesanales frente a las cervezas industriales.
+
+\subsection{Desafíos y Limitaciones}
+A pesar de sus notables ventajas en rapidez y portabilidad, las narices electrónicas aún enfrentan importantes desafíos técnicos y de estandarización que han limitado la expansión de su uso como herramienta de monitoreo.
+
+Una de las principales limitaciones radica en los propios sensores de gas, especialmente aquellos de bajo coste. Se observa una baja selectividad, lo que significa que los sensores a menudo reaccionan a múltiples compuestos, un fenómeno conocido como sensibilidad cruzada. Esta falta de especificidad inherente a un solo sensor limita la consecución de un alto rendimiento en la detección. Para abordar esta limitación, la solución más efectiva es el enfoque multisensorial, que combina una matriz de sensores con algoritmos de aprendizaje automático para extraer patrones distintivos.
+
+Otro problema crucial se relaciona con la dependencia ambiental, ya que la presencia de factores como la temperatura y el vapor de agua puede alterar las características del sensor. Además, los sensores enfrentan problemas intrínsecos como la respuesta no lineal y la deriva de la señal, que obligan a realizar calibraciones cíclicas.
+
+La estabilidad a largo plazo se ve comprometida por la susceptibilidad de los sensores a la intoxicación permanente (envenenamiento). Este fenómeno ocurre cuando los centros activos del sensor son ocupados por contaminantes de alta concentración, causando cambios irreversibles en sus características. Para contrarrestar esta degradación y aumentar la vida útil, se recomienda reducir el tiempo de exposición del sensor a los contaminantes, empleando un muestreo secuencial y un lavado con aire limpio.
+
+En el ámbito de la aplicación, existe una dificultad inherente al análisis de olores compuestos por más de una fuente, ya que la identificación precisa depende no solo del tipo de sensor, sino también de la calidad de la base de datos y de los algoritmos de reconocimiento utilizados. Por último, la falta de estándares específicos en la industria es una de las principales limitaciones que dificultan la expansión y homogeneización del uso de las e-noses como una herramienta de monitoreo confiable.
+
+Las narices electrónicas puedes acoplarse a otros sistemas, como por ejemplo un dron, dependiendo de la aplicación que se le quiera dar. Otro ejemplo es una nariz electrónica en un reloj de pulsera cuyo objetivo es medir constantemente la calidad del aire.
+
+\section{Agentes caninos}
+Los perros detectores representan el método tradicional y ampliamente utilizado para la detección de sustancias como drogas o explosivos. Su trabajo se basa en la asombrosa capacidad de su sistema olfativo.
+
+En los cuerpos de seguridad en España, el servicio canino está altamente especializado. Aunque los perros son los que huelen, el proceso es un trabajo en equipo con el guía.
+
+El servicio cinológico cuenta con varias especialidades principales:
+\begin{itemize}
+    \item \textbf{Detectores de Droga: }Se encargan de la búsqueda de sustancias estupefacientes ilegales en diversos escenarios, como el control de vuelos en aeropuertos, equipajes en puertos, y dispositivos operativos en carreteras o domicilios.
+    \item \textbf{Detectores de Explosivos: }Su función es vital en lugares públicos, edificios oficiales, y zonas de visita de personalidades, inspeccionando paquetería y equipajes ante amenazas reales de explosivos.
+    \item \textbf{Seguridad: }Incluye la protección de personas y edificios públicos, así como el control de masas.
+    \item \textbf{Rescate: }Dedicados al salvamento de personas desaparecidas en áreas extensas, catástrofes, avalanchas, o la detección de personas ocultas en vehículos y edificios.
+\end{itemize}
+Además, en la actualidad, el servicio amplía su especialización a la localización de cebos envenenados, la protección de especies y la detección de tráfico de marfil.\\
+
+El entrenamiento de estos perros se basa en el juego. Inicialmente, la sustancia objetivo se pone a la vista y el perro es premiado al acercarse a olerla. El entrenamiento consiste en incrementar gradualmente la complejidad del ``juego'', enseñándole al perro a marcar la ubicación de la sustancia para recibir una recompensa.
+
+La eficacia del perro se debe a su capacidad para detectar sustancias incluso cuando se ha intentado eliminarlas. Por ejemplo, pueden detectar una mancha de sangre en el suelo que ha sido limpiada con lejía u otros productos de limpieza fuertes.\\
+
+A pesar de su increíble sensibilidad, el uso de perros detectores no está exento de limitaciones. Por ejemplo, el estado de ánimo del perro puede variar dependiendo del estado de ánimo del guía o de la cantidad de estimulos que pueda haber en la zona, lo que puede resultar en distracción o falta de motivación para el ``juego''. Además, los perros requieren descansos regulares para mantener su eficacia y evitar la fatiga. Es fundamental el trabajo constante del guía para asegurar que el perro se mantenga concentrado en la tarea. Por otro lado la detección canina es un método que consume mucho tiempo, es costoso y requiere un amplio entrenamiento.\\
+
+En el contexto de la nariz electrónica, las e-noses se presentan como una tecnología con ventajas logísticas (rapidez, portabilidad y coste-efectividad) que buscan complementar los métodos tradicionales de detección canina.
