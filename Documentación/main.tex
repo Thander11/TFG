@@ -6,6 +6,9 @@
 \setlength{\marginparwidth}{2cm}
 
 \usepackage{lipsum} % Este paquete es para poner texto genérico en los capítulos, quitar cuando ya se hayan redactado
+% Glosarios y acrónimos
+\usepackage[acronym]{glossaries}
+\makeglossaries
 % Paquete para tipografía química (fórmulas con subíndices/superíndices)
 \usepackage[version=4]{mhchem}
 \usepackage{tabularx}
@@ -40,8 +43,12 @@
 
 %%%% CAPÍTULOS INTRODUCTORIOS %%%%
 \pagenumbering{gobble}
-%\chapter*{Agradecimientos} % Apartado opcional, descomentar si se quiere añadir
+\chapter*{Agradecimientos} % Apartado opcional, descomentar si se quiere añadir
+
 % Dedicatorias del trabajo, pueden ser en español o inglés dependiendo de lo que se considere más apropiado
+
+\chapter*{Glosario}
+
 
 \chapter*{Resumen}
 EL RESUMEN EN ESPAÑOL
@@ -65,6 +72,10 @@ EL RESUMEN EN INGLÉS
 \newpage
 \listoffigures
 \newpage
+% Imprimir glosario y acrónimos
+\input{glossary.tex}
+\printglossary
+\printglossary[type=\acronymtype,title=Acrónimos]
 
 
 %%%%%%% ESTRUCTURA DEL TFG %%%%%%%%%%%%%%
