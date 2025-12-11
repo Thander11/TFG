@@ -1,8 +1,9 @@
 # Fdb version 4
-["pdflatex"] 1764842972.78393 "c:/Users/raulm/OneDrive - Universidad de Extremadura/TFG/Organización/Planificación.tex" "out/Planificación.pdf" "Planificación" 1764842974.11193 0
-  "Planificación.tex" 1764842852 3873 348d3e1bf8c168611e392253ec725e86 ""
-  "c:/Users/raulm/OneDrive - Universidad de Extremadura/TFG/Organización/Planificación.tex" 1764842852 3873 348d3e1bf8c168611e392253ec725e86 ""
+["pdflatex"] 1765444423.84661 "c:/Users/raulm/OneDrive - Universidad de Extremadura/TFG/Organización/Planificación.tex" "out/Planificación.pdf" "Planificación" 1765444428.26856 0
+  "Planificación.tex" 1765444420 3966 2a57889ada9e4a834fe2084dec635f6e ""
+  "c:/Users/raulm/OneDrive - Universidad de Extremadura/TFG/Organización/Planificación.tex" 1765444420 3966 2a57889ada9e4a834fe2084dec635f6e ""
   "c:/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc" 1764583238 2971 def0b6c1f0b107b3b936def894055589 ""
+  "c:/texlive/2025/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1764583238 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "c:/texlive/2025/texmf-dist/fonts/map/fontname/texfonts.map" 1764584849 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "c:/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/ecbx1095.tfm" 1764584194 3584 21b378cca2e40816b0e6d74a4dc98f04 ""
   "c:/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/ecbx1200.tfm" 1764584194 3584 402da0b29eafbad07963b1224b222f18 ""
@@ -11,6 +12,7 @@
   "c:/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/ecrm1200.tfm" 1764584194 3584 f80ddd985bd00e29e9a6047ebd9d4781 ""
   "c:/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/ecrm1440.tfm" 1764584194 3584 3169d30142b88a27d4ab0e3468e963a2 ""
   "c:/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/ecrm2074.tfm" 1764584194 3584 8e2870ec7aa9776f59654942b0923f51 ""
+  "c:/texlive/2025/texmf-dist/fonts/tfm/jknappen/ec/tcrm1095.tfm" 1764584194 1536 02c06700a42be0f5a28664c7273f82e7 ""
   "c:/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1764581874 1004 54797486969f23fa377b128694d548df ""
   "c:/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1764581874 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
   "c:/texlive/2025/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm" 1764581874 916 f87d7c45f9c908e672703b83b72241a3 ""
@@ -105,8 +107,8 @@
   "c:/texlive/2025/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1764593724 5587484 30eee748fa419a911c40b0c750dd21ba ""
   "c:/texlive/2025/texmf-var/web2c/pdftex/pdflatex.fmt" 1764594027 3635703 8823318e4ba0335b2c14a4fa5f270bf1 ""
   "c:/texlive/2025/texmf.cnf" 1764593679 713 e69b156964470283e0530f5060668171 ""
-  "out/Planificación.aux" 1764842973 340 e3b1624f851163658002e353cedc3437 "pdflatex"
-  "out/Planificación.out" 1764842973 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
+  "out/Planificación.aux" 1765444427 340 e3b1624f851163658002e353cedc3437 "pdflatex"
+  "out/Planificación.out" 1765444426 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
   (generated)
   "out/Planificación.aux"
   "out/Planificación.log"
