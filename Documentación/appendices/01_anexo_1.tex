@@ -3,29 +3,62 @@ En este anexo se lleva un seguimiento de la obtencion de las características de
 
 \begin{table}[htbp]
 	\centering
-	\small
-	\begin{tabularx}{\textwidth}{@{} l l l X @{}}
-			oprule
-			extbf{Fecha} & \textbf{Sustancia} & \textbf{Condiciones} & \textbf{Hora inicio; Hora fin; Comentarios} \\
+	\footnotesize
+	\setlength{\tabcolsep}{4pt}
+	\begin{tabularx}{\textwidth}{@{} >{\raggedright\arraybackslash}p{0.18\textwidth} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X @{}}
+		\toprule
+			\textbf{Nombre} & \textbf{Sustancia} & \textbf{Condiciones} & \textbf{Control} \\
 		\midrule
-		2025--12--11 & Cacao en polvo (2\,g) & Bote cerrado & \begin{itemize}
-            \item Hora inicio: 17:16
-            \item Hora fin: 17:22
-            \item Comentarios: 
-		\end{itemize}\\
+		EXP\_M\_1 & Cacao en polvo (2\,g) & Bote cerrado a temperatura ambiente & {\raggedright\begin{minipage}[t]{\linewidth}\begin{itemize}\itemsep0pt\parskip0pt\parsep0pt\setlength{\topsep}{0pt}
+			\item \textbf{Fecha:} 2025--12--11
+			\item \textbf{Hora inicio:} 17:16
+			\item \textbf{Hora fin:} 17:22
+			\item \textbf{Comentarios:}
+		\end{itemize}\end{minipage}}\\
 		\midrule
-		2025--12--12 & Limón exprimido (3\,g) & Bote cerrado a temperatura ambiente & \begin{itemize}
-            \item Hora inicio: 11:37
-            \item Hora fin: 11:44
-            \item Comentarios: Se ha cerrado la puerta a las 11:39.
-		\end{itemize}\\
+		EXP\_M\_2--1 & Limón exprimido (3\,g) & Bote cerrado a temperatura ambiente & {\raggedright\begin{minipage}[t]{\linewidth}\begin{itemize}\itemsep0pt\parskip0pt\parsep0pt\setlength{\topsep}{0pt}
+			\item \textbf{Fecha:} 2025--12--12
+			\item \textbf{Hora inicio:} 11:37
+			\item \textbf{Hora fin:} 11:44
+			\item \textbf{Comentarios:} Se ha cerrado la puerta a las 11:39.
+		\end{itemize}\end{minipage}}\\
 		\midrule
-		2025--12--12 & Limón exprimido (3\,g) & Bote abierto a temperatura ambiente & \begin{itemize}
-            \item Hora inicio: 11:56
-            \item Hora fin: 17:22
-            \item Comentarios: La habitación no estaba vacía.
-		\end{itemize}\\
+		EXP\_M\_2--2 & Limón exprimido (3\,g) & Bote abierto a temperatura ambiente & {\raggedright\begin{minipage}[t]{\linewidth}\begin{itemize}\itemsep0pt\parskip0pt\parsep0pt\setlength{\topsep}{0pt}
+			\item \textbf{Fecha:} 2025--12--12
+			\item \textbf{Hora inicio:} 11:56
+			\item \textbf{Hora fin:} 12:03
+			\item \textbf{Comentarios:}
+		\end{itemize}\end{minipage}}\\
+		\midrule
+		EXP\_M\_3--1 & Salsa chipotle y adobo (3\,g) & Bote cerrado a temperatura ambiente & {\raggedright\begin{minipage}[t]{\linewidth}\begin{itemize}\itemsep0pt\parskip0pt\parsep0pt\setlength{\topsep}{0pt}
+			\item \textbf{Fecha:} 2025--12--12
+			\item \textbf{Hora inicio:} 12:16
+			\item \textbf{Hora fin:} 12:23
+			\item \textbf{Comentarios:} Ha salido alguien de la habitación a las 12:17 y ha vuelto a entrar a las 12:18.
+		\end{itemize}\end{minipage}}\\
+		\midrule
+		EXP\_M\_2--3 & Limón exprimido (3\,g) & Bote abierto a temperatura ambiente con corriente de aire & {\raggedright\begin{minipage}[t]{\linewidth}\begin{itemize}\itemsep0pt\parskip0pt\parsep0pt\setlength{\topsep}{0pt}
+			\item \textbf{Fecha:} 2025--12--12
+			\item \textbf{Hora inicio:} 12:38
+			\item \textbf{Hora fin:} 12:45
+			\item \textbf{Comentarios:} El bote se ha volcado a las 12:44. No se ha derramado nada y ha sido un corto periodo de tiempo así que continua el experimento.
+		\end{itemize}\end{minipage}}\\
+		\midrule
+		EXP\_M\_3--2 & Salsa chipotle y adobo (3\,g) & Bote abierto a temperatura ambiente & {\raggedright\begin{minipage}[t]{\linewidth}\begin{itemize}
+		\itemsep0pt\parskip0pt\parsep0pt\setlength{\topsep}{0pt}
+			\item \textbf{Fecha:} 2025--12--12
+            \item \textbf{Hora inicio:} 13:13
+            \item \textbf{Hora fin:} 13:20
+            \item \textbf{Comentarios:}
+		\end{itemize}\end{minipage}}\\
+		\midrule
+		EXP\_M\_3--2 & Salsa chipotle y adobo (3\,g) & Bote abierto a temperatura ambiente con corriente de aire & {\raggedright\begin{minipage}[t]{\linewidth}\begin{itemize}\itemsep0pt\parskip0pt\parsep0pt\setlength{\topsep}{0pt}
+			\item \textbf{Fecha:} 2025--12--12
+			\item \textbf{Hora inicio:} 12:52
+			\item \textbf{Hora fin:} 12:59
+			\item \textbf{Comentarios:} Está lloviendo.
+		\end{itemize}\end{minipage}}\\
 		\bottomrule
 	\end{tabularx}
-    \caption{Registro de mediciones de sustancias y condiciones de muestreo.}\label{tab:registro_sustancias}
+    \caption{Registro de mediciones de sustancias y condiciones de muestreo.}\label{tab:registro_sustancias_malo}
 \end{table}

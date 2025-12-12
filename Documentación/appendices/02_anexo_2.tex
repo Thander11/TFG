@@ -3,23 +3,20 @@ En este anexo se lleva un seguimiento de la obtencion de las características de
 
 \begin{table}[htbp]
 	\centering
-	\small
-	\begin{tabularx}{\textwidth}{@{} l l l X @{}}
-			oprule
-			extbf{Fecha} & \textbf{Sustancia} & \textbf{Condiciones} & \textbf{Hora inicio; Hora fin; Comentarios} \\
+	\footnotesize
+	\setlength{\tabcolsep}{4pt}
+	\begin{tabularx}{\textwidth}{@{} >{\raggedright\arraybackslash}p{0.18\textwidth} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X @{}}
+		\toprule
+			\textbf{Nombre} & \textbf{Sustancia} & \textbf{Condiciones} & \textbf{Hora inicio; Hora fin; Comentarios} \\
 		\midrule
-		2025--12--11 & Cacao en polvo (2\,g) & Bote cerrado & \begin{itemize}
-            \item Hora inicio: 17:16
-            \item Hora fin: 17:22
-            \item Comentarios: 
-		\end{itemize}\\
+		EXP\_M\_1 & Cacao en polvo (2\,g) & Bote cerrado a temperatura ambiente & {\raggedright\begin{minipage}[t]{\linewidth}\begin{itemize}\itemsep0pt\parskip0pt\parsep0pt\setlength{\topsep}{0pt}
+			\item \textbf{Fecha:} 2025--12--11
+			\item \textbf{Hora inicio:} 17:16
+			\item \textbf{Hora fin:} 17:22
+			\item \textbf{Comentarios:}
+		\end{itemize}\end{minipage}}\\
 		\midrule
-		2025--12--11 & Cacao en polvo (2\,g) & Bote cerrado & \begin{itemize}
-            \item Hora inicio: 17:16
-            \item Hora fin: 11:20
-            \item Comentarios: 
-		\end{itemize}\\
 		\bottomrule
 	\end{tabularx}
-	\caption{Registro de mediciones de sustancias y condiciones de muestreo.}\label{tab:registro_sustancias}
+	\caption{Registro de mediciones de sustancias y condiciones de muestreo.}\label{tab:registro_sustancias_bueno}
 \end{table}
