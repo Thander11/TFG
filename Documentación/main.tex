@@ -12,6 +12,8 @@
 \usepackage{booktabs}
 \usepackage{xltabular}
 \usepackage{caption}
+\usepackage{float} % Para usar [H] y fijar la posición de figuras/tablas
+\usepackage[section]{placeins} % Evita que los flotantes crucen secciones (añade \FloatBarrier)
 
 % Rellenar con los datos del estudiante y el trabajo
 \estudiante{Raúl Martín-Romo Sánchez}{Grado}{Ingeniería Informática en Ingeniería del Software}
@@ -47,7 +49,27 @@
 % Dedicatorias del trabajo, pueden ser en español o inglés dependiendo de lo que se considere más apropiado
 
 \chapter*{Glosario}
-
+\begin{description}
+    \item[Biomímesis:] Ciencia que estudia la naturaleza como fuente de inspiración para el desarrollo de tecnologías y sistemas que resuelvan problemas humanos mediante la imitación de modelos, sistemas o elementos biológicos.
+    
+    \item[Compuestos Orgánicos Volátiles (COVs):] Grupo de sustancias químicas orgánicas cuya presión de vapor es lo suficientemente alta en condiciones ambientales normales como para evaporarse significativamente y entrar en la atmósfera. Son las moléculas clave en la detección olfativa.
+    
+    \item[Quimiometría:] Disciplina científica que utiliza métodos matemáticos y estadísticos para diseñar o seleccionar procedimientos de medida óptimos y proporcionar la máxima información química relevante mediante el análisis de datos químicos.
+    
+    \item[Análisis de Componentes Principales (PCA):] Método estadístico de reducción de la dimensionalidad que transforma un conjunto de variables correlacionadas en un número menor de variables no correlacionadas llamadas componentes principales, facilitando la identificación de patrones y agrupamientos.
+    
+    \item[Análisis de Función de Discriminantes (DFA):] Técnica estadística utilizada para determinar qué variables permiten distinguir mejor entre dos o más grupos de muestras previamente definidos, con el fin de crear un modelo predictivo de clasificación.
+    
+    \item[Análisis de Clusters (CA):] Técnica exploratoria de análisis de datos que agrupa objetos o muestras de tal manera que la similitud entre los miembros de un mismo grupo sea máxima y la similitud con miembros de otros grupos sea mínima.
+    
+    \item[Redes Neuronales Artificiales (ANN):] Modelos computacionales inspirados en el funcionamiento del sistema nervioso central biológico. Están compuestos por capas de nodos interconectados que aprenden a reconocer patrones complejos y relaciones no lineales en los datos.
+    
+    \item[Máquinas Vectoriales de Soporte (SVM):] Algoritmos de aprendizaje automático supervisado capaces de resolver problemas de clasificación y regresión mediante la búsqueda de un hiperplano óptimo que maximice la separación entre diferentes clases en un espacio multidimensional.
+    
+    \item[Servicio cinológico:] Unidad o equipo especializado en el adiestramiento, cuidado y empleo de perros con fines de seguridad, rescate o detección de sustancias ilícitas y especímenes protegidos.
+    
+    \item[Tráfico de marfil:] Comercio ilegal de colmillos de elefantes y otros animales que poseen defensas de marfil. Es una de las principales amenazas para la conservación de la fauna silvestre a nivel global.
+\end{description}
 
 \chapter*{Resumen}
 EL RESUMEN EN ESPAÑOL

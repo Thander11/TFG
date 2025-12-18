@@ -1,1 +1,48 @@
 \chapter{Metodología y herramientas}
+\section{Definición de la metodología aplicada}
+
+Desde el principio se definieron cinco fases principales:
+
+\begin{itemize}
+    \item Reuniones iniciales.
+    \item Búsqueda de información.
+    \item Formación y entrenamiento de la nariz electrónica (e\nobreakdash-nose).
+    \item Pruebas comparativas con los agentes caninos.
+    \item Redacción final de la documentación.
+\end{itemize}
+
+Sin embargo, el contenido específico, la secuencia detallada y la carga de trabajo dentro de cada fase no podían fijarse de antemano, ya que dependen de la disponibilidad de recursos, de las personas implicadas y de la información que se vaya obteniendo durante el avance del proyecto. Por este motivo se adoptó un enfoque ligero, apoyado en metodologías ágiles (Scrum y Kanban), que facilita mantener un ritmo constante y una alta capacidad de adaptación ante cambios y necesidades emergentes.
+
+\subsubsection{Control de versiones con Git}
+Para garantizar la trazabilidad y poder revertir cambios si fuera necesario, se utiliza Git como sistema de control de versiones. Esto permite mantener un historial detallado de todas las modificaciones realizadas en el código y la documentación, facilitando la colaboración y la gestión del proyecto.
+
+Esto se logra a traves de un repositorio privado en GitHub gestionado mediante ramas, en el que se almacena todo el código fuente, documentación, información recopilada a modo de apuntes y recursos relacionados con el proyecto.
+
+\subsubsection{Sprints adaptativos}
+Se define como sprint a cada una de las fases anteriormente mencionadas. La duración de cada sprint se fija en funcion de una estimación del tiempo que se cree necesario para lograr los objetivos establecidos para esa fase.
+
+Antes de que inicie cada sprint (En los ultimos días del sprint anterior), se hace una organiacación aproximada de las tareas a realizar. Al comenzar el sprint, se hace una planificación más detallada de las tareas a realizar, asignando prioridades y fijando fechas de las posibles reuniones con los implicados. Durante el sprint, se revisa periódicamente el progreso y se ajustan las tareas y prioridades según sea necesario.
+
+\subsubsection{Github Projects y Tablero Kanban}
+
+Para la gestión de tareas, sprints y el seguimiento del progreso del proyecto, se utiliza GitHub Projects (En el repositorio anteriormente mencionado), que cuenta con un tablero Kanban integrado, como el que se muestra en la Figura~\ref{fig:tablero_kanban}. Este tablero permite visualizar las tareas en diferentes estados (Backlog, Ready, In progress, Done) y facilita la organización y priorización de las actividades. Cada tarea se representa como una tarjeta que puede moverse entre las columnas según su estado actual, proporcionando una visión clara del avance del proyecto.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{pictures/Tablero_Kanban.jpg}
+    \caption{Tablero Kanban del segundo sprint.}\label{fig:tablero_kanban}
+\end{figure}
+
+\subsection{Planificación}
+
+\section{Herramientas utilizadas}
+Dada la naturaleza del proyecto, es posible dsitinguir entre dos tipos de herramientas: herramientas hardware y herramientas software.
+
+\subsection{Herramientas hardware}
+Aquí se encuentra la principal herramienta para este estudio: la nariz electrónica utilizada para la toma de datos de las ditintas muestras. Esta nariz electrónica ha sido diseñada y construida en el laboratorio de sensores de la Escuela de Ingenierías Industriales de Badajoz por Cristina Brugera Salas, bajo la supervisión del Dr.\ Jesús Lozano Rogado, cotutor de este trabajo.
+
+%Aqui va la foto de la nariz electronica
+
+En la Figura~\ref{fig:nariz_electronica} se puede observar dicha nariz electrónica desde una vista exterior (La carcasa). La ``verdadera'' nariz electrónica es una placa PCB, diseñada y programada en el laboratorio de sensores de la Esuela de Ingenierias Industriales de Badajoz, que se encuentra en el interior de la carcasa. En esta placa es donde se encuentran los sensores de gasesy el microcontrolador, además de contar con un módulo Bluetooth para la comunicación con la aplicación movil, que la controla y una entrada microUSB para poder conectarla a la corriente y cargar la bateria con la que cuenta.
+
+\subsection{Herramientas software}

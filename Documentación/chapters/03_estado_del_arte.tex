@@ -43,7 +43,7 @@ De esta forma, la nariz electrónica es capaz de procesar la fracción volátil 
 
 En la figura~\ref{fig:funcionamiento_enose} se muestra un diagrama de flujo que ilustra el funcionamiento general de una nariz electrónica, desde la toma de muestra hasta la generación de resultados interpretativos mediante el procesamiento de datos.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.9\textwidth]{pictures/Funcionamiento_e-nose.png}
     \caption{Funcionamiento general de una e-nose.}\label{fig:funcionamiento_enose}
@@ -81,12 +81,19 @@ Los sensores MOS se clasifican según la técnica utilizada para producir la cap
 \subsubsection{Tipos de materiales MOS}
 Los sensores MOS originales estaban hechos de óxido de zinc (\ce{ZnO}) y fueron seguidos por el uso de otros materiales. Los óxidos de metal que se han utilizado o propuesto se muestran en la Tabla~\ref{tab:materiales_MOS}.
 
-\begin{table}[htbp]
-\centering
-\begin{tabularx}{\textwidth}{lX}
-\toprule
-\textbf{Material} & \textbf{Aplicaciones y Notas Clave} \\
+\begin{xltabular}{\textwidth}{@{}lX@{}}
+	\toprule
+	\textbf{Material} & \textbf{Aplicaciones y Notas Clave} \\
 \midrule
+\endfirsthead%
+	\toprule
+	\textbf{Material} & \textbf{Aplicaciones y Notas Clave} \\
+\midrule
+\endhead%
+\midrule \multicolumn{2}{r}{Continúa en la siguiente página}\\
+\endfoot%
+\bottomrule
+\endlastfoot%
 Dióxido de Estaño (\ce{SnO2}) & El más ampliamente estudiado y utilizado. Se usa en sensores de película porosa y gruesa con una alta relación superficie-volumen. \\
 \midrule 
 Dióxido de Titanio (\ce{TiO2}) & Compuesto generalizado, no tóxico, barato y respetuoso con el medio ambiente. Junto con \ce{SnO2}, puede dar lugar a sensores de alta selectividad. \\
@@ -100,16 +107,14 @@ Dióxido de Titanio (\ce{TiO2}) & Compuesto generalizado, no tóxico, barato y r
 Óxido Cúprico (\ce{CuO}) & Ha sido utilizado para diversas aplicaciones como baterías, biosensores, células solares y sensores de gas. \\
 \midrule 
 Óxido Cuproso (\ce{Cu2O}) & Abordado menos en aplicaciones de detección de gas en comparación con \ce{CuO}. \\
-\bottomrule
-\end{tabularx}
-\caption{Materiales comunes en sensores MOS y sus aplicaciones.}\label{tab:materiales_MOS}
-\end{table}
+\end{xltabular}
+\captionof{table}{Materiales comunes en sensores MOS y sus aplicaciones.}\label{tab:materiales_MOS}
 
 Estos son ejemplos comerciales, pero en el laboratorio de sensores de la escuela de ingenierías industriales se están desarrollando sesnsores para usar en vez de los comerciales con una mejor capacidad de reacción a gases concretos.
 
 En la figura~\ref{fig:sensor_MOS} se muestra un esquema de un sensor MOS típico. El sensor consta de un sustrato aislante (como alúmina o vidrio) sobre el cual se deposita una capa delgada de óxido metálico. Encima de esta capa se colocan electrodos metálicos para medir la resistencia eléctrica del óxido. Un calentador integrado mantiene la temperatura óptima para la operación del sensor, ya que la sensibilidad y selectividad dependen en gran medida de la temperatura de funcionamiento.
 
-\begin{figure}[htbp]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{pictures/Sensor_MOS.png}
     \caption{Presentación esquemática de un sensor MOX.}\label{fig:sensor_MOS}
