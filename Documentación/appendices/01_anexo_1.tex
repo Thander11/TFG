@@ -3,14 +3,14 @@ En este anexo se lleva un seguimiento de la obtencion de las características de
 
 \footnotesize
 \setlength{\tabcolsep}{4pt}
-\begin{xltabular}{\textwidth}{@{} >{\raggedright\arraybackslash}p{0.18\textwidth} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X @{}}
-	\toprule
-	\textbf{Nombre} & \textbf{Sustancia} & \textbf{Condiciones} & \textbf{Control} \\
+\begin{xltabular}{\textwidth}{@{} >{\centering\arraybackslash}p{0.18\textwidth} >{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\raggedright\arraybackslash}X @{}}
+		\toprule
+	\multicolumn{1}{c}{\textbf{Nombre}} & \multicolumn{1}{c}{\textbf{Sustancia}} & \multicolumn{1}{c}{\textbf{Condiciones}} & \multicolumn{1}{c}{\textbf{Control}} \\
 \midrule
 \endfirsthead%
 
-	\toprule
-	\textbf{Nombre} & \textbf{Sustancia} & \textbf{Condiciones} & \textbf{Control} \\
+		\toprule
+	\multicolumn{1}{c}{\textbf{Nombre}} & \multicolumn{1}{c}{\textbf{Sustancia}} & \multicolumn{1}{c}{\textbf{Condiciones}} & \multicolumn{1}{c}{\textbf{Control}} \\
 \midrule
 \endhead%
 
@@ -90,4 +90,4 @@ En este anexo se lleva un seguimiento de la obtencion de las características de
 			\item \textbf{Comentarios:} Está lloviendo y entra bastante viento.
 		\end{itemize}\end{minipage}}\\
 	\end{xltabular}
-	\captionof{table}{Registro de mediciones de sustancias y condiciones de muestreo.}\label{tab:registro_sustancias_malo}
+	{\captionsetup{type=table,hypcap=false}\captionof{table}{Registro de mediciones de sustancias y condiciones de muestreo.}\label{tab:registro_sustancias_malo}}

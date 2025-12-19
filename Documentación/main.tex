@@ -1,6 +1,10 @@
+% chktex-file 48
 \documentclass[minitoc, hidelinks, headlogo, framedcover]{tfeEPCC}
 \usepackage[spanish, es-tabla]{babel} % Comentar si se va a realizar en inglés
 %\usepackage{parskip} % Quitar comentario si se quieren distinguir los párrafos con saltos y quitar las sangrías
+% Espaciado y sangría de párrafos (manteniendo la sangría)
+\setlength{\parskip}{0.7em}
+\setlength{\parindent}{1.5em}
 
 % Ajuste para notas al margen (todonotes): evitar advertencias de margen
 \setlength{\marginparwidth}{2cm}
@@ -21,8 +25,8 @@
 \keywords{Nariz Electrónica\and e-Nose\and Agentes Caninos\and Detección de Sustancias\and Sensores\and Unidad Canina}
 
 \begin{document}
-\sloppy 
-\pagebreak 
+\sloppy%
+\pagebreak%
 
 %%%%%%%%%%%%% PORTADA %%%%%%%%%%%%%
 % Poner convocatoria y año de presentación
@@ -53,6 +57,8 @@
     \item[Biomímesis:] Ciencia que estudia la naturaleza como fuente de inspiración para el desarrollo de tecnologías y sistemas que resuelvan problemas humanos mediante la imitación de modelos, sistemas o elementos biológicos.
     
     \item[Compuestos Orgánicos Volátiles (COVs):] Grupo de sustancias químicas orgánicas cuya presión de vapor es lo suficientemente alta en condiciones ambientales normales como para evaporarse significativamente y entrar en la atmósfera. Son las moléculas clave en la detección olfativa.
+    
+    \item[Compuestos de Azufre Volátiles (VSCs):] Sustancias químicas que contienen azufre y presentan una alta volatilidad. Estos compuestos suelen tener olores fuertes y característicos, y son de gran interés en estudios de detección olfativa y análisis ambiental debido a su bajo umbral de detección por sistemas biológicos y sensores.
     
     \item[Quimiometría:] Disciplina científica que utiliza métodos matemáticos y estadísticos para diseñar o seleccionar procedimientos de medida óptimos y proporcionar la máxima información química relevante mediante el análisis de datos químicos.
     
@@ -165,6 +171,7 @@ EL RESUMEN EN INGLÉS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%% ANEXOS %%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% chktex 48
 \startappendices
 
 %%%%%%%% ANEXO 1 %%%%%%%%
@@ -183,5 +190,5 @@ EL RESUMEN EN INGLÉS
 %%%%%%%% BIBLIOGRAFÍA %%%%%%%%
 % Se puede cambiar el estilo de la bibliografía, por defecto es 'unsrturl'
 % Por ejemplo: \makebibliography{alphaurl}
-\makebibliography
+\makebibliography%
 \end{document}

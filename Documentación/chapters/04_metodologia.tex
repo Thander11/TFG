@@ -15,11 +15,13 @@ Sin embargo, el contenido específico, la secuencia detallada y la carga de trab
 
 \subsubsection{Control de versiones con Git}
 Para garantizar la trazabilidad y poder revertir cambios si fuera necesario, se utiliza Git como sistema de control de versiones. Esto permite mantener un historial detallado de todas las modificaciones realizadas en el código y la documentación, facilitando la colaboración y la gestión del proyecto.
+\par
 
 Esto se logra a traves de un repositorio privado en GitHub gestionado mediante ramas, en el que se almacena todo el código fuente, documentación, información recopilada a modo de apuntes y recursos relacionados con el proyecto.
 
 \subsubsection{Sprints adaptativos}
 Se define como sprint a cada una de las fases anteriormente mencionadas. La duración de cada sprint se fija en funcion de una estimación del tiempo que se cree necesario para lograr los objetivos establecidos para esa fase.
+\par
 
 Antes de que inicie cada sprint (En los ultimos días del sprint anterior), se hace una organiacación aproximada de las tareas a realizar. Al comenzar el sprint, se hace una planificación más detallada de las tareas a realizar, asignando prioridades y fijando fechas de las posibles reuniones con los implicados. Durante el sprint, se revisa periódicamente el progreso y se ajustan las tareas y prioridades según sea necesario.
 
@@ -40,9 +42,29 @@ Dada la naturaleza del proyecto, es posible dsitinguir entre dos tipos de herram
 
 \subsection{Herramientas hardware}
 Aquí se encuentra la principal herramienta para este estudio: la nariz electrónica utilizada para la toma de datos de las ditintas muestras. Esta nariz electrónica ha sido diseñada y construida en el laboratorio de sensores de la Escuela de Ingenierías Industriales de Badajoz por Cristina Brugera Salas, bajo la supervisión del Dr.\ Jesús Lozano Rogado, cotutor de este trabajo.
+\par
 
-%Aqui va la foto de la nariz electronica
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{pictures/Nariz_electronica.jpg}
+    \caption{Carcasa de la nariz electrónica.}\label{fig:nariz_electronica}
+\end{figure}
 
-En la Figura~\ref{fig:nariz_electronica} se puede observar dicha nariz electrónica desde una vista exterior (La carcasa). La ``verdadera'' nariz electrónica es una placa PCB, diseñada y programada en el laboratorio de sensores de la Esuela de Ingenierias Industriales de Badajoz, que se encuentra en el interior de la carcasa. En esta placa es donde se encuentran los sensores de gasesy el microcontrolador, además de contar con un módulo Bluetooth para la comunicación con la aplicación movil, que la controla y una entrada microUSB para poder conectarla a la corriente y cargar la bateria con la que cuenta.
+En la Figura~\ref{fig:nariz_electronica} se puede observar dicha nariz electrónica desde una vista exterior (La carcasa), donde están los orificios de entrada y salida de aire. La ``verdadera'' nariz electrónica es una placa PCB, diseñada y programada en el laboratorio de sensores de la Esuela de Ingenierias Industriales de Badajoz, que se encuentra en el interior de la carcasa. En esta placa es donde se encuentran los sensores de gases y el microcontrolador PIC32MM0256GPM048, además de contar con un módulo Bluetooth Rn4871 para la comunicación con la aplicación movil, que la controla y una entrada microUSB para poder conectarla a la corriente y cargar la bateria con la que cuenta. Toda esta placa se muestra en la Figura~\ref{fig:placa_pcb}.
+\par
 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{pictures/Placa_PCB.jpg}
+    \caption{Placa PCB de la nariz electrónica.}\label{fig:placa_pcb}
+\end{figure}
+
+El conjunto de sensores que componen esta nariz electrónica es el siguiente:
+\begin{itemize}
+    \item \textbf{SCD40} (PA): Sensor de CO$_2$, temperatura y humedad, fabricado por Sensirion.
+    \item \textbf{SGP40} (MOS): Sensor de COV, fabricado por Sensirion.
+    \item \textbf{BME688} (MOS): Sensor de presión, temperatura, humedad, COV, VSC y gas, fabricado por Bosch.
+    \item \textbf{ENS160} (MOS): Sensor de COV, calidad del aire, VOX y NO$_2$, fabricado por ScioSense.
+    \item \textbf{ZMOD4410} (MOS): Sensor de COV y CO$_2$, fabricado por Renesas.
+\end{itemize}
 \subsection{Herramientas software}
