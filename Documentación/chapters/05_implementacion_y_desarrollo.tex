@@ -1,6 +1,6 @@
 \chapter{Implementacion, desarrollo y pruebas comparativas}
 \section{Implementación y desarrollo}
-Con el objetivo de contar con una nariz electrónica operativa que complemente el trabajo de los agentes caninos, se decidió entrenar una red neuronal artificial (ANN). Esta se integrará en una aplicación Bluetooth para dispositivo móvil, encargada de determinar si la muestra analizada corresponde o no a la sustancia objetivo.
+Con el objetivo de contar con una nariz electrónica operativa que complemente el trabajo de los agentes caninos, se decidió entrenar una red neuronal artificial (ANN). Esta se integrará en una aplicación Bluetooth para dispositivos móviles que controlará la nariz electrónica. Dicha red neuronal será la encargada de determinar si la muestra analizada corresponde o no a la sustancia objetivo.
 \par
 
 La implementación y el desarrollo de la nariz electrónica se estructuran en tres fases:
@@ -13,6 +13,32 @@ La implementación y el desarrollo de la nariz electrónica se estructuran en tr
 A continuación, se detallan cada una de estas fases.
 
 \subsection{Construcción del dataset}
+Para la construcción del conjunto de datos, se llevaron a cabo múltiples experimentos (tomas de muestras) utilizando la nariz electrónica para recopilar datos de diversas muestras. En total se realizaron 76 experimentos, de los cueles los datos son almacenados en ficheros de texto (uno por cada experimento) que contienen las lecturas de los sensores. Estos ficheros se encuentran disponibles en el repositorio del proyecto mencionado en el capítulo de metodología.
+\par
+
+Se busca hacer una clasificación binaria, es decir, distinguir entre dos clases, además de que el entrenamiento de la ANN se realice con un conjunto de datos equilibrado. Para ello, se ha dividido el dataset en dos carpetas (``BUENO'' y ``MALO''): una para las muestras positivas (hachís) y otra para las muestras negativas (otras sustancias) respectivamente. Cada carpeta contiene 38 ficheros de texto correspondientes a los experimentos realizados con cada tipo de muestra.
+\par
+
+Para asignarle un nombre identificativo a cada experimento, se ha usado la nomenclatura EXP\_X\_Y-Z, donde:
+
+\begin{itemize}
+    \item \textbf{EXP:} Es una anrebiatura de ``EXPERIMENTO''.
+    \item \textbf{X:} Indica si la muestra pertenece a la calse ``BUENO'' (B) o ``MALO'' (M).
+    \item \textbf{Y:} Es un índicie que, en la muestras positivias, sirve para llevar un conteo de los experimentos realizados, mientras que, en las muestras negativas, se aumenta dicho índice cada vez que se cambia de sustancia.
+    \item \textbf{Z:} Es un número secuencial que identifica el experimento dentro de cada sustancia. Es usado en las muestras negativas para diferenciar entre experimentos realizados con la misma sustancia bajo distintas condiciones. En las muestras positivas se omite ya que siempre se trabaja con hachís.
+\end{itemize}
+
+\subsubsection{Proceso de toma de muestras}
+
+\subsubsection{Muestras negativas}
+
+\subsubsection{Muestras positivas}
+
+\subsubsection{Limpieza del dataset}
+Todos los archivos de texto de las muestras se han ido guardando en una carpeta llamada \texttt{Por\_procesar}, en la que tambien se encuentran divididas en las subcarpetas ``BUENO'' y ``MALO''. Estos archivos cuentan con datos, como la presión o la humedad, que no son útiles para el entrenamiento de la ANN, por lo que se ha llevado a cabo un proceso de limpieza y preprocesamiento de los datos para eliminar información irrelevante y preparar los datos para su uso en el entrenamiento de la red neuronal.
+\par
+
+Este proceso de limpieza se realiza con un script en Python llamado \texttt{Limpiador.py}, que inspecciona cada archivo de texto en las carpetas \texttt{Entrenamiento/Por\_procesar/BUENO} y \texttt{Entrenamiento/Por\_procesar/MALO}, extrae únicamente las columnas correspondientes a las lecturas de los sensores relevantes para el análisis y elimina las filas de la fase de desorción para solo tener datos de la fase de adsorción. Los archivos limpios se guardan en nuevas carpetas llamadas \texttt{Entrenamiento/BUENO} y \texttt{Entrenamiento/MALO} respectivamente, manteniendo la misma estructura de nombres de archivo para facilitar su identificación.
 
 \subsection{Entrenamiento de la red neuronal}
 

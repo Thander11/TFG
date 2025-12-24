@@ -41,7 +41,7 @@ Para la gestión de tareas, sprints y el seguimiento del progreso del proyecto, 
 Dada la naturaleza del proyecto, es posible dsitinguir entre dos tipos de herramientas: herramientas hardware y herramientas software.
 
 \subsection{Herramientas hardware}
-Aquí se encuentra la principal herramienta para este estudio: la nariz electrónica utilizada para la toma de datos de las ditintas muestras. Esta nariz electrónica ha sido diseñada y construida en el laboratorio de sensores de la Escuela de Ingenierías Industriales de Badajoz por Cristina Brugera Salas, bajo la supervisión del Dr.\ Jesús Lozano Rogado, cotutor de este trabajo.
+Aquí se encuentra la principal herramienta para este estudio: la nariz electrónica utilizada para la toma de datos de las ditintas muestras y, posteriormente, para la realización de las pruebas con la ANN y la neuva aplicación móvil. Esta nariz electrónica ha sido diseñada y construida en el laboratorio de sensores de la Escuela de Ingenierías Industriales de Badajoz por Cristina Brugera Salas, bajo la supervisión del Dr.\ Jesús Lozano Rogado, cotutor de este trabajo.
 \par
 
 \begin{figure}[H]
@@ -50,7 +50,7 @@ Aquí se encuentra la principal herramienta para este estudio: la nariz electró
     \caption{Carcasa de la nariz electrónica.}\label{fig:nariz_electronica}
 \end{figure}
 
-En la Figura~\ref{fig:nariz_electronica} se puede observar dicha nariz electrónica desde una vista exterior (La carcasa), donde están los orificios de entrada y salida de aire. La ``verdadera'' nariz electrónica es una placa PCB, diseñada y programada en el laboratorio de sensores de la Esuela de Ingenierias Industriales de Badajoz, que se encuentra en el interior de la carcasa. En esta placa es donde se encuentran los sensores de gases y el microcontrolador PIC32MM0256GPM048, además de contar con un módulo Bluetooth Rn4871 para la comunicación con la aplicación movil, que la controla y una entrada microUSB para poder conectarla a la corriente y cargar la bateria con la que cuenta. Toda esta placa se muestra en la Figura~\ref{fig:placa_pcb}.
+En la Figura~\ref{fig:nariz_electronica} se puede observar dicha nariz electrónica desde una vista exterior (La carcasa), donde están los orificios de entrada y salida de aire. La ``verdadera'' nariz electrónica es una placa PCB, diseñada y programada en el laboratorio de sensores de la Esuela de Ingenierias Industriales de Badajoz, que se encuentra en el interior de la carcasa. En esta placa es donde se encuentran los sensores de gases y el microcontrolador PIC32MM0256GPM048, además de contar con un módulo Bluetooth Rn4871 para la comunicación con una aplicación movil que la controla, y una entrada microUSB para poder conectarla a la corriente y cargar la bateria con la que cuenta. Toda esta placa se muestra en la Figura~\ref{fig:placa_pcb}.
 \par
 
 \begin{figure}[H]
@@ -68,4 +68,17 @@ El conjunto de sensores que componen esta nariz electrónica es el siguiente:
     \item \textbf{ZMOD4410} (MOS): Sensor de COV y CO$_2$, fabricado por Renesas.
 \end{itemize}
 \subsection{Herramientas software}
-%No olvidar hablar de la aplicación bluetooth que se ha usado para controlar la nariz electrónica y recoger los datos
+
+\subsubsection{Toma de muestras}
+Para la fase de toma de muestras, en conjunto con la nariz electrónica mencionada en el apartado anterior, se ha utilzado una aplicación móvil desarrollada también por Cristina Brugera Salas, que permite controlar la nariz electrónica a través de Bluetooth, enviando comandos a través de la aplicación, y recoger los datos obtenidos por los sensores. Esta aplicación facilita la configuración de los parámetros de medición, el inicio y la detención de las pruebas, así como el almacenamiento y exportación de los datos recopilados para su posterior análisis. En la Figura~\ref{fig:app_toma_muestras} se muestra una captura de pantalla de la interfaz de la aplicación móvil mencionada.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.4\textwidth]{pictures/InterfazBT1.jpg}
+    \caption{Interfaz de la a plicación móvil para el control de la toma de muestras.}\label{fig:app_toma_muestras}
+\end{figure}
+
+\subsubsection{Entrenamiento de la ANN}
+% Aquí se hablará de que se ha uasdo google colab y python porque el portatil no daba para más.
+
+\subsubsection{Aplicación Bluetooth}
