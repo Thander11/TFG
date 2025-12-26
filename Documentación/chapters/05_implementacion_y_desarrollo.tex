@@ -29,6 +29,35 @@ Para asignarle un nombre identificativo a cada experimento, se ha usado la nomen
 \end{itemize}
 
 \subsubsection{Proceso de toma de muestras}
+Se trata de un proceso cíclico que consta de dos fases: desorción (toma de aire limpio para limpiar los sensores y establecer la linea base) y adsorción (toma de la muestra).
+\par
+
+Para este proyecto se ha buscado recrear situaciones lo más parecidas posibles a una situación real, por ejemplo, un control de carretera. Para ello, se ha establecido un solo ciclo, con una fase de desorción de 120 segundos (dos minutos), para eliminar cualquier posible resto de impureza que haya posido quedar en los sensores, y una fase de adsorción de 300 segundos (cinco minutos).
+\par
+
+Para que el aire entre en la carcasa y entre en contacto con los sensores, se conectan tubos flexibles a las entradas de la carcasa. En la entrada de desorción (IM\_D) se conecta a un tubo conectado a un pequeño purificador de aire para que el aire esté limpio. En la entrada de adsorción (IM\_A) se conecta a un tubo que conecta con el bote de muestreo donde estará la sustancia. A su vez, este bote de muestreo también esta conectado a otro purificador de aire para que entre aire limpio en el bote y se cree una corriente de aire, permitiendo que el aire de dentro del bote pueda ser absorbido mas facilmente por el tubo conectado a la nariz. Esta disposición puede observarse en la Figura~\ref{fig:setup_muestreo}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{pictures/Circuito_entero.jpg}
+    \caption{Disposición del equipo para la muestra EXP\_M\_5--1.}\label{fig:setup_muestreo}
+\end{figure}
+
+Por otra parte, también es posible tomar muestras sin necesidad de usar el bote de muestreo, conectando directamente un tubo de adsorción que enctre en contacto con el aire, por ejemplo para tomar muestra de la calidad de aire de una habitación entera, o colocandolo cerca de una sustancia, como ocurre en la Figura~\ref{fig:setup_muestreo_sin_bote}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.65\textwidth]{pictures/Circuito_abierto.jpg}
+    \caption{Disposición del equipo para la muestra EXP\_B\_34.}\label{fig:setup_muestreo_sin_bote}
+\end{figure}
+
+Antes de poder empezar a tomar muestras, es imprescidible encender la nariz electrónica con una hora o 45 minutos de antelación para que los sensores se estabilicen térmicamente y las lecturas sean fiables.
+\par
+
+Una vez los sensores se han calentado y la sustancia está preparada, solo queda conectar la nariz electrónica a un telefono movil android mediante Bluetooth y usar la aplicación móvil desarrollada para controlar la toma de muestras. Habría que configurar en número de ciclos y los tiempos de adsorción y desorción en las condiciones que se han mencionado anteriormente (1 ciclo, 120 segundos de desorción y 300 segundos de adsorción) y ya podría iniciarse la toma de muestras enviando el comando a través de la aplicación. Para saber como configurar la aplicación y conectarla a la nariz electrónica, se puede consultar el Anexo 3.
+\par
+
+Una vez haya finalizado la toma de la muestra, los datos se habrán al macenado en un fichero de texto llamado ``DATOS.txt'' en la tarjeta SD de la nariz electrónica. El siguiente paso es copiar este fichero al ordenador y cambiarle el nombre por el correspondiente a la nomenclatura mencionada anteriormente. Es importante borrar el contenido de la tarjeta SD antes de iniciar una nueva toma de muestras. De no hacerse, los datos de la siguiente muestra se añadirán al final del fichero ``DATOS.txt''.
 
 \subsubsection{Muestras negativas}
 
