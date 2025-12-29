@@ -78,6 +78,45 @@ Para la fase de toma de muestras, en conjunto con la nariz electrónica menciona
     \caption{Interfaz de la a plicación móvil para el control de la toma de muestras.}\label{fig:app_toma_muestras}
 \end{figure}
 
+\subsubsection{Limpieza del dataset}
+Para la limpieza y preprocesamiento de los datos obtenidos durante la fase de toma de muestras, se busca crear un script que automatice este proceso y facilite la preparación del dataset para su posterior análisis y entrenamiento de la ANN\@. Existen varias posibilidades para llevar a cabo esta tarea, entre las que se incluyen:
+
+\begin{itemize}
+    \item \textbf{Python:}
+    \begin{itemize}
+        \item Cuenta con librerias como NumPy, Pandas, Matplotlib o Polaras para el procesamiento y visualización de datos.
+        \item Sencillo de aprender y utilizar.
+        \item Amplia comunidad y soporte.
+        \item Limpieza reproducible.
+        \item Familiaridad con el lenguaje.
+    \end{itemize}
+    \item \textbf{R:}
+    \begin{itemize}
+        \item Limpieza reproducible.
+        \item Muy usado en investigación.
+    \end{itemize}
+    \item \textbf{Bash + herramientas UNIX:}
+    \begin{itemize}
+        \item Potente para archivos de texto.
+        \item Muy rápido.
+        \item Limpieza reproducible.
+        \item Cero dependencias.
+    \end{itemize}
+    \item \textbf{SQL + scripts:}
+    \begin{itemize}
+        \item Exportación muy limpia.
+        \item Limpieza reproducible.
+    \end{itemize}
+    \item \textbf{Apache Spark:}
+    \begin{itemize}
+        \item Escalable.
+        \item Limpieza reproducible.
+        \item Muy usado en entornos de investigación grandes.
+    \end{itemize}
+\end{itemize}
+
+Dado que se trata de un script sencillo, que no tienen que procesar una gran cantidad de datos, se ha optado por utilizar Python para la limpieza de dichos datos. Esta elección se basa en la familiaridad con el lenguaje, la disponibilidad de librerías especializadas y la facilidad para crear scripts reproducibles que faciliten el análisis posterior.
+
 \subsubsection{Entrenamiento de la ANN}
 % Aquí se hablará de que se ha uasdo google colab y python porque el portatil no daba para más.
 

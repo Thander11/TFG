@@ -59,9 +59,30 @@ Una vez los sensores se han calentado y la sustancia está preparada, solo queda
 
 Una vez haya finalizado la toma de la muestra, los datos se habrán al macenado en un fichero de texto llamado ``DATOS.txt'' en la tarjeta SD de la nariz electrónica. El siguiente paso es copiar este fichero al ordenador y cambiarle el nombre por el correspondiente a la nomenclatura mencionada anteriormente. Es importante borrar el contenido de la tarjeta SD antes de iniciar una nueva toma de muestras. De no hacerse, los datos de la siguiente muestra se añadirán al final del fichero ``DATOS.txt''.
 
+%Hablar de que si la temperatira es muy baja, la conexión bluetooth de la nariz puede fallar.
+
 \subsubsection{Muestras negativas}
+Para las muestras negativas, se han utilizado diversas sustancias que pueden encontrarse en un entorno cotidiano y que no deben ser confundidas con la sustancia objetivo. Estas sustancias incluyen alimentos como cacao en polvo, limón exprimido, salsas, etc. Un seguimiento detallado de la obtención de las características de estas sustancias se encuentra en el Anexo 1.
+\par
+
+Para cada sustancia (excepto la primera, que se hizo como una prueba), se han realizado múltiples experimentos bajo diferentes condiciones, como el estado del bote de muestreo (abierto o cerrado) y la presencia o ausencia de corriente de aire. Esto permite evaluar cómo estas variables afectan las lecturas de los sensores y la capacidad de la ANN para distinguir entre la sustancia objetivo y otras sustancias.
+\par
+
+Por otra parte, no todas las muestras negativas se han tomado de sutancias usando el bote de muestreo. Algunas muestras se han tomado directamente del aire de una habitación, una caja o de un coche, sitios donde puede encontrase el hachís.
 
 \subsubsection{Muestras positivas}
+Las muestras positivas se han tomado usando hasta cinco tipos diferentes de hachís, es decir, que provienene de cinco fuentes distintas, y cinta de envalar con restos de dicha sustancia. Esto se ha hecho para que la ANN pueda generalizar mejor y no se sobreentrene con las características específicas de un solo tipo de hachís.
+\par
+
+Para los cuatro primeros tipos y la cinta de envalar, se han realizado multiples experimentos bajo distintas condiciones, como el estado del bote de muestreo (abierto o cerrado) o si la tapa del recipiente donde se encontraba el hachís estaba puesta o no. \par
+
+En el caso del quinto tipo de hachís (la muestra mas grande), los expremientos se han realizado sin usar el bote de muestreo, tomando los datos de la muestra directamente del aire de una caja cerrada y de un coche cerrado. Esto se ha hecho para simular situaciones reales donde el hachís puede estar oculto en espacios cerrados.
+\par
+
+Además, dado que para las muestras positivas se dispone de un menor numero de muestras en comparación con las negativas, se ha optado por repetir algunos experimentos para aumentar la cantidad de datos disponibles para el entrenamiento de la ANN, ya que, pese a tratarse de la misma muestra, los resiltados pueden ser ligeramente diferentes entre una toma y otra.
+\par
+
+Un seguimiento detallado de estas tomas de muestras se encuentra en el Anexo 2.
 
 \subsubsection{Limpieza del dataset}
 Todos los archivos de texto de las muestras se han ido guardando en una carpeta llamada \texttt{Por\_procesar}, en la que tambien se encuentran divididas en las subcarpetas ``BUENO'' y ``MALO''. Estos archivos cuentan con datos, como la presión o la humedad, que no son útiles para el entrenamiento de la ANN, por lo que se ha llevado a cabo un proceso de limpieza y preprocesamiento de los datos para eliminar información irrelevante y preparar los datos para su uso en el entrenamiento de la red neuronal.
