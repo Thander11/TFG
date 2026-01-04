@@ -60,8 +60,8 @@ flutter:
 
   # To add assets to your application, add an assets section
   assets:
-    - assets/modelo_nariz.tflite
-    - assets/modelo.tflite
+    - assets/hachis-Plus.tflite
+    - assets/hachis.tflite
     - assets/icon.png
 
 flutter_launcher_icons:
