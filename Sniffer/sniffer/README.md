@@ -1,4 +1,8 @@
 # sniffer
+Compatibilidad de plataformas
+
+- Solo Android: Este proyecto está configurado únicamente para Android.
+- Limpieza realizada: Se han eliminado los directorios de iOS, macOS, Linux, Web y Windows.
 
 A new Flutter project.
 
