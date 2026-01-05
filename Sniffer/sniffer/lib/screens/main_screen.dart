@@ -72,13 +72,13 @@ class _MainScreenState extends State<MainScreen> {
       appBar: CustomSearchAppBar(
         title: "Dispositivos Disponibles", // <--- Título de inicio
         onSearchPressed: () => startScan(),
-        onSettingsPressed: () => print("Ajustes"),
+        onSettingsPressed: null,
       ),
 
       body: Column(
         children: [
+          const SizedBox(height: 5),
           if (isScanning)
-            const SizedBox(height: 5),
             const LinearProgressIndicator(backgroundColor: Colors.blue),
 
           const SizedBox(height: 5),

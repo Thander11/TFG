@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:sniffer/utils/navigation.dart';
 import 'dart:async';
 import 'package:tflite_flutter/tflite_flutter.dart';
 import '../widgets/app_bar.dart';
@@ -110,6 +111,56 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
     );
   }
 
+  void detenerTodo({required String titulo, required String mensaje, bool enviarStop = true}) {
+    if (enviarStop) {
+      sendCommand("Stop"); // Enviamos el comando físico
+    }
+
+    setState(() {
+      isAnalyzing = false;
+    });
+
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(titulo),
+        content: Text(mensaje),
+        actions: [
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text("OK"))
+        ],
+      ),
+    );
+  }
+
+  void _mostrarDialogoFin(String titulo, String mensaje) {
+  // Aseguramos que el estado de análisis cambie a falso
+  setState(() {
+    isAnalyzing = false;
+  });
+
+  showDialog(
+    context: context,
+    barrierDismissible: false, // Obliga al usuario a pulsar OK
+    builder: (context) => AlertDialog(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      title: Row(
+        children: [
+          Icon(Icons.check_circle, color: Colors.green.shade700),
+          const SizedBox(width: 10),
+          Text(titulo),
+        ],
+      ),
+      content: Text(mensaje),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          child: const Text("ENTENDIDO", style: TextStyle(fontWeight: FontWeight.bold)),
+        )
+      ],
+    ),
+  );
+}
+
   void connectToDevice() async {
     try {
       // 1. Esperamos a que el dispositivo esté realmente conectado
@@ -135,13 +186,24 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                 String rawLine = String.fromCharCodes(value).trim();
                 
                 if (rawLine.isNotEmpty) {
-                  // FILTRO: No mostrar si es el eco de un comando o basura del sistema
-                  bool esEco = rawLine == "Exper" || rawLine == "Stop" || rawLine.contains("Wrong command");
-                  
-                  if (!esEco) {
-                    addMessage(rawLine, false); // Solo mostramos datos reales
+                  // DETECCIÓN DE AUTOSTOP: Si la placa envía "STOP" o mensajes de fin
+                  // según se ve en tu captura
+                  if (rawLine.contains("STOP") || rawLine.contains("AutoStop Mode enabled")) {
+                    setState(() {
+                      isAnalyzing = false; // Detiene la lógica de la IA en la App
+                    });
+                    // Opcional: Mostrar el diálogo de fin que creamos antes
+                    _mostrarDialogoFin(
+                      "Experimento Finalizado", 
+                      "La nariz ha completado los ciclos y activado el AutoStop."
+                    );
+                  }
+
+                  // Filtrar ecos para la consola visual
+                  if (rawLine != "Exper" && rawLine != "Stop") {
+                    addMessage(rawLine, false);
                     
-                    // Procesamos para la IA (esto ya aplica el filtro Aire/muestra != 0)
+                    // Procesar datos para la IA solo si seguimos analizando
                     List<double>? inputIA = procesarTramaParaIA(rawLine);
                     if (inputIA != null && isAnalyzing) {
                       runInference(inputIA);
@@ -180,13 +242,9 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
   }
 
   void startDetection() {
-    setState(() => isAnalyzing = true);
-    // Timer de seguridad (por ejemplo 30 segundos)
-    timeoutTimer = Timer(const Duration(seconds: 30), () {
-      if (isAnalyzing) {
-        setState(() => isAnalyzing = false);
-        showDialog(context: context, builder: (_) => const AlertDialog(title: Text("Tiempo agotado"), content: Text("No se detectó la sustancia.")));
-      }
+    setState(() {
+      isAnalyzing = true;
+      resultadoIA = 0.0; // Reiniciamos el umbral al empezar
     });
   }
 
@@ -265,11 +323,13 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
     return Scaffold(
       appBar: CustomSearchAppBar(
         title: "Análisis de Muestra",
-        onSettingsPressed: () => Navigator.pop(context),
-        onSearchPressed: () async {
-          await widget.device.disconnect();
-          if (context.mounted) Navigator.pop(context);
-        },
+        onSettingsPressed: () => AppNavigation.goToSettings(
+          context, 
+          widget.device, 
+          uartChar,
+          onMessageSent: (text, isCommand) => addMessage(text, isCommand),
+        ),
+        onSearchPressed: () => AppNavigation.goToHome(context),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -357,7 +417,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                       color: resultadoIA >= 0.7 ? Colors.red.shade900 : Colors.green.shade900,
                     ),
                   ),
-                  Text("Umbral: ${(resultadoIA * 100).toStringAsFixed(1)}%"),
+                  Text("Impureza: ${(resultadoIA * 100).toStringAsFixed(1)}%"),
                 ],
               ),
             ),

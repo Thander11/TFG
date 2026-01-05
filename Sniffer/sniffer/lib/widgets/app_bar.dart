@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 
 class CustomSearchAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String title; // <--- Nueva variable
-  final VoidCallback onSearchPressed;
-  final VoidCallback onSettingsPressed;
+  final String title;
+  final VoidCallback? onSettingsPressed;
+  final VoidCallback? onSearchPressed;
+  final bool isSettingsScreen; // Nueva variable para saber si estamos en ajustes
+  final VoidCallback? onBackAction;
 
   const CustomSearchAppBar({
     super.key,
-    required this.title, // <--- Obligatorio pasar el título
-    required this.onSearchPressed,
-    required this.onSettingsPressed,
+    required this.title,
+    this.onSettingsPressed,
+    this.onSearchPressed,
+    this.isSettingsScreen = false, // Por defecto es falso
+    this.onBackAction,
   });
 
   @override
@@ -30,27 +34,41 @@ class CustomSearchAppBar extends StatelessWidget implements PreferredSizeWidget 
         ),
         child: Row(
           children: [
-            IconButton(
-              icon: const Icon(Icons.settings, color: Colors.white),
-              onPressed: onSettingsPressed,
-            ),
+            // Lógica dinámica para el botón izquierdo
+            if (isSettingsScreen)
+              IconButton(
+                icon: const Icon(Icons.arrow_back, color: Colors.white),
+                onPressed: onBackAction ?? () => Navigator.pop(context), // Vuelve a la pantalla de análisis e informa del cambio
+              )
+            else if (onSettingsPressed != null)
+              IconButton(
+                icon: const Icon(Icons.settings, color: Colors.white),
+                onPressed: onSettingsPressed,
+              )
+            else
+              const SizedBox(width: 48),
+
             Expanded(
               child: Center(
                 child: Text(
-                  title.toUpperCase(), // <--- Usamos el título aquí
+                  title.toUpperCase(),
                   style: const TextStyle(
-                    color: Colors.white, 
-                    fontWeight: FontWeight.bold, 
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
                     fontSize: 13,
                     letterSpacing: 1.1,
                   ),
                 ),
               ),
             ),
-            IconButton(
-              icon: const Icon(Icons.search, color: Colors.white),
-              onPressed: onSearchPressed,
-            ),
+
+            if (onSearchPressed != null)
+              IconButton(
+                icon: const Icon(Icons.search, color: Colors.white),
+                onPressed: onSearchPressed,
+              )
+            else
+              const SizedBox(width: 48),
           ],
         ),
       ),
