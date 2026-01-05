@@ -70,17 +70,19 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       // Usamos tu barra azul personalizada
       appBar: CustomSearchAppBar(
-        onSearchPressed: () => startScan(), // Botón de la lupa
-        onSettingsPressed: () {
-          // Aquí podrías abrir una pantalla de configuración técnica del manual
-          print("Ajustes presionados");
-        },
+        title: "Dispositivos Disponibles", // <--- Título de inicio
+        onSearchPressed: () => startScan(),
+        onSettingsPressed: () => print("Ajustes"),
       ),
+
       body: Column(
         children: [
           if (isScanning)
+            const SizedBox(height: 5),
             const LinearProgressIndicator(backgroundColor: Colors.blue),
-          
+
+          const SizedBox(height: 5),
+
           Expanded(
             child: scanResults.isEmpty
                 ? const Center(child: Text("Buscando nariz electrónica..."))
