@@ -118,6 +118,123 @@ Para la limpieza y preprocesamiento de los datos obtenidos durante la fase de to
 Dado que se trata de un script sencillo, que no tienen que procesar una gran cantidad de datos, se ha optado por utilizar Python para la limpieza de dichos datos. Esta elección se basa en la familiaridad con el lenguaje, la disponibilidad de librerías especializadas y la facilidad para crear scripts reproducibles que faciliten el análisis posterior.
 
 \subsubsection{Entrenamiento de la ANN}
-% Aquí se hablará de que se ha uasdo google colab y python porque el portatil no daba para más.
+Existen diversas herramientas y frameworks para el desarrollo y entrenamiento de redes neuronales artificiales (ANN\@). Algunas de esas opciones son:
+
+\begin{itemize}
+    \item \textbf{Lenguajes:}
+    \begin{itemize}
+        \item \textbf{Python:}
+        \begin{itemize}
+            \item Buen ecosistema y librerías.
+            \item Sencillo de aprender y utilizar.
+            \item Amplia comunidad y soporte.
+            \item Flexibilidad y prototipado.
+            \item Familiaridad con el lenguaje.
+        \end{itemize}
+        \item \textbf{C++:}
+        \begin{itemize}
+            \item Velocidad inigualable de ejecución.
+            \item Gestión manual de memoria.
+        \end{itemize}
+        \item \textbf{Julia:}
+        \begin{itemize}
+            \item Gran velocidad de ejecución.
+            \item Resuelve el ``problema de los dos lenguajes'' (puedes investigar y producir en el mismo lenguaje sin perder velocidad).
+        \end{itemize}
+        \item \textbf{Mojo:}
+        \begin{itemize}
+            \item Combina la sintaxis de Python con el rendimiento de C++.
+            \item Está diseñado específicamente para hardware de IA (TPUs y GPUs).
+        \end{itemize}
+    \end{itemize}
+
+    \item \textbf{Entornos de ejecución:}
+    \begin{itemize}
+        \item \textbf{Orange/KNIME:}
+        \begin{itemize}
+            \item Permiten crear tuberías de datos completas (limpiar, entrenar y evaluar) de forma visual.
+        \end{itemize}
+        \item \textbf{Kaggle Kernels:}
+        \begin{itemize}
+            \item Entorno en la nube listo para ejecutar notebooks.
+            \item Acceso a GPUs y TPUs.
+            \item Comunidad activa y competiciones.
+            \item Enfocado en ciencia de datos.
+            \item Set de datos ya listos para usar.
+        \end{itemize}
+        \item \textbf{Google Colab:}
+        \begin{itemize}
+            \item Entorno en la nube listo para ejecutar notebooks.
+            \item Acceso a GPUs y TPUs de Google.
+            \item Integración con Google Drive.
+            \item Fácil de compartir y colaborar.
+        \end{itemize}
+    \end{itemize}
+
+    \item \textbf{Frameworks:}
+    \begin{itemize}
+        \item \textbf{PyTorch:}
+        \begin{itemize}
+            \item Usa ``gráficos dinámicos'', lo que permite cambiar el modelo en pleno entrenamiento.
+            \item Facilidad de depuración; puedes usar las herramientas estándar de Python para encontrar errores.
+            \item Ecosistema enorme.
+            \item Familiaridad con el framework.
+        \end{itemize}
+        \item \textbf{TensorFlow / Keras:}
+        \begin{itemize}
+            \item Producción y despliegue.
+            \item Ecosistema móvil.
+            \item Su interfaz simplificada permite crear redes neuronales complejas en pocas líneas de código.
+        \end{itemize}
+        \item \textbf{Scikit-Learn:}
+        \begin{itemize}
+            \item Simplicidad.
+            \item Herramientas estadísticas integradas.
+            \item No requiere GPU, corre en cualquier ordenador con muy pocos recursos.
+        \end{itemize}
+    \end{itemize}
+\end{itemize}
+
+Para este proyecto se ha decidio usar Python como lenguaje de programación debido a sus fentajas, especialmente por ser el mas usado para el entrenamiento de modelos de inteligencia artificial y el gran soporte de la comunidad. En cuanto al entorno de ejecución, se ha optado por Google Colab, ya que proporciona acceso gratuito a GPUs y TPUs, facilitando el entrenamiento de modelos complejos sin necesidad de contar con hardware potente localmente y pudiendo guardar los notebooks, modelos y datasets directamente en Google Drive\@. Finalmente se han elegido tanto PyTorch como Keras como frameworks para el desarrollo y entrenamiento de la ANN\@. Se entrenarán modelos con ambos frameworks y los mismos datos para comparar resultados y determinar cuál se adapta mejor a las necesidades del proyecto.
 
 \subsubsection{Aplicación Bluetooth}
+En lo relativo a la construcción de la aplicación móvil responsable de la comunicación Bluetooth con la nariz electrónica, se han evaluado diversas alternativas tecnológicas:
+
+\begin{itemize}
+    \item \textbf{Flutter:}
+    \begin{itemize}
+        \item Es muy estable y permite escanear, conectar y escuchar notificaciones del módulo Bluetooth de forma sencilla.
+        \item Permite cargar el modelo desde la carpeta de activos (assets).
+        \item Es reactivo, la interfaz se actualiza sola en cuanto el modelo cambia su predicción de ``Negativo'' a ``Positivo''.
+        \item Permite crear una aplicación multiplataforma.
+        \item Ofrece una gran velocidad en la transferencia de datos.
+    \end{itemize}
+    \item \textbf{React Native:}
+    \begin{itemize}
+        \item Es potente pero la configuración inicial (permisos en Android/iOS) suele ser tediosa.
+        \item Es web, permitiendo que la aplicación se use en cualquier plataforma.
+        \item Permite la integración con IA\@.
+        \item Gran facilidad para crear un selector de modelos y gestionar la lógica de temporizadores (el tiempo límite de detección) usando hooks de React.
+    \end{itemize}
+    \item \textbf{Kotlin:}
+    \begin{itemize}
+        \item Usa APIs oficiales (BluetoothGatt en Android).
+        \item Tienes el control total sobre la latencia.
+        \item Permite la integración con IA usnado librerías nativas de TensorFlow Lite para Android y CoreML para iOS\@.
+        \item Permite un consumo de batería más eficiente si la app debe estar encendida durante horas procesando datos.
+    \end{itemize}
+    \item \textbf{Capacitor:}
+    \begin{itemize}
+        \item Acceso directo a las APIs nativas de iOS y Android mediante Plugins.
+        \item Permite gestionar el ciclo de vida completo: escanear el módulo Bluetooth, conectarse, descubrir servicios y suscribirse a notificaciones.
+        \item Puedes ejecutar tu modelo directamente en la capa web usando TensorFlow.js.
+        \item Permite crear aplicaciones multiplataforma.
+        \item Es un puente entre tecnologías web y móviles nativas.
+        \item Existe un plugin para usar el SDK de Google, lo que permite que el modelo corra de forma nativa (más rápido) mientras se controla desde JavaScript.
+    \end{itemize}
+\end{itemize}
+
+En este caso se toma como prioridad la velocidad de la transferencia de datos, asurando que la aplicación pueda procesar la información recibida de la nariz electrónica en tiempo real.
+\par
+
+Flutter se posiciona como la opción ganadora para este proyecto porque ofrece un equilibrio perfecto entre el alto rendimiento de las aplicaciones nativas y la agilidad de desarrollo multiplataforma, algo crítico cuando se trabaja con hardware y modelos de inteligencia artificial en tiempo real. No es tan difícil como programar en Nativo (Kotlin/Swift), pero es mucho más potente para hardware que Capacitor. A diferencia de Capacitor, que depende de una capa web y un puente de comunicación que puede generar latencia, Flutter maneja la entrada de datos del módulo Bluetooth de forma directa y eficiente mediante Streams de forma nativa en su lenguaje (Dart), permitiendo procesar el flujo constante de sensores sin interrupciones. Además, su capacidad para ejecutar la red neuronal en Isolates (hilos de ejecución independientes) garantiza que el análisis intensivo de los datos no congele la interfaz de usuario, manteniendo la aplicación fluida mientras la IA ``busca'' la sustancia objetivo. Esto, sumado a la robustez de librerías como ``flutter\_blue\_plus'' para la gestión estable del Bluetooth y la facilidad para cargar y descargar dinámicamente diferentes modelos de TensorFlow Lite aprovechando la aceleración por hardware del móvil, lo convierte en la herramienta más fiable para convertir un smartphone en el procesador inteligente de una nariz electrónica.
