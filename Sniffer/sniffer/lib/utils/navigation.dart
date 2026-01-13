@@ -5,19 +5,20 @@ import '../screens/main_screen.dart';
 
 class AppNavigation {
   // Función para ir a AJUSTES
-  static void goToSettings(
+  static Future<bool?> goToSettings(
     BuildContext context, 
     BluetoothDevice device, 
     BluetoothCharacteristic? uartChar,
-    {Function(String, bool)? onMessageSent} // Añade esta línea
+    {required Function(String, bool) onMessageSent}
   ) {
-    Navigator.push(
+    // Añadimos el return para que devuelva lo que diga el Navigator
+    return Navigator.push<bool>(
       context,
       MaterialPageRoute(
         builder: (context) => SettingsScreen(
           device: device,
           uartChar: uartChar,
-          onMessageSent: onMessageSent, // Pasa la función aquí
+          onMessageSent: onMessageSent,
         ),
       ),
     );

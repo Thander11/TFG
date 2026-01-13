@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:tflite_flutter/tflite_flutter.dart';
 import '../widgets/app_bar.dart';
 import 'package:flutter/services.dart';
+import 'package:vibration/vibration.dart';
 
 class AnalysisScreen extends StatefulWidget {
   final BluetoothDevice device;
@@ -30,6 +31,8 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
   Timer? timeoutTimer;
   DateTime lastCommandTime = DateTime.now();
   Interpreter? _interpreter;
+  bool vibracionActiva = true;
+  String _rawBuffer = "";
 
   @override
   void initState() {
@@ -133,33 +136,40 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
   }
 
   void _mostrarDialogoFin(String titulo, String mensaje) {
-  // Aseguramos que el estado de análisis cambie a falso
-  setState(() {
-    isAnalyzing = false;
-  });
+    setState(() {
+      isAnalyzing = false;
+    });
 
-  showDialog(
-    context: context,
-    barrierDismissible: false, // Obliga al usuario a pulsar OK
-    builder: (context) => AlertDialog(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-      title: Row(
-        children: [
-          Icon(Icons.check_circle, color: Colors.green.shade700),
-          const SizedBox(width: 10),
-          Text(titulo),
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+        title: Row(
+          children: [
+            Icon(Icons.check_circle, color: Colors.green.shade700),
+            const SizedBox(width: 10),
+            // Usamos Expanded para evitar el error de Overflow
+            Expanded(
+              child: Text(
+                titulo,
+                style: const TextStyle(fontSize: 18),
+                overflow: TextOverflow.ellipsis, // Opcional: añade puntos suspensivos si es muy largo
+                maxLines: 2, // Permite que el título ocupe hasta dos líneas
+              ),
+            ),
+          ],
+        ),
+        content: Text(mensaje),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("ENTENDIDO", style: TextStyle(fontWeight: FontWeight.bold)),
+          )
         ],
       ),
-      content: Text(mensaje),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context),
-          child: const Text("ENTENDIDO", style: TextStyle(fontWeight: FontWeight.bold)),
-        )
-      ],
-    ),
-  );
-}
+    );
+  }
 
   void connectToDevice() async {
     try {
@@ -181,32 +191,54 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
             if (char.uuid.toString().contains("9616")) { 
               uartChar = char;
               await char.setNotifyValue(true);
-              
-              char.lastValueStream.listen((value) {
-                String rawLine = String.fromCharCodes(value).trim();
-                
-                if (rawLine.isNotEmpty) {
-                  // DETECCIÓN DE AUTOSTOP: Si la placa envía "STOP" o mensajes de fin
-                  // según se ve en tu captura
-                  if (rawLine.contains("STOP") || rawLine.contains("AutoStop Mode enabled")) {
-                    setState(() {
-                      isAnalyzing = false; // Detiene la lógica de la IA en la App
-                    });
-                    // Opcional: Mostrar el diálogo de fin que creamos antes
-                    _mostrarDialogoFin(
-                      "Experimento Finalizado", 
-                      "La nariz ha completado los ciclos y activado el AutoStop."
-                    );
-                  }
 
-                  // Filtrar ecos para la consola visual
-                  if (rawLine != "Exper" && rawLine != "Stop") {
-                    addMessage(rawLine, false);
+              // Dentro de tu Bluetooth Listener
+              char.lastValueStream.listen((value) {
+                // 1. Acumulamos lo que llega sin limpiar todavía
+                _rawBuffer += String.fromCharCodes(value);
+
+                // 2. Solo procesamos si el buffer contiene un salto de línea completo (\n)
+                if (_rawBuffer.contains('\n')) {
+                  // Dividimos por saltos de línea por si han llegado varias juntas
+                  List<String> lines = _rawBuffer.split('\n');
+                  
+                  // El último elemento puede estar incompleto, lo guardamos para la siguiente vez
+                  _rawBuffer = lines.removeLast();
+
+                  for (String line in lines) {
+                    String rawLine = line.trim();
+                    if (rawLine.isEmpty) continue;
+
+                    // --- AQUÍ VA TU LÓGICA DE FILTRADO REFORZADA ---
                     
-                    // Procesar datos para la IA solo si seguimos analizando
-                    List<double>? inputIA = procesarTramaParaIA(rawLine);
-                    if (inputIA != null && isAnalyzing) {
-                      runInference(inputIA);
+                    // A. Prioridad: AutoStop
+                    if (rawLine == "STOP" || rawLine.contains("AutoStop Mode enabled")) {
+                      if (isAnalyzing) {
+                        setState(() => isAnalyzing = false);
+                        _mostrarDialogoFin("Experimento Finalizado", "La nariz ha completado los ciclos.");
+                      }
+                      continue;
+                    }
+
+                    // B. Filtro de Ecos de comandos (No mostrar lo que empieza por #)
+                    if (rawLine.startsWith("#")) continue;
+
+                    // C. Filtro de comandos enviados y confirmaciones redundantes
+                    if (rawLine != "Exper" && rawLine != "Stop" && rawLine != "SETTINGS") {
+                      
+                      // D. Tratamiento especial para el OK
+                      if (rawLine == "OK") {
+                        addMessage("OK - Comando aceptado", false);
+                      } else {
+                        // E. PROCESAMIENTO IA (Tu función personalizada)
+                        List<double>? datosLimpios = procesarTramaParaIA(rawLine);
+                        if (datosLimpios != null && isAnalyzing) {
+                          checkNeuralNetwork(datosLimpios); 
+                        }
+                        
+                        // F. Mostrar en consola solo si no es ruido repetido
+                        addMessage(rawLine, false);
+                      }
                     }
                   }
                 }
@@ -311,11 +343,54 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
     return null; // Si la línea no tiene suficientes columnas
   }
 
-  void checkNeuralNetwork(String data) {
-    // AQUÍ irá tu lógica de TFLite
-    // Si detección > umbral:
-    // setState(() => isAnalyzing = false); 
-    // timeoutTimer?.cancel();
+  Future<void> checkNeuralNetwork(List<double> inputData) async {
+    const List<double> medias = [
+      1169.46, 26872.82, 83.52, 250.1, 500.5, 31000.2, 1200.4, 650.3, 450.8, 150.2, 400.1, 12.5, 95000.0
+    ];
+
+    const List<double> desviaciones = [
+      647.36, 11313.59, 201.75, 120.4, 250.1, 5000.5, 300.2, 150.8, 120.4, 45.2, 80.5, 5.2, 12000.0
+    ];
+
+    try {
+      // 1. ESCALADO (StandardScaler: z = (x - u) / s)
+      List<double> xScaled = [];
+      for (int i = 0; i < inputData.length; i++) {
+        // Evitamos división por cero si la desviación es 0
+        double std = desviaciones[i] == 0 ? 1.0 : desviaciones[i];
+        xScaled.add((inputData[i] - medias[i]) / std);
+      }
+
+      // 2. ADAPTACIÓN AL MODELO (FLATTEN)
+      // Tu modelo espera una entrada de tamaño 242676. 
+      // Para una prueba en tiempo real, rellenamos el resto con 0.
+      var fullInput = List<double>.filled(242676, 0.0);
+      for (int i = 0; i < xScaled.length; i++) {
+        fullInput[i] = xScaled[i];
+      }
+
+      // 3. INFERENCIA TFLITE
+      var input = fullInput.reshape([1, 242676]);
+      var output = List.filled(1, 0.0).reshape([1, 1]);
+
+      _interpreter!.run(input, output);
+      // double probabilidad = 0.85; // Valor de prueba
+      double probabilidad = output[0][0];
+
+      // 4. ACTUALIZACIÓN DE INTERFAZ
+      setState(() {
+        resultadoIA = probabilidad;
+      });
+
+      // Alerta física si se supera el umbral del 70%
+      if (resultadoIA >= 0.7 && vibracionActiva) {
+        if (await Vibration.hasVibrator()) {
+          Vibration.vibrate(duration: 500);
+        }
+      }
+    } catch (e) {
+      debugPrint("Error en inferencia IA: $e");
+    }
   }
 
   @override
@@ -323,12 +398,23 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
     return Scaffold(
       appBar: CustomSearchAppBar(
         title: "Análisis de Muestra",
-        onSettingsPressed: () => AppNavigation.goToSettings(
-          context, 
-          widget.device, 
-          uartChar,
-          onMessageSent: (text, isCommand) => addMessage(text, isCommand),
-        ),
+        onSettingsPressed: () async {
+          // Seguimos usando tu función original, pero capturando el resultado
+          final resultado = await AppNavigation.goToSettings(
+            context, 
+            widget.device, 
+            uartChar,
+            onMessageSent: (text, isCommand) => addMessage(text, isCommand),
+          );
+
+          // Si el usuario pulsó CONFIRMAR, recibiremos el booleano
+          if (resultado != null) {
+            setState(() {
+              vibracionActiva = resultado;
+            });
+            debugPrint("Sincronizado: Vibración = $vibracionActiva");
+          }
+        },
         onSearchPressed: () => AppNavigation.goToHome(context),
       ),
       body: Padding(

@@ -129,12 +129,25 @@ class _SettingsScreenState extends State<SettingsScreen> {
               
               if (mounted) {
                 ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text("Configuración enviada a la eNOSE"),
-                    backgroundColor: Colors.blue,
+                  SnackBar(
+                    content: const Text(
+                      "Configuración aplicada correctamente",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    backgroundColor: Colors.green.shade600,
+                    behavior: SnackBarBehavior.floating,
+                    // Ajustamos el margen para que aparezca arriba
+                    margin: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).size.height - 160,
+                      left: 20,
+                      right: 20,
+                    ),
+                    duration: const Duration(seconds: 2),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                   ),
                 );
-                Navigator.pop(context); // Regresa a AnalysisScreen
+                Navigator.pop(context, vibracionActiva); // Volver a la pantalla de análisis
               }
             },
             style: ElevatedButton.styleFrom(
