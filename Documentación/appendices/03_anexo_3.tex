@@ -75,6 +75,31 @@ Esta configuración puede verse en la Figura~\ref{fig:misc_settings}.
     \caption{Configuración de la pestaña Misc.}\label{fig:misc_settings}
 \end{figure}
 
+\newpage
+
 \section{Conexión con la nariz electrónica}
+Para conectar la aplicación con la nariz electrónica, primero hay que volver a pulsar las tres rayas horizontales en la esquina superior izquierda de la pantalla principal de la aplicación. A continuación, se debe seleccionar la opción \textit{Devices}. Aparecerá una lista con los dispositivos Bluetooth disponibles, como se ve en la Figura~\ref{fig:lista_dispositivos}. Además en la esquina superior derecha está el boton ``SCAN'' para volver a buscar dispositivos. Hay que seleccionar el dispositivo correspondiente a la nariz electrónica (en este caso \textit{nosecrisE4}) y esperar a que se establezca la conexión. Una vez conectado, se puede volver a la pantalla principal de la aplicación para comenzar a recibir datos.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{pictures/Lista-dispositivos.jpg}
+    \caption{Lista de dispositivos Bluetooth disponibles.}\label{fig:lista_dispositivos}
+\end{figure}
 
 \section{Configuración de botones}
+Para facilitar la toma de muestras, se pueden configurar los botones macros en la parte inferior de la pantalla principal de la aplicación. Para ello simplemente hay que mantener pulsado el botón que se desea configurar hasta que aparezca la pantalla de configuración del botón, como se ve en la Figura~\ref{fig:configuracon_boton}. 
+\par
+
+Una vez en la pantalla de configuración, es posivle enontrar varios parametros:
+\begin{itemize}
+    \item \textbf{Name:} Nombre del botón (por ejemplo, ``Start'' o ``Stop'').
+    \item \textbf{Value:} Comando que se enviará al dispositivo al pulsar el botón (por ejemplo, ``Exper'' o ``STOP'').
+    \item \textbf{Edit mode:} Tipo de envío, debe estar en ``Text''.
+    \item \textbf{Action:} Puede ser ``Send'', para que el comando se envíe automáticamente, o ``Insert'', para que el comando se inserte en el campo de texto sin enviarse (Este último se usa para enviar comandos que requiere que se escriba algún parámetro antes de enviarlo).
+\end{itemize}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{pictures/Boton_config.jpg}
+    \caption{Pantalla de configuración de un botón macro.}\label{fig:configuracon_boton}
+\end{figure}
