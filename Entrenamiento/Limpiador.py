@@ -155,3 +155,19 @@ def procesar_lote() -> None:
 if __name__ == "__main__":
     # Ejecuta siempre la versión CLI (por defecto, lote si no hay argumentos)
     seleccionar_y_limpiar_cli()
+
+    # Opción para encadenar Augmentation.py
+    import sys
+    import subprocess
+    from pathlib import Path
+
+    print("\n" + "-"*40)
+    ans = input("¿Desea llevar a cabo el aumento de datos? (s/n): ").strip().lower()
+    if ans == 's':
+        script_path = Path(__file__).parent / "Augmentation.py"
+        if script_path.exists():
+            print(f"Lanzando {script_path.name}...")
+            subprocess.run([sys.executable, str(script_path)])
+        else:
+            print(f"[ERROR] No se encuentra el archivo: {script_path}")
+
