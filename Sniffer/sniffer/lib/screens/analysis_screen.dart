@@ -25,7 +25,7 @@ class ConsoleMessage {
 class _AnalysisScreenState extends State<AnalysisScreen> {
   BluetoothCharacteristic? uartChar;
   List<ConsoleMessage> consoleHistory = [];
-  String? selectedModel = "hachis-Plus.tflite"; // Aquí conectarás tus .tflite
+  String? selectedModel = "modelo_hachis-plus.tflite"; // Aquí conectarás tus .tflite
   bool isAnalyzing = false;
   double resultadoIA = 0.0; // Resultado de la inferencia de la IA
   Timer? timeoutTimer;
@@ -435,10 +435,10 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                   value: selectedModel,
                   isExpanded: true,
                   onChanged: onModelChanged,
-                  items: ["hachis-Plus.tflite", "modelo.tflite"].map((String val) {
+                  items: ["modelo_hachis-plus.tflite", "modelo_hachis.tflite"].map((String val) {
                     return DropdownMenuItem<String>(
                       value: val,
-                      child: Text(val == "hachis-Plus.tflite" ? "Modelo Hachís Plus" : "Modelo Base"),
+                      child: Text(val == "modelo_hachis-plus.tflite" ? "Modelo Hachís Plus" : "Modelo Hachís"),
                     );
                   }).toList(),
                 ),
