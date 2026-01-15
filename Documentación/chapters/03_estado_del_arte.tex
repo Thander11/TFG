@@ -1,5 +1,5 @@
 \chapter{Estado del Arte}
-\section{Narices Electrónicas (E-Noses)}
+\section{Narices electrónicas (E-noses)}
 Anteriormente se ha descrito qué es una nariz electrónica, pero es importante definir qué características debe tener una nariz electrónica para ser considerada como tal.
 \par
 
@@ -11,7 +11,7 @@ Es imprescindible que ofrezca repetibilidad y estabilidad en sus mediciones a lo
 
 Las principales ventajas de las narices electrónicas es que son rápidas, portatiles y económicas en comparación con metodos tradicionales para ciertas aplicaciones como la detección de sustancias, o técnicas cromatográficas para controles de calidad.
 
-\subsection{Antecedentes y Evolución de la Nariz Electrónica}
+\subsection{Antecedentes y evolución de la nariz electrónica}
 La base tecnológica de la nariz electrónica (e-nose) se encuentra en la investigación de los sensores de gas de semiconductores de óxido metálico (MOS), cuyo desarrollo se remonta a mediados del siglo XX.\@ Un hito temprano fue la descripción de las propiedades sensibles al gas del óxido de germanio en 1953. Los primeros sensores de gas se fabricaron utilizando óxido de zinc (\ce{ZnO}) y, a lo largo del tiempo, la tecnología evolucionó para incorporar materiales como el dióxido de estaño (\ce{SnO2}), el dióxido de titanio (\ce{TiO2}) y el óxido de tungsteno (\ce{WO3}). De estos, el dióxido de estaño granular es el material más ampliamente estudiado y empleado en la actualidad.
 \par
 
@@ -26,7 +26,7 @@ El funcionamiento de una nariz electrónica se basa en el principio de la biomí
 
 El sistema completo se divide en tres partes esenciales que trabajan de forma secuencial: la toma de muestra (equipo de muestreo), la matriz de sensores y el sistema de tratamiento de datos.
 
-\subsubsection{Ciclo de Medición y Detección}
+\subsubsection{Ciclo de medición y detección}
 El proceso se inicia con la preparación de la muestra, donde los Compuestos Orgánicos Volátiles (COV) son concentrados por calentamiento en la fase de vapor sobre la muestra (lo que se conoce como espacio de cabeza). Estos volátiles son introducidos en el sistema de detección a través de un ciclo de medición bien definido:
 \begin{itemize}
     \item \textbf{Fase de Adsorción (Exposición):} Los sensores se exponen directamente a la atmósfera de la muestra contaminada (o espacio de cabeza), permitiendo que las moléculas de olor se adsorban sobre la superficie de los sensores. Durante esta fase, los sensores registran sus respuestas continuamente.
@@ -35,13 +35,13 @@ El proceso se inicia con la preparación de la muestra, donde los Compuestos Org
 
 Los sensores de gas, principalmente los semiconductores de óxido metálico (MOS), miden las diferentes propiedades físico-químicas de los componentes del aroma. Esta interacción modifica las propiedades eléctricas del sensor (como su conductividad), convirtiendo el olor en una señal eléctrica mensurable.
 
-\subsubsection{Generación de la Huella Olfativa}
+\subsubsection{Generación de la huella olfativa}
 La e-nose requiere una matriz de múltiples sensores de gas para funcionar. Cada sensor posee una cierta especificidad para un grupo de compuestos químicos. Debido a que los olores suelen estar compuestos por más de una fuente, cada sensor de la matriz reacciona de forma única, generando un valor de conductividad individual.
 \par
 
 El resultado de esta matriz de respuestas es una matriz de datos compleja, que constituye la ``huella digital'' o ``huella olfativa'' del olor percibido. Esta huella es esencial para la identificación y clasificación de los olores, ya que cada combinación de respuestas de los sensores corresponde a un aroma específico.
 
-\subsubsection{Procesamiento y Reconocimiento de Patrones}
+\subsubsection{Procesamiento y reconocimiento de patrones}
 La etapa final y definitoria del sistema es el procesamiento de datos. El ordenador se encarga de procesar la matriz de datos mediante técnicas quimiométricas (estadísticas multivariadas y algoritmos de aprendizaje automático).
 \par
 
@@ -144,7 +144,7 @@ En la figura~\ref{fig:sensor_MOS} se muestra un esquema de un sensor MOS típico
     \caption{Presentación esquemática de un sensor MOX.}\label{fig:sensor_MOS}
 \end{figure}
 
-\subsection{Procesamiento de Datos (Quimiometría)}
+\subsection{Procesamiento de datos (Quimiometría)}
 Una vez que la matriz de sensores de la nariz electrónica ha capturado las respuestas a los Compuestos Orgánicos Volátiles (COV), es indispensable someter los datos a un riguroso proceso de interpretación para obtener un resultado significativo. Cada sensor aporta un valor de conductividad, generando una matriz de datos compleja que debe ser analizada.
 \par
 
@@ -162,7 +162,7 @@ La elección del método de análisis adecuado siempre dependerá de los datos d
 \subsection{Aplicaciones}
 Los sistemas de olfato electrónico han evolucionado desde su aplicación inicial en laboratorios de control de calidad para el análisis de alimentos hasta convertirse en una técnica de análisis no destructiva y de gran aplicabilidad en diversos sectores como seguridad y defensa (detección de drogas y explosivos), detección de enfermedades, control de la calidad del ambiente (por ejemplo, para detectar incendios) o para diversos estudios, por ejemplo, un estudio que buscar comparar la calidad de las cervezas artesanales frente a las cervezas industriales.
 
-\subsection{Desafíos y Limitaciones}
+\subsection{Desafíos y limitaciones}
 A pesar de sus notables ventajas en rapidez y portabilidad, las narices electrónicas aún enfrentan importantes desafíos técnicos y de estandarización que han limitado la expansión de su uso como herramienta de monitoreo.
 \par
 

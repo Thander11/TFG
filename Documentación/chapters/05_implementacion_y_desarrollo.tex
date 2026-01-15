@@ -186,3 +186,100 @@ Una vez finalizado el desarrollo, se procedió a la persistencia del modelo medi
 Para el entrenamiento del ``modelo plus'' con el dataset aumentado, se siguió un procedimiento casi idéntico al descrito anteriormente, asegurando la consistencia en la comparación de resultados entre ambos modelos. Los únicos cambios radicaron en el número de épocas, que se incrementó a 50 para permitir un aprendizaje más profundo, y la adaptación del tamaño del lote (batch size) a 10 muestras por iteración, optimizando así el proceso de entrenamiento con el nuevo conjunto de datos.
 
 \subsection{Desarrollo de la aplicación móvil}
+Anteriormente se ha mencionado que la aplicación se ha desarrollado usando Flutter. Es importante destacar que, para que los modelos puedan ser ejecutados en dispositivos móviles, es necesario convertirlos a un formato compatible con TensorFlow Lite (.tflite). Los modelos entrenados en Keras se han convertido a este formato directamente, mientras que los modelos desarrollados en PyTorch requieren una conversión adicional. Esta conversión se realiza primero exportando el modelo a ONNX (Open Neural Network Exchange) y luego utilizando el convertidor de ONNX a TensorFlow Lite. Sin embargo, la conversion de PyTorch a ONNX presenta ciertos problemas de compatibilidad, por lo que no se ha podido completar este proceso para los modelos desarrollados en PyTorch.
+\par
+
+Por este motivo, la aplicación móvil solo integra los modelos desarrollados en Keras. La aplicación permite al usuario seleccionar entre el modelo normal y el modelo plus, dependiendo de sus necesidades y del entorno en el que se utilice la nariz electrónica.
+\par
+
+A continuación se describe como se ha desarrollado la aplicación:
+
+\subsubsection{Confguración del entorno de desarrollo}
+El desarrollo de software para sistemas de sensado químico requiere un entorno que permita la iteración rápida y la visualización de datos en tiempo real. Para ello, Flutter, cuyo lenguaje de programación es Dart, fue elegido por su capacidad de gestionar interfaces reactivas. Esto es crucial cuando los datos de los sensores llegan con una frecuencia alta (por ejemplo cada 2 segundos), ya que la UI debe actualizarse sin bloquear el hilo principal de ejecución.
+\par
+
+Para poder comenzar con la creación de la aplicación, es necesario instalar Flutter SDK y configurar un editor de código compatible, como Visual Studio Code o Android Studio. Además, se deben instalar los plugins necesarios para Flutter y Dart en el editor elegido. Además, hay que instalar Java Development Kit (JDK) para la compilación de la aplicación. Por otra parte, es necesario tener instalado Android Studio para poder emular dispositivos Android y probar la aplicación en un entorno controlado.
+\par
+
+Una vez instalado todo el software necesario y creado el proyecto Flutter usando el comando \texttt{flutter create nombre\_del\_proyecto}, se deben añadir las dependencias necesarias en el archivo \texttt{pubspec.yaml}. Las dependencias principales son:
+\begin{itemize}
+    \item \textbf{flutter\_blue\_plus:} Para el escaneo y comunicación de baja energía (BLE) con el microcontrolador PIC32 de la nariz electrónica.
+    \item \textbf{tflite\_flutter:} Motor de ejecución para el modelo de Inteligencia Artificial en el dispositivo móvil.
+    \item \textbf{vibration:} Para el feedback háptico en alertas de seguridad (Vibración cuando se detecta la sustancia objetivo).
+\end{itemize}
+
+\subsubsection{Arquitectura de la aplicación}
+La aplicación sigue una arquitectura modular para separar la lógica de comunicación de la interfaz de usuario.
+\par
+
+La estructura de ficheros de la aplicación móvil se muestra en la Figura~\ref{fig:estructura_app}. La carpeta \texttt{screens} contiene las distintas pantallas de la aplicación, como la pantalla principal (Donde se encuentra la lista de dispositivos disponibles), la pantalla de análisis (Donde se controla el análisis de datos) y la pantalla de configuración (Donde se puede modificar los ajustes del análisis). La carpeta \texttt{utils} alberga funciones auxiliares, en este caso, la navegación entre pantallas. La carpeta \texttt{widgets} contiene componentes reutilizables, actualmente solo la barra de navegación superior. El archivo \texttt{main.dart} es el punto de entrada de la aplicación, donde se inicializan las dependencias y se configura la navegación entre pantallas.
+
+\begin{figure}[H]
+    \centering
+    \renewcommand*\DTstylecomment{\rmfamily\color{blue}\textsc}
+    \begin{minipage}{0.5\textwidth}
+        \dirtree{%
+            .1 /lib.
+            .2 screens.
+            .3 analysis\_screen.dart.
+            .3 main\_screen.dart.
+            .3 settings\_screen.dart.
+            .2 utils.
+            .3 navigation.dart.
+            .2 widgets.
+            .3 app\_bar.dart.
+            .2 main.dart.
+        }
+    \end{minipage}
+    \caption{Estructura de ficheros de la aplicación móvil}\label{fig:estructura_app}
+\end{figure}
+
+En el Anexo 4 se encuentra una descripción detallada de cada una de las pantallas y funcionalidades de la aplicación móvil desarrollada para controlar la nariz electrónica.
+
+\subsubsection{Desarrollo del protocolo de comunicación}
+La comunicación entre la aplicación móvil y la nariz electrónica se realiza mediante Bluetooth Low Energy (BLE). El microcontrolador PIC32 en la nariz electrónica actúa como un servidor BLE, mientras que la aplicación móvil funciona como un cliente BLE\@. La comunicación se establece utilizando servicios y características BLE predefinidos.
+
+\begin{itemize}
+    \item \textbf{Sincronización de comandos:} Se utiliza el prefijo \textit{\textgreater\textgreater~Enviando:} para registrar las órdenes enviadas (Por ejemplo \textit{\#NSNC,1}) y se espera el \textit{OK} de confirmación del PIC32.
+    \item \textbf{Gestión de datos (Buffering):} Se ha implementado un buffer de línea (\textit{\_rawBuffer}) que acumula fragmentos de datos hasta detectar un salto de línea (\textit{\textbackslash~n}), evitando duplicados visuales y errores de lectura en las tramas de 13 sensores.
+    \item \textbf{Control de ciclos (AutoStop):} La aplicación monitoriza la cadena ``STOP'' o ``AutoStop Mode enabled'' enviada por el firmware \textit{v1.5\_Cristina} para finalizar el experimento automáticamente y mostrar un cuadro de diálogo al usuario.
+\end{itemize}
+
+\subsubsection{Implementación de la inteligencia artificial}
+Se ha implementado la capacidad de ejecutar modelos de TensorFlow Lite directamente en el dispositivo móvil utilizando la librería \texttt{tflite\_flutter}. Esto permite realizar inferencias de manera eficiente sin necesidad de conexión a internet. Además, es posible cambiar facilmente de modelo desde la interfaz de usuario, permitiendo al usuario seleccionar entre el modelo normal y el modelo plus según sus necesidades.
+\par
+
+Es necesario que los datos de los sensores se preprocesen de la misma manera que durante el entrenamiento del modelo. Para ello la función \textit{procesarTramaParaIA} actúa como un portero lógico de la siguiente manera:
+
+\begin{enumerate}
+    \item Quita el espacio que hay al inicio de la primera fila de datos.
+    \item Elimina la primera fila que contiene la cabecera.
+    \item Ignora la fila con los nombres de las columnas. Es necesario para que el programa no intente convertir texto en números.
+    \item Dart usa el punto como decimal por defecto, así que no es necesario cambiar puntos por comas, así que además, en vez de cambiar las comas por espacios, las usa como separadores directamente.
+    \item Si el valor de la ultima columna es 0 (Aire limpio de la desorción) lo omite.
+    \item Elimina las columnas que no son necesarias para la inferencia (presión, humedad, temperatura, etc.).
+\end{enumerate}
+
+Acto seguido se aplica la normalización estadística aplicando un ``StandardScaler'' $z = (x - \mu) / \sigma$. Esto nivela sensores con rangos dispares, como el CO2 (400--2000 ppm) frente a la IAQ del sensor ZMOD4410 (0--500), permitiendo que la red neuronal aprenda patrones químicos en lugar de magnitudes absolutas.
+\par
+
+Para finalizar se utiliza ``Zero-Padding'' para adaptar la entrada individual de sensores al tamaño esperado por el modelo (242.676 datos), devolviendo una probabilidad de impureza.
+
+\subsubsection{Diseño de interfaz y experiencia de usuario}
+La interfaz de usuario (UI) de la aplicación móvil ha sido diseñada para ser intuitiva y fácil de usar, permitiendo a los usuarios interactuar con la nariz electrónica de manera eficiente. Se han implementado varias pantallas clave tales como una pantalla principal en la que se muestra una lista de dispositivos Bluetooth disponibles para conectarse, una pantalla de ajustes en la que se pueden configurar parámetros del análisis, tales como el número de ciclos, los tiempos de adsorción y desorción y la activación del modo AutoStop y de la vibración, y una pantalla de análisis donde se visualizan los datos en tiempo real. La pantalla de analisis cuenta con los siguientes componenetes:
+
+\begin{itemize}
+    \item \textbf{Desplegable de modelos:} Un desplegable en el que se puede seleccionar el modelo de IA a utilizar.
+    \item \textbf{Terminal:} Donde se muestran los mensajes y comandos que se envian y reciben al comunicarse con la nariz electrónica.
+    \item \textbf{Indicador de impureza:} Muestra la impureza del aire en tiempo real, actualizándose cada vez que llega una nueva lectura de los sensores.
+    \item \textbf{Botón de iniciar/cancelar:} Permite al usuario iniciar o detener el análisis en cualquier momento.
+\end{itemize}
+
+Se utiliza un sistema de semáforo en el que si la impureza calculada es $\ge 0.7$, el contenedor de impureza cambia a rojo con el mensaje ``¡SUSTANCIA DETECTADA\!''. Si es menor, se mantiene verde como ``AIRE LIMPIO''. Además, se ha implementado un sistema de alertas hápticas que hace vibrar el dispositivo cuando se detecta la sustancia objetivo, proporcionando una notificación inmediata al usuario sin necesidad de mirar a la pantalla.
+\par
+
+\section{Pruebas comparativas}
+% Hablar de que se va a tener en cuenta para elegir que pruebas hacer
+
+% Introducir que se va a describir en que consite cada prueba. Cada prueba será un subsection
+
