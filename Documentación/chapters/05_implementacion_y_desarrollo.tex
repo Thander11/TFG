@@ -60,7 +60,7 @@ Una vez los sensores se han calentado y la sustancia está preparada, solo queda
 Una vez haya finalizado la toma de la muestra, los datos se habrán al macenado en un fichero de texto llamado ``DATOS.txt'' en la tarjeta SD de la nariz electrónica. El siguiente paso es copiar este fichero al ordenador y cambiarle el nombre por el correspondiente a la nomenclatura mencionada anteriormente. Es importante borrar el contenido de la tarjeta SD antes de iniciar una nueva toma de muestras. De no hacerse, los datos de la siguiente muestra se añadirán al final del fichero ``DATOS.txt''.
 
 \subsubsection{Muestras negativas}
-Para las muestras negativas, se han utilizado diversas sustancias que pueden encontrarse en un entorno cotidiano y que no deben ser confundidas con la sustancia objetivo. Estas sustancias incluyen alimentos como cacao en polvo, limón exprimido, salsas, etc. Un seguimiento detallado de la obtención de las características de estas sustancias se encuentra en el Anexo 1.
+Para las muestras negativas, se han utilizado diversas sustancias que pueden encontrarse en un entorno cotidiano y que no deben ser confundidas con la sustancia objetivo. Estas sustancias incluyen alimentos como cacao en polvo, limón exprimido, salsas, etc. Un seguimiento detallado de la obtención de las características de estas sustancias se encuentra en la Tabla~\ref{tab:registro_sustancias_malo} del Anexo 1.
 \par
 
 Para cada sustancia (excepto la primera, que se hizo como una prueba), se han realizado múltiples experimentos bajo diferentes condiciones, como el estado del bote de muestreo (abierto o cerrado) y la presencia o ausencia de corriente de aire. Esto permite evaluar cómo estas variables afectan las lecturas de los sensores y la capacidad de la ANN para distinguir entre la sustancia objetivo y otras sustancias.
@@ -80,7 +80,7 @@ En el caso del quinto tipo de hachís (la muestra mas grande), los expremientos 
 Además, dado que para las muestras positivas se dispone de un menor numero de muestras en comparación con las negativas, se ha optado por repetir algunos experimentos para aumentar la cantidad de datos disponibles para el entrenamiento de la ANN, ya que, pese a tratarse de la misma muestra, los resiltados pueden ser ligeramente diferentes entre una toma y otra.
 \par
 
-Un seguimiento detallado de estas tomas de muestras se encuentra en el Anexo 2.
+Un seguimiento detallado de estas tomas de muestras se encuentra en la Tabla~\ref{tab:registro_sustancias_bueno} del Anexo 2.
 
 \subsubsection{Limpieza del dataset}
 Todos los archivos de texto de las muestras se han ido guardando en una carpeta llamada \texttt{Por\_procesar}, en la que tambien se encuentran divididas en las subcarpetas ``BUENO'' y ``MALO''. Estos archivos cuentan con datos, como la presión o la humedad, que no son útiles para el entrenamiento de la ANN, por lo que se ha llevado a cabo un proceso de limpieza y preprocesamiento de los datos para eliminar información irrelevante y preparar los datos para su uso en el entrenamiento de la red neuronal.
@@ -104,7 +104,7 @@ La metodología de generación de datos sintéticos combina dos técnicas princi
     \item \textbf{Inyección de Ruido Proporcional (Jittering):} Para introducir variabilidad, se aplica ruido gaussiano multiplicativo a las lecturas de los sensores. Se utiliza una distribución normal con media 1 y una desviación estándar de 0.005 (0.5\% de ruido). La fórmula empleada es $X_{aug} = X_{orig} \cdot \mathcal{N}(1, 0.005)$, donde $X_{aug}$ es la muestra aumentada, $X_{orig}$ es la muestra original y $\mathcal{N}(1, 0.005)$ es una variable aleatoria con distribución normal. Este enfoque altera ligeramente la amplitud de las señales simulando fluctuaciones en los sensores, pero preservando la morfología y tendencia de la señal original.
 \end{enumerate}
 
-El dataset original constaba de 76 muestras (38 positivas y 38 negativas). Tras aplicar el proceso de aumento de datos, se han generado un total de 760 muestras sintéticas adicionales (380 positivas y 380 negativas), resultando en un conjunto de datos final de 836 muestras.
+El dataset original constaba de 76 muestras (38 positivas y 38 negativas). Tras aplicar el proceso de aumento de datos, se han generado un total de 760 muestras sintéticas adicionales (380 positivas y 380 negativas), resultando en un conjunto de datos final de 836 muestras. El nombre de los archivos aumentados sigue la nomenclatura original, añadiendo un sufijo ``\_PX'' donde ``X'' es un número secuencial que identifica cada muestra sintética generada a partir de la misma muestra original.
 \par
 
 De esta forma, se consigue un dataset más rico y variado, permitiendo que la red neuronal aprenda a reconocer patrones incluso en presencia de ruido o variaciones temporales.

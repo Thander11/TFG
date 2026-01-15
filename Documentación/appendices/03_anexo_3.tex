@@ -100,6 +100,43 @@ Una vez en la pantalla de configuración, es posivle enontrar varios parametros:
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.6\textwidth]{pictures/Boton_config.jpg}
+    \includegraphics[width=0.65\textwidth]{pictures/Boton_config.jpg}
     \caption{Pantalla de configuración de un botón macro.}\label{fig:configuracon_boton}
 \end{figure}
+
+Para un uso normal de la nariz electrónica, se recomienda configurar al menos los botones que se muestran en la Tabla~\ref{tab:botones_macros}.
+
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{xltabular}{\textwidth}{@{} >{\centering\arraybackslash}p{0.22\textwidth} >{\centering\arraybackslash}p{0.22\textwidth} >{\centering\arraybackslash}p{0.22\textwidth} >{\raggedright\arraybackslash}p{0.34\textwidth} @{}}
+        \toprule
+    \multicolumn{1}{c}{\textbf{Botón}} & \multicolumn{1}{c}{\textbf{Value}} & \multicolumn{1}{c}{\textbf{Action}} & \multicolumn{1}{c}{\textbf{Descripción}} \\
+\midrule
+\endfirsthead%
+
+        \toprule
+    \multicolumn{1}{c}{\textbf{Botón}} & \multicolumn{1}{c}{\textbf{Value}} & \multicolumn{1}{c}{\textbf{Action}} & \multicolumn{1}{c}{\textbf{Descripción}} \\
+\midrule
+\endhead%
+
+\midrule \multicolumn{4}{r}{Continúa en la siguiente página}\\
+\endfoot%
+
+\bottomrule
+\endlastfoot%
+    AutoStop & \#NSAS,2 & Send & Activa la parada automática \\
+    \midrule
+    Cycles & \#NSNC, & Insert & Establece el número de ciclos \\
+    \midrule
+    Settings & SETTINGS & Send & Permite ver los valores de la velocidad de los datos, el número de ciclos, el estado del autostop y los tiempos de adsorción y desorción \\
+    \midrule
+    Exper & Exper, & Send & Inicia la toma de muestras \\
+    \midrule
+    Stop & Stop & Send & Detiene la toma de muestras \\
+    \midrule
+    Ta (s) & \#NSTA, & Insert & Establece el tiempo de adsorción en segundos \\
+    \midrule
+    Td (s) & \#NSTD, & Insert & Establece el tiempo de desorción en segundos \\
+\end{xltabular}
+\normalsize
+{\captionsetup{type=table,hypcap=false}\captionof{table}{Configuración recomendada de botones macros para la nariz electrónica.}\label{tab:botones_macros}}
