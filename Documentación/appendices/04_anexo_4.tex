@@ -9,7 +9,7 @@ Una vez abierta la aplicación, lo primero que se ve es una lista de todos los d
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.45\textwidth]{pictures/Pantalla_principal.jpg}
+    \shadowbox{\includegraphics[width=0.42\textwidth]{pictures/Pantalla_principal.jpg}}
     \caption{Lista de dispositivos Bluetooth cercanos en la aplicación Sniffer.}\label{fig:lista_app}
 \end{figure}
 
@@ -17,12 +17,38 @@ En caso de querer volver a buscar dispositivos, se puede pulsar el botón de bú
 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\textwidth]{pictures/Boton_busqueda.jpg}
+    \shadowbox{\includegraphics[width=0.5\textwidth]{pictures/Boton_busqueda.jpg}}
     \caption{Botón de búsqueda de dispositivos Bluetooth en la aplicación Sniffer.}\label{fig:boton_busqueda}
 \end{figure}
 
 Una vez se ha realizado la conexión con la nariz electrónica, se accederá a la pantalla de analisis de sustancias.
 
 \section{Detección de sustancias}
+La pantalla de analisis cuenta con la opción de elegir que modelo de red neuronal se desea usar para analizar las muestras recibidas por la nariz electrónica. Esta opción puede verse en la Figura~\ref{fig:seleccion_modelo}. 
+
+\begin{figure}[H]
+    \centering
+    \shadowbox{\includegraphics[width=0.5\textwidth]{pictures/Selector_modelo.jpg}}
+    \caption{Selección del modelo de red neuronal en la aplicación Sniffer.}\label{fig:seleccion_modelo}
+\end{figure}
+
+Además, esta pantalla cuenta con una ventana estilo terminal donde se muestran los datos recibidos por la nariz electrónica en tiempo real. Tabien cuenta con un cuadro en el que se muestra el nivel de impureza a tiempo real. En caso de que dicho nivel de impureza supere el umbral establecido (70\%), dicho cuadro se volverá de color rojo y el dispositivo vibrará para alertar al usuario.
+\par
+
+En la parte inferior de la pantalla, se encuentra el botón para iniciar el análisis de una muestra. Al pulsar dicho botón, la nariz electrónica comenzará a tomar datos y enviarlos a la aplicación para su análisis. Una vez finalizado el análisis se mostrará un mensaje emergente que lo indique en pantalla. No obstante, si se desea detener el análisis antes de que finalice, se puede pulsar otro botón que detendrá el análisis en curso. En la Figura~\ref{fig:pantalla_analisis_datos} se puede ver la pantalla de análisis durante el proceso.
+
+\begin{figure}[H]
+    \centering
+    \shadowbox{\includegraphics[width=0.5\textwidth]{pictures/Pantalla_analisis_datos.jpg}}
+    \caption{Pantalla de análisis de sustancias en la aplicación Sniffer.}\label{fig:pantalla_analisis_datos}
+\end{figure}
+
+Desde esta pantalla también es posible acceder a la pantalla de ajustes de la aplicación o volver a la pantalla principal para desconectar la nariz electrónica y conectar otro dispositivo si se desea. En la Figura~\ref{fig:barra_analisis} se pueden ver los botones correspondientes en la barra superior de la pantalla de análisis. La lupa para volver a la pantalla principal y el icono de engranaje para acceder a la pantalla de ajustes.
+
+\begin{figure}[H]
+    \centering
+    \shadowbox{\includegraphics[width=0.5\textwidth]{pictures/Barra_analisis.jpg}}
+    \caption{Botones de la barra superior en la pantalla de análisis de sustancias.}\label{fig:barra_analisis}
+\end{figure}
 
 \section{Configuración del análisis}
