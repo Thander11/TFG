@@ -281,7 +281,22 @@ Se utiliza un sistema de semáforo en el que si la impureza calculada es $\ge 0.
 \subsubsection{Funcionamiento técnico de la aplicación}
 Para terminar esta sección, se describe cual es el funcionamiento de la aplicación internamente cuando el usuario interactúa con ella. El flujo de ejecución de la aplicación es el siguiente.
 
+Cuando se habre la aplicación por primera vez, hay que aceptar los permisos necesarios para el funcionamiento de la aplicación, como el acceso a Bluetooth y la ubicación. Una vez aceptados los permisos, se muestra la pantalla principal con la lista de dispositivos Bluetooth disponibles, omitiendo los dispositivos que aparecen como ``Desconocido'' y resaltando los que contengan ``NOSE'' en su nombre. El usuario selecciona la nariz electrónica de la lista y se establece la conexión BLE\@. Tras la conexión se navega a la pantalla de análisis.
+\par
 
+En la pantalla de análisis, el usuario puede seleccionar el modelo de red neuronal a utilizar desde un desplegable. Además cuetna con una terminal donde se muestran los mensajes enviados y recibidos. El usuario puede iniciar el análisis pulsando el botón de iniciar. Esto envía el comando de inicio ``Exper'' a la nariz electrónica y comienza a recibir datos en tiempo real. La aplicación procesa cada trama de datos recibida, aplicando el preprocesamiento necesario (normalización y padding) antes de pasar los datos al modelo de IA seleccionado para obtener una predicción de impureza. La impureza se muestra en la pantalla y se actualiza cada vez que llega una nueva lectura. Si la impureza es mayor o igual a 0.7, la aplicación cambia el indicador a rojo y muestra una alerta de sustancia detectada, además de activar la vibración del dispositivo si está habilitada. La ejecución continúa hasta que acaban los ciclos y se ejecuta el AutoStop, o hasta que el usuario decide cancelar el análisis pulsando el botón de cancelar, lo que envía el comando ``Stop'' a la nariz electrónica y detiene la recepción de datos.
+\par
+
+En cualquier momento se puede volver a la pantalla principal, desde la pantalla de análisis, pulsando la lupa de la barra superior, para desconectar la nariz electrónica y conectar otro dispositivo si lo desea.Por otra parte está la opción de ir a la pantalla de ajustes. Por otra parte está la opción de ir a la pantalla de ajustes. Al hacerlo, la aplicación enviará el comando ``SETTINGS'' a la nariz electrónica para que esta le devuelva un mensaje con la configuración que incluye el número de ciclos, los tiempos de adsorción y desorción, y el estado del modo AutoStop. Estos datos recibidos se reflejan en los campos correspondientes de la pantalla de ajustes (Además del estado de la vibración). El usuario puede modificar estos parámetros y guardar los cambios pulsando el botón de guardar. Esto envía un comando ``\#NSNC,X'', donde X es el número de ciclos, seguido de los tiempos de adsorción (``\#NSTA,X'') y desorción (``\#NSTD,X''), donde X es el tiempo en segundos, y el estado del modo AutoStop (1 para activado, 0 para desactivado). La nariz electrónica responde con un ``OK'' confirmando que ha recibido y aplicado la nueva configuración. También está la opción de volver a la pantalla de análisis sin guardar los cambios, pulsando el icono de flecha hacia atrás en la barra superior.
+\par
+
+Es posible ver un diagrama de flujo que resume este funcionamiento en la Figura~\ref{fig:diagrama_flujo_tecnico_app}. Además este documento cuenta con un manual de usuario detallado en el Anexo 4, que explica paso a paso cómo utilizar la aplicación móvil para controlar la nariz electrónica, sin profundizar en el funcionamiento interno que ya se ha abordado en este punto.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{pictures/Flujo_tecnico_Sniffer.png}
+    \caption{Diagrama de flujo del funcionamiento de la aplicación móvil}\label{fig:diagrama_flujo_tecnico_app}
+\end{figure}
 
 \section{Pruebas comparativas}
 % Hablar de que se va a tener en cuenta para elegir que pruebas hacer
