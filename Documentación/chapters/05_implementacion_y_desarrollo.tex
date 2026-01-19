@@ -158,7 +158,7 @@ Para las capas ocultas se empleó la función de activación ReLU (Rectified Lin
 Para llevar a cabo la optimización del entrenamiento, se emplea Adam con una tasa de aprendizaje de 0.001, conocido por su manejo eficiente de momentos y su convergencia rápida. Además, la función de pérdida seleccionada es \textit{Binary Cross Entropy Loss} (BCE Loss), adecuada para problemas de clasificación binaria. Por otra parte la precisión (Accuracy) es la métrica elegida para evaluar el rendimiento del modelo durante el entrenamiento y la validación, y se monitorea durante todo el proceso.
 \par
 
-Se hará un entrenamiento por lotes, usando un tamaño de lote (batch size) de 5 muestras por iteración. Este tamaño pequeño permite una actualización más frecuente de los pesos, lo que puede ayudar a la convergencia del modelo, especialmente con conjuntos de datos limitados. Además, se implementa una estrategia de parada temprana (Early Stopping) con una paciencia de 10 épocas. Si la pérdida en el conjunto de validación no mejora durante este periodo, el entrenamiento se detiene automáticamente, previniendo el sobreajuste y asegurando que se guarden los pesos óptimos.
+Se hará un entrenamiento por lotes, usando un tamaño de lote (batch size) de 5 muestras por iteración. Este tamaño pequeño permite una actualización más frecuente de los pesos, lo que puede ayudar a la convergencia del modelo, especialmente con conjuntos de datos limitados. Además, se implementa una estrategia de parada temprana (``Early Stopping'') con una paciencia de 10 épocas. Si la pérdida en el conjunto de validación no mejora durante este periodo, el entrenamiento se detiene automáticamente, previniendo el sobreajuste y asegurando que se guarden los pesos óptimos.
 \par
 
 Una vez finalizado el entrenamiento y validada la eficacia del modelo, se procedió a la exportación de los resultados para garantizar su portabilidad y despliegue en entornos reales. En primer lugar, se realizó el guardado del modelo completo en formato nativo de Keras (.keras), almacenando tanto la arquitectura como los pesos optimizados. Posteriormente, para facilitar su integración en dispositivos de hardware limitados, se llevó a cabo una conversión a TensorFlow Lite (.tflite) mediante la herramienta TFLiteConverter. Este proceso permitió generar un archivo binario optimizado, con menor huella de memoria y latencia reducida, quedando así el sistema preparado para realizar inferencias de forma local y eficiente sin necesidad de depender del framework completo de TensorFlow. Esta exportación a TensorFlow Lite es crucial para la implementación en la aplicación móvil que controlará la nariz electrónica.
@@ -194,7 +194,7 @@ Se utilizó ReLU (Rectified Linear Unit) en las capas ocultas para evitar el pro
 A continuación, se procedió a la configuración del proceso de entrenamiento. Para la configuración de la función de pérdida, se seleccionó \textit{Binary Cross Entropy Loss} (BCE Loss), adecuada para problemas de clasificación binaria, como se ha mencionado anteriormente. Para la optimización se utilizó el optimizador Adam, conocido por su eficiencia y capacidad para adaptarse a diferentes tipos de datos. Se estableció una tasa de aprendizaje inicial de 0.001, un valor comúnmente utilizado que equilibra la velocidad de convergencia y la estabilidad del entrenamiento.
 \par
 
-Para optimizar el tiempo de cómputo y evitar que el modelo memorice el ruido de los datos, se implementó un control de ``paciencia'' de 10 épocas. A esto se le conoce como Estrategia de Parada Temprana (Early Stopping). Si la pérdida en el conjunto de validación no mejora tras este periodo, el entrenamiento se detiene automáticamente. Esta técnica actúa como un regulador temporal. En lugar de fijar un número arbitrario de épocas (como 100), el modelo se detiene cuando detecta que la pérdida en el conjunto de validación comienza a estancarse o subir, asegurando que guardamos los pesos que mejor funcionan con datos que la red no ha ``visto'' para entrenar.
+Para optimizar el tiempo de cómputo y evitar que el modelo memorice el ruido de los datos, se implementó un control de ``paciencia'' de 10 épocas. A esto se le conoce como Estrategia de Parada Temprana (``Early Stopping''). Si la pérdida en el conjunto de validación no mejora tras este periodo, el entrenamiento se detiene automáticamente. Esta técnica actúa como un regulador temporal. En lugar de fijar un número arbitrario de épocas (como 100), el modelo se detiene cuando detecta que la pérdida en el conjunto de validación comienza a estancarse o subir, asegurando que guardamos los pesos que mejor funcionan con datos que la red no ha ``visto'' para entrenar.
 \par
 
 Una vez finalizado el desarrollo, se procedió a la persistencia del modelo mediante el guardado en un archivo con extensión \.pth. Este archivo almacena los pesos y sesgos óptimos encontrados, permitiendo su despliegue posterior sin necesidad de repetir el proceso de entrenamiento.
@@ -368,7 +368,8 @@ A continuación se muestra, en la Figura~\ref{fig:diagrama_flujo_tecnico_app}, u
 \end{figure}
 
 \section{Pruebas comparativas}
-En esta sección se describen las distintas pruebas que se han llevado a cabo para evaluar el rendimiento de la nariz electrónica en comparación con el olfato canino bajo las mismas circunstancias.
+En esta sección se describen las distintas pruebas que se han llevado a cabo para evaluar el rendimiento de la nariz electrónica en comparación con el olfato canino bajo las mismas circunstancias. El modelo utilizado en las pruebas fue ``Modelo Hachís Plus'', el cual ha demostrado ser el más preciso.
+\par
 
 Para estas pruebas se ha contado con la colaboración de un guía canino del cuerpo cinológico de la Guardia Civil, quien ha aportado su experiencia y la de su perro adiestrado para la detección de drogas. En la Figura~\ref{fig:zape} es posible ver Zape, el agente canino que ha participado en las pruebas.
 
@@ -386,7 +387,8 @@ Para poder cuantificar y comparar los resultados obtenidos por la nariz electró
     \item \textbf{Precisión:} Como de concreta es la zona o área marcada donde se detecta la sustancia objetivo (Del 1 al 10).
 \end{itemize}
 
-Tras una conversación con el guía canino, se han decidio que pruebas llevar a cabo basandose en las practicas habituales de entrenamiento y detección que suelen llevar a cabo en la comandancia. En total se han realizado 6 pruebas, las cuales se explican a continuación.
+Tras una conversación con el guía canino, se han decidio que pruebas llevar a cabo basandose en las practicas habituales de entrenamiento y detección que suelen llevar a cabo en la comandancia. En total se han realizado 6 pruebas, las cuales se explican a continuación:
+
 
 \subsection{Prueba 1: Paquetería}
 % Varias cajas de cartón dentro de una furgoneta. Solo una tiene hachís.

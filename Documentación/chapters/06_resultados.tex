@@ -2,7 +2,10 @@
 En este capítulo se presentan los resultados obtenidos tras el entrenamiento y evaluación de los modelos de redes neuronales implementados en Keras y PyTorch, así como una comparación de los resultados de las evaluaciónes. Además, se incluyen los resultados de las pruebas comparativas realizadas entre la nariz electrónica entrenada y el agente canino de la Guardia Civil encargado en la detección de drogas.
 
 \section{Resultados de redes neuronales}
-Tras el entrenamiento, se evalúa el modelo en el conjunto de prueba para garantizar que los resultados no sufren de sobreajuste. El rendimiento se visualiza mediante curvas de aprendizaje (Accuracy y Loss), con una precisión (Accuracy) del 77.78\%, para verificar la convergencia, como se observa en la Figura~\ref{fig:curvas_entrenamiento_Keras} y una matriz de confusión para observar cómo clasifica el sistema las muestras ``Buenas'' y ``Malas'' reales frente a las predichas. Dicha matriz puede verse en la Figura~\ref{fig:matriz_confusion_Keras}.
+Como se ha mencionado anteriormente se han entrenado redes neuronales usando Keras y PyTorch, concretamente dos modelos con cada framework, uno con el dataset base y otro con el dataset aumentado.
+\par
+
+Tras el entrenamiento, se evalúa el modelo en el conjunto de prueba para comprobar si los resultados sufren de sobreajuste pese a haber apliacado ``Early Stopping''. El rendimiento se visualiza mediante curvas de aprendizaje Accuracy (Precisión) y Loss (Pérdida).
 \par
 
 \begin{figure}[H]
