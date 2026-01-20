@@ -1,0 +1,139 @@
+\chapter{Anexo 4: entrenamiento de modelos experimentales}
+En este anexo se detallan los procedimientos y configuraciones utilizadas para entrenar los modelos experimentales presentados en el capítulo 5. 
+
+\section{Entrenamiento}
+
+\subsection{Keras}
+En primer lugar se importan las librerías necesarias para el desarrollo del modelo y la visualización de los resultados (tensorflow, numpy, pandas, skalern, matplotlib, etc.). Posteriormente sigue la carga de datos y su preprocesamiento. Los datos se extraen de archivos de texto, convirtiendo las lecturas de los sensores en vectores numéricos aplanados, para despueés llevar a cabo una Homogeneización (Padding), ya que, debido a que las capturas tienen duraciones distintas, se realiza un relleno con valores nulos (NaN) hasta alcanzar la longitud máxima de 242,676 características. A continuación, se procede a la imputación de los valores faltantes utilizando \textit{SimpleImputer} con una estrategia constante (valor 0) y se normalizan los datos mediante \textit{StandardScaler}, que transforma las características para que tengan media 0 y varianza 1, un paso fundamental para que las funciones de activación de Keras operen correctamente. Finalmente, los datos se dividen separando inicialmente un 20\% para el conjunto de Prueba. Del 80\% restante, se utiliza un 20\% para Validación durante el entrenamiento, resultando en una distribución final aproximada de 64\% para Entrenamiento, 16\% para Validación y 20\% para Prueba, empleando una semilla de aleatoriedad (random\_state=42) para permitir la reproducibilidad de los experimentos.
+\par
+
+Se ha implementado un modelo de tipo Secuencial que permite un flujo de datos lineal a través de capas densas:
+\begin{enumerate}
+    \item \textbf{Capa de entrada:} Se define implícitamente al especificar la forma de entrada (input\_shape) basada en las características extraídas.
+    \item \textbf{Primera capa oculta:} 32 neuronas con función de activación ReLU\@. Su función es realizar la primera abstracción de los datos del sensor.
+    \item \textbf{Capa de Dropout:} Con una tasa de 0.2 (20\%) para prevenir el sobreajuste (overfitting) durante el entrenamiento.
+    \item \textbf{Segunda capa oculta:} 16 neuronas con función de activación ReLU, que profundiza en la jerarquía de patrones detectados.
+    \item \textbf{Capa de salida:} Una única neurona con función de activación Sigmoide, que proyecta el resultado final como una probabilidad entre 0 y 1.
+\end{enumerate}
+
+La arquitectura de la red fue determinada mediante un proceso experimental, adaptándose a las particularidades del conjunto de datos para prevenir posibles complicaciones.
+\par
+
+Se eligió una estructura de capas decreciente. La capa inicial de 32 neuronas funciona extrayendo características complejas, mientras que la siguiente capa de 16 neuronas sintetiza esta información previo a la clasificación. Esta cantidad de neuronas busca un compromiso entre potencia y simplicidad, impidiendo una complejidad excesiva dado el volumen de muestras.
+\par
+
+Debido al tamaño reducido del dataset frente a la alta dimensionalidad de las entradas, el riesgo de sobreajuste (\textit{overfitting}) es notable. La inclusión de \textit{Dropout} obliga a la red a no basarse en neuronas concretas, favoreciendo una representación más sólida y una mejor generalización con datos nuevos.
+\par
+
+Para las capas ocultas se empleó la función de activación ReLU (Rectified Linear Unit), evitando así el desvanecimiento del gradiente y acelerando el entrenamiento. En la salida, la función Sigmoide es indispensable para generar una probabilidad entre 0 y 1, requisito para la clasificación binaria con la función de pérdida \textit{Binary Cross Entropy}.
+\par
+
+Para llevar a cabo la optimización del entrenamiento, se emplea Adam con una tasa de aprendizaje de 0.001, conocido por su manejo eficiente de momentos y su convergencia rápida. Además, la función de pérdida seleccionada es \textit{Binary Cross Entropy Loss} (BCE Loss), adecuada para problemas de clasificación binaria. Por otra parte la precisión (Accuracy) es la métrica elegida para evaluar el rendimiento del modelo durante el entrenamiento y la validación, y se monitorea durante todo el proceso.
+\par
+
+Se hará un entrenamiento por lotes, usando un tamaño de lote (batch size) de 5 muestras por iteración. Este tamaño pequeño permite una actualización más frecuente de los pesos, lo que puede ayudar a la convergencia del modelo, especialmente con conjuntos de datos limitados. Además, se implementa una estrategia de parada temprana (``Early Stopping'') con una paciencia de 10 épocas. Si la pérdida en el conjunto de validación no mejora durante este periodo, el entrenamiento se detiene automáticamente, previniendo el sobreajuste y asegurando que se guarden los pesos óptimos.
+\par
+
+Una vez finalizado el entrenamiento y validada la eficacia del modelo, se procedió a la exportación de los resultados para garantizar su portabilidad y despliegue en entornos reales. En primer lugar, se realizó el guardado del modelo completo en formato nativo de Keras (.keras), almacenando tanto la arquitectura como los pesos optimizados. Posteriormente, para facilitar su integración en dispositivos de hardware limitados, se llevó a cabo una conversión a TensorFlow Lite (.tflite) mediante la herramienta TFLiteConverter. Este proceso permitió generar un archivo binario optimizado, con menor huella de memoria y latencia reducida, quedando así el sistema preparado para realizar inferencias de forma local y eficiente sin necesidad de depender del framework completo de TensorFlow. Esta exportación a TensorFlow Lite es crucial para la implementación en la aplicación móvil que controlará la nariz electrónica.
+\par
+
+Para el entrenamiento del ``modelo plus'' con el dataset aumentado, se siguió un procedimiento idéntico al descrito anteriormente, asegurando la consistencia en la comparación de resultados entre ambos modelos.
+
+\subsection{PyTorch}
+El primer paso de todos es la importación de las librerías necesarias para el desarrollo del modelo y la visualización de los resultados (torch, numpy, pandas, skalern, matplotlib, etc.). A continuación, se procede a la carga y preprocesamiento de los datos. El éxito del entrenamiento depende de la calidad y homogeneidad de los datos de entrada. El flujo implementado consta de varias etapas, empezando por la carga y eiquetdo de los datos, donde se leen los archivos de texto limpios interpretando valores decimales y omitiendo encabezados. Las muestras se clasificaron en dos categorías: ``BUENO'' (clase 1) y ``MALO'' (clase 0). Debido a las variaciones en los tiempos de muestreo de los sensores, las señales presentaban distintas longitudes. Se aplicó una técnica de padding con valores NaN para igualar todas las muestras a la longitud máxima detectada (242,676 puntos), garantizando una matriz de características constante. Posteriormente se pasa a la imputación y normalización, donde se utilizó \textit{SimpleImputer} con una estrategia constante (valor 0) para tratar los datos faltantes generados en el paso anterior. Se aplicó un escalado estadístico mediante \textit{StandardScaler}, transformando los datos para que tengan media 0 y varianza 1, lo que facilita la convergencia del optimizador. Para finalizar la carga de los datos, Los datos se dividieron de forma estratificada para mantener la proporción de clases en tres conjuntos: Entrenamiento (60\%), Validación (20\%) y Prueba (20\%).
+\par
+
+Se ha diseñado una arquitectura de tipo Perceptrón Multicapa (MLP) adaptada a la alta dimensionalidad de los datos. La estructura definida en la clase OlfativaANN integra:
+\begin{enumerate}
+    \item \textbf{Capa de entrada:} Ajustada dinámicamente al número de características de las muestras (Por si se decide en un futuro modificar la duración de muestreo de los sensores).
+    \item \textbf{Primera capa oculta:} 32 neuronas con función de activación ReLU para capturar patrones no lineales.
+    \item \textbf{Capa de Dropout:} Se configuró una probabilidad de 0.2 (20\%). Esta técnica de regularización previene el sobreajuste (overfitting) al desactivar neuronas aleatoriamente durante el entrenamiento.
+    \item \textbf{Segunda capa oculta:} 16 neuronas con función de activación ReLU\@.
+    \item \textbf{Capa de salida:} Una única neurona con función de activación Sigmoide, ideal para problemas de clasificación binaria, ya que entrega una probabilidad en el rango [0,1].
+\end{enumerate}
+
+La configuración de la red se seleccionó bajo un enfoque empírico y preventivo, considerando las características específicas del dataset.
+\par
+
+Se optó por una arquitectura decreciente. La primera capa (32 neuronas) actúa como un extractor de características de alto nivel, mientras que la segunda (16 neuronas) condensa esa información antes de la clasificación final. Este número moderado de neuronas busca un equilibrio entre la capacidad de aprendizaje y la simplicidad, evitando que el modelo sea demasiado complejo para el número total de muestras disponibles.
+\par
+
+Dado que el dataset es relativamente pequeño comparado con la dimensionalidad de las señales de entrada, existe un riesgo elevado de overfitting (sobreajuste). El Dropout fuerza a la red a no depender de neuronas específicas, creando una representación más robusta y mejorando la capacidad de generalización con datos nuevos.
+\par
+
+Se utilizó ReLU (Rectified Linear Unit) en las capas ocultas para evitar el problema de desvanecimiento del gradiente y permitir un entrenamiento más rápido. La Sigmoide en la salida es necesaria para obtener un valor de probabilidad entre 0 y 1, lo cual es el estándar para la clasificación binaria mediante la función de pérdida \textit{Binary Cross Entropy}.
+\par
+
+A continuación, se procedió a la configuración del proceso de entrenamiento. Para la configuración de la función de pérdida, se seleccionó \textit{Binary Cross Entropy Loss} (BCE Loss), adecuada para problemas de clasificación binaria, como se ha mencionado anteriormente. Para la optimización se utilizó el optimizador Adam, conocido por su eficiencia y capacidad para adaptarse a diferentes tipos de datos. Se estableció una tasa de aprendizaje inicial de 0.001, un valor comúnmente utilizado que equilibra la velocidad de convergencia y la estabilidad del entrenamiento.
+\par
+
+Para optimizar el tiempo de cómputo y evitar que el modelo memorice el ruido de los datos, se implementó un control de ``paciencia'' de 10 épocas. A esto se le conoce como Estrategia de Parada Temprana (``Early Stopping''). Si la pérdida en el conjunto de validación no mejora tras este periodo, el entrenamiento se detiene automáticamente. Esta técnica actúa como un regulador temporal. En lugar de fijar un número arbitrario de épocas (como 100), el modelo se detiene cuando detecta que la pérdida en el conjunto de validación comienza a estancarse o subir, asegurando que guardamos los pesos que mejor funcionan con datos que la red no ha ``visto'' para entrenar.
+\par
+
+Una vez finalizado el desarrollo, se procedió a la persistencia del modelo mediante el guardado en un archivo con extensión \.pth. Este archivo almacena los pesos y sesgos óptimos encontrados, permitiendo su despliegue posterior sin necesidad de repetir el proceso de entrenamiento.
+\par
+
+Para el entrenamiento del ``modelo plus'' con el dataset aumentado, se siguió un procedimiento casi idéntico al descrito anteriormente, asegurando la consistencia en la comparación de resultados entre ambos modelos. Los únicos cambios radicaron en el número de épocas, que se incrementó a 50 para permitir un aprendizaje más profundo, y la adaptación del tamaño del lote (batch size) a 10 muestras por iteración, optimizando así el proceso de entrenamiento con el nuevo conjunto de datos.
+
+\section{Resultados}
+Tras el entrenamiento, se evalúa el modelo en el conjunto de prueba para comprobar si los resultados sufren de sobreajuste pese a haber apliacado ``Early Stopping''. El rendimiento se visualiza mediante curvas de aprendizaje Accuracy (Precisión) y Loss (Pérdida) y matrices de confusión.
+\par
+
+En las Figuras~\ref{fig:curvas_entrenamiento_Keras} y~\ref{fig:matriz_confusion_Keras} se muestran las curvas de aprendizaje y la matriz de confusión del modelo entrenado en Keras, mientras que en las Figuras~\ref{fig:curvas_entrenamiento_Keras-plus} y~\ref{fig:matriz_confusion_Keras-plus} se presentan los resultados correspondientes al ``modelo plus''.
+
+\begin{figure}[H]
+    \centering
+    \shadowbox{\includegraphics[width=0.9\textwidth]{pictures/Curvas_entrenamiento_keras.png}}
+    \caption{Curvas de precisión (Accuracy) y pérdida (Loss) durante el entrenamiento y validación del modelo en Keras.}\label{fig:curvas_entrenamiento_Keras}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \shadowbox{\includegraphics[width=0.5\textwidth]{pictures/Matriz_confusion_keras.png}}
+    \caption{Matriz de confusión del modelo entrenado en Keras.}\label{fig:matriz_confusion_Keras}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \shadowbox{\includegraphics[width=0.9\textwidth]{pictures/Curvas_entrenamiento_keras-plus.png}}
+    \caption{Curvas de precisión (Accuracy) y pérdida (Loss) durante el entrenamiento y validación del modelo en Keras con datos ampliados.}\label{fig:curvas_entrenamiento_Keras-plus}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \shadowbox{\includegraphics[width=0.5\textwidth]{pictures/Matriz_confusion_keras-plus.png}}
+    \caption{Matriz de confusión del modelo entrenado en Keras con datos ampliados.}\label{fig:matriz_confusion_Keras-plus}
+\end{figure}
+
+Observando las matrices de confusión, se puede apreciar que ambos modelos presentnan una gran capacidad para clasificar correctamente las muestras, con un número muy reducido de falsos negativos y ningun falso positivo. Sin embargo, si se analizan las curvas de aprendizaje, pese a que ambos modelos presentan una precisión bastante elevada (93.75\% en el modelo normal y 99.34\% en el modelo aumentado), el modelo normal muestra signos de sobreajuste, con una brecha significativa entre las curvas de entrenamiento y validación. En contraste, el modelo aumentado exhibe curvas más alineadas, indicando una mejor generalización. En el modelo normal se ve cómo la precisión de validación es bastante inferior a la de entrenamiento, además de que la pérdida de validación acaba siendo mayor que la de entrenamiento, lo que indica que el modelo ha memorizado patrones específicos del conjunto de entrenamiento que no se generalizan bien a datos nuevos. En el modelo aumentado, la cuerva de precisión de validación es bastante estable y superior a la del entrenamiento, además de que la pérdida de validación es menor que la de entrenamiento, lo que indica que el modelo ha aprendido patrones más generales y es capaz de adaptarse mejor a datos no vistos previamente.
+\par
+
+Esto sugiere que el uso de datos ampliados ha contribuido a mejorar la robustez del modelo, permitiéndole aprender patrones más generales y reducir la dependencia de características específicas del conjunto de entrenamiento.
+\par
+
+De manera similar, en las Figuras~\ref{fig:curvas_entrenamiento_PyTorch} y~\ref{fig:matriz_confusion_PyTorch} se muestran las curvas de aprendizaje y la matriz de confusión del modelo entrenado en PyTorch, mientras que en las Figuras~\ref{fig:curvas_entrenamiento_PyTorch-plus} y~\ref{fig:matriz_confusion_PyTorch-plus} se presentan los resultados correspondientes al ``modelo plus''.
+
+\begin{figure}[H]
+    \centering
+    \shadowbox{\includegraphics[width=0.9\textwidth]{pictures/Curvas_entrenamiento_pytorch.png}}
+    \caption{Curvas de precisión (Accuracy) y pérdida (Loss) durante el entrenamiento y validación del modelo en PyTorch.}\label{fig:curvas_entrenamiento_PyTorch}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \shadowbox{\includegraphics[width=0.5\textwidth]{pictures/Matriz_confusion_pytorch.png}}
+    \caption{Matriz de confusión del modelo entrenado en PyTorch.}\label{fig:matriz_confusion_PyTorch}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \shadowbox{\includegraphics[width=0.9\textwidth]{pictures/Curvas_entrenamiento_pytorch-plus.png}}
+    \caption{Curvas de precisión (Accuracy) y pérdida (Loss) durante el entrenamiento y validación del modelo en PyTorch con datos ampliados.}\label{fig:curvas_entrenamiento_PyTorch-plus}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \shadowbox{\includegraphics[width=0.5\textwidth]{pictures/Matriz_confusion_pytorch-plus.png}}
+    \caption{Matriz de confusión del modelo entrenado en PyTorch con datos ampliados.}\label{fig:matriz_confusion_PyTorch-plus}
+\end{figure}
+

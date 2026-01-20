@@ -129,84 +129,15 @@ De esta forma, se consigue un dataset más rico y variado, permitiendo que la re
 
 \subsection{Entrenamiento de la red neuronal}
 Como se ha mencionado en apartados enteriores de este documento, no se entrenará una sola ANN, sino que se entrenarán varios modelos con distintos frameworks (Keras y PyTorch) y conjuntos de datos (concretamente con un conjunto de datos normal y otro conjunto de datos aumentado) para comparar resultados y determinar cuál se adapta mejor a las necesidades del proyecto.
-
-\subsubsection{Keras}
-En primer lugar se importan las librerías necesarias para el desarrollo del modelo y la visualización de los resultados (tensorflow, numpy, pandas, skalern, matplotlib, etc.). Posteriormente sigue la carga de datos y su preprocesamiento. Los datos se extraen de archivos de texto, convirtiendo las lecturas de los sensores en vectores numéricos aplanados, para despueés llevar a cabo una Homogeneización (Padding), ya que, debido a que las capturas tienen duraciones distintas, se realiza un relleno con valores nulos (NaN) hasta alcanzar la longitud máxima de 242,676 características. A continuación, se procede a la imputación de los valores faltantes utilizando \textit{SimpleImputer} con una estrategia constante (valor 0) y se normalizan los datos mediante \textit{StandardScaler}, que transforma las características para que tengan media 0 y varianza 1, un paso fundamental para que las funciones de activación de Keras operen correctamente. Finalmente, los datos se dividen separando inicialmente un 20\% para el conjunto de Prueba. Del 80\% restante, se utiliza un 20\% para Validación durante el entrenamiento, resultando en una distribución final aproximada de 64\% para Entrenamiento, 16\% para Validación y 20\% para Prueba, empleando una semilla de aleatoriedad (random\_state=42) para permitir la reproducibilidad de los experimentos.
 \par
 
-Se ha implementado un modelo de tipo Secuencial que permite un flujo de datos lineal a través de capas densas:
-\begin{enumerate}
-    \item \textbf{Capa de entrada:} Se define implícitamente al especificar la forma de entrada (input\_shape) basada en las características extraídas.
-    \item \textbf{Primera capa oculta:} 32 neuronas con función de activación ReLU\@. Su función es realizar la primera abstracción de los datos del sensor.
-    \item \textbf{Capa de Dropout:} Con una tasa de 0.2 (20\%) para prevenir el sobreajuste (overfitting) durante el entrenamiento.
-    \item \textbf{Segunda capa oculta:} 16 neuronas con función de activación ReLU, que profundiza en la jerarquía de patrones detectados.
-    \item \textbf{Capa de salida:} Una única neurona con función de activación Sigmoide, que proyecta el resultado final como una probabilidad entre 0 y 1.
-\end{enumerate}
+Entre esos modelos se entrenaron modelos estándar y modelos optimizados para su uso en tiempo real en la aplicación móvil que controla la nariz electrónica. Para ver como se han entrenado los modelos estándar y los resultados obtenidos, se puede consultar el Anexo 4.
 
-La arquitectura de la red fue determinada mediante un proceso experimental, adaptándose a las particularidades del conjunto de datos para prevenir posibles complicaciones.
-\par
-
-Se eligió una estructura de capas decreciente. La capa inicial de 32 neuronas funciona extrayendo características complejas, mientras que la siguiente capa de 16 neuronas sintetiza esta información previo a la clasificación. Esta cantidad de neuronas busca un compromiso entre potencia y simplicidad, impidiendo una complejidad excesiva dado el volumen de muestras.
-\par
-
-Debido al tamaño reducido del dataset frente a la alta dimensionalidad de las entradas, el riesgo de sobreajuste (\textit{overfitting}) es notable. La inclusión de \textit{Dropout} obliga a la red a no basarse en neuronas concretas, favoreciendo una representación más sólida y una mejor generalización con datos nuevos.
-\par
-
-Para las capas ocultas se empleó la función de activación ReLU (Rectified Linear Unit), evitando así el desvanecimiento del gradiente y acelerando el entrenamiento. En la salida, la función Sigmoide es indispensable para generar una probabilidad entre 0 y 1, requisito para la clasificación binaria con la función de pérdida \textit{Binary Cross Entropy}.
-\par
-
-Para llevar a cabo la optimización del entrenamiento, se emplea Adam con una tasa de aprendizaje de 0.001, conocido por su manejo eficiente de momentos y su convergencia rápida. Además, la función de pérdida seleccionada es \textit{Binary Cross Entropy Loss} (BCE Loss), adecuada para problemas de clasificación binaria. Por otra parte la precisión (Accuracy) es la métrica elegida para evaluar el rendimiento del modelo durante el entrenamiento y la validación, y se monitorea durante todo el proceso.
-\par
-
-Se hará un entrenamiento por lotes, usando un tamaño de lote (batch size) de 5 muestras por iteración. Este tamaño pequeño permite una actualización más frecuente de los pesos, lo que puede ayudar a la convergencia del modelo, especialmente con conjuntos de datos limitados. Además, se implementa una estrategia de parada temprana (``Early Stopping'') con una paciencia de 10 épocas. Si la pérdida en el conjunto de validación no mejora durante este periodo, el entrenamiento se detiene automáticamente, previniendo el sobreajuste y asegurando que se guarden los pesos óptimos.
-\par
-
-Una vez finalizado el entrenamiento y validada la eficacia del modelo, se procedió a la exportación de los resultados para garantizar su portabilidad y despliegue en entornos reales. En primer lugar, se realizó el guardado del modelo completo en formato nativo de Keras (.keras), almacenando tanto la arquitectura como los pesos optimizados. Posteriormente, para facilitar su integración en dispositivos de hardware limitados, se llevó a cabo una conversión a TensorFlow Lite (.tflite) mediante la herramienta TFLiteConverter. Este proceso permitió generar un archivo binario optimizado, con menor huella de memoria y latencia reducida, quedando así el sistema preparado para realizar inferencias de forma local y eficiente sin necesidad de depender del framework completo de TensorFlow. Esta exportación a TensorFlow Lite es crucial para la implementación en la aplicación móvil que controlará la nariz electrónica.
-\par
-
-Para el entrenamiento del ``modelo plus'' con el dataset aumentado, se siguió un procedimiento idéntico al descrito anteriormente, asegurando la consistencia en la comparación de resultados entre ambos modelos.
-
-\subsubsection{PyTorch}
-El primer paso de todos es la importación de las librerías necesarias para el desarrollo del modelo y la visualización de los resultados (torch, numpy, pandas, skalern, matplotlib, etc.). A continuación, se procede a la carga y preprocesamiento de los datos. El éxito del entrenamiento depende de la calidad y homogeneidad de los datos de entrada. El flujo implementado consta de varias etapas, empezando por la carga y eiquetdo de los datos, donde se leen los archivos de texto limpios interpretando valores decimales y omitiendo encabezados. Las muestras se clasificaron en dos categorías: ``BUENO'' (clase 1) y ``MALO'' (clase 0). Debido a las variaciones en los tiempos de muestreo de los sensores, las señales presentaban distintas longitudes. Se aplicó una técnica de padding con valores NaN para igualar todas las muestras a la longitud máxima detectada (242,676 puntos), garantizando una matriz de características constante. Posteriormente se pasa a la imputación y normalización, donde se utilizó \textit{SimpleImputer} con una estrategia constante (valor 0) para tratar los datos faltantes generados en el paso anterior. Se aplicó un escalado estadístico mediante \textit{StandardScaler}, transformando los datos para que tengan media 0 y varianza 1, lo que facilita la convergencia del optimizador. Para finalizar la carga de los datos, Los datos se dividieron de forma estratificada para mantener la proporción de clases en tres conjuntos: Entrenamiento (60\%), Validación (20\%) y Prueba (20\%).
-\par
-
-Se ha diseñado una arquitectura de tipo Perceptrón Multicapa (MLP) adaptada a la alta dimensionalidad de los datos. La estructura definida en la clase OlfativaANN integra:
-\begin{enumerate}
-    \item \textbf{Capa de entrada:} Ajustada dinámicamente al número de características de las muestras (Por si se decide en un futuro modificar la duración de muestreo de los sensores).
-    \item \textbf{Primera capa oculta:} 32 neuronas con función de activación ReLU para capturar patrones no lineales.
-    \item \textbf{Capa de Dropout:} Se configuró una probabilidad de 0.2 (20\%). Esta técnica de regularización previene el sobreajuste (overfitting) al desactivar neuronas aleatoriamente durante el entrenamiento.
-    \item \textbf{Segunda capa oculta:} 16 neuronas con función de activación ReLU\@.
-    \item \textbf{Capa de salida:} Una única neurona con función de activación Sigmoide, ideal para problemas de clasificación binaria, ya que entrega una probabilidad en el rango [0,1].
-\end{enumerate}
-
-La configuración de la red se seleccionó bajo un enfoque empírico y preventivo, considerando las características específicas del dataset.
-\par
-
-Se optó por una arquitectura decreciente. La primera capa (32 neuronas) actúa como un extractor de características de alto nivel, mientras que la segunda (16 neuronas) condensa esa información antes de la clasificación final. Este número moderado de neuronas busca un equilibrio entre la capacidad de aprendizaje y la simplicidad, evitando que el modelo sea demasiado complejo para el número total de muestras disponibles.
-\par
-
-Dado que el dataset es relativamente pequeño comparado con la dimensionalidad de las señales de entrada, existe un riesgo elevado de overfitting (sobreajuste). El Dropout fuerza a la red a no depender de neuronas específicas, creando una representación más robusta y mejorando la capacidad de generalización con datos nuevos.
-\par
-
-Se utilizó ReLU (Rectified Linear Unit) en las capas ocultas para evitar el problema de desvanecimiento del gradiente y permitir un entrenamiento más rápido. La Sigmoide en la salida es necesaria para obtener un valor de probabilidad entre 0 y 1, lo cual es el estándar para la clasificación binaria mediante la función de pérdida \textit{Binary Cross Entropy}.
-\par
-
-A continuación, se procedió a la configuración del proceso de entrenamiento. Para la configuración de la función de pérdida, se seleccionó \textit{Binary Cross Entropy Loss} (BCE Loss), adecuada para problemas de clasificación binaria, como se ha mencionado anteriormente. Para la optimización se utilizó el optimizador Adam, conocido por su eficiencia y capacidad para adaptarse a diferentes tipos de datos. Se estableció una tasa de aprendizaje inicial de 0.001, un valor comúnmente utilizado que equilibra la velocidad de convergencia y la estabilidad del entrenamiento.
-\par
-
-Para optimizar el tiempo de cómputo y evitar que el modelo memorice el ruido de los datos, se implementó un control de ``paciencia'' de 10 épocas. A esto se le conoce como Estrategia de Parada Temprana (``Early Stopping''). Si la pérdida en el conjunto de validación no mejora tras este periodo, el entrenamiento se detiene automáticamente. Esta técnica actúa como un regulador temporal. En lugar de fijar un número arbitrario de épocas (como 100), el modelo se detiene cuando detecta que la pérdida en el conjunto de validación comienza a estancarse o subir, asegurando que guardamos los pesos que mejor funcionan con datos que la red no ha ``visto'' para entrenar.
-\par
-
-Una vez finalizado el desarrollo, se procedió a la persistencia del modelo mediante el guardado en un archivo con extensión \.pth. Este archivo almacena los pesos y sesgos óptimos encontrados, permitiendo su despliegue posterior sin necesidad de repetir el proceso de entrenamiento.
-\par
-
-Para el entrenamiento del ``modelo plus'' con el dataset aumentado, se siguió un procedimiento casi idéntico al descrito anteriormente, asegurando la consistencia en la comparación de resultados entre ambos modelos. Los únicos cambios radicaron en el número de épocas, que se incrementó a 50 para permitir un aprendizaje más profundo, y la adaptación del tamaño del lote (batch size) a 10 muestras por iteración, optimizando así el proceso de entrenamiento con el nuevo conjunto de datos.
-
-\subsection{Keras a tiempo real}
+\subsubsection{Keras a tiempo real}
 Esta verisión del modelo entrenado en Keras está diseñada para su uso en la aplicación móvil que controla la nariz electrónica en tiempo real. A diferencia del modelo estándar, que procesa datos completos después de la toma de muestras, este modelo está optimizado para realizar inferencias de manera continua a medida que llegan los datos de los sensores.
 \par
 
-A diferencia de las versiones experimentales, este desarrollo pone especial énfasis en los parámetros de normalización necesarios para el entorno de producción. Para ello, se realiza una extracción de características reales procesando las señales de los sensores manteniendo la estructura de datos que la nariz electrónica enviará en tiempo real. Además se lleva a cabo una exportación de parámetros del ``Scaler'' siendo un paso crítico en esta sección es la extracción de las medias (\texttt{scaler.mean\_}) y desviaciones típicas (\texttt{scaler.var\_}) del StandardScaler. Estos valores son fundamentales para que la aplicación móvil pueda normalizar las nuevas lecturas de los sensores de la misma forma en que se normalizaron los datos de entrenamiento, garantizando la fidelidad de la predicción.
+A diferencia de las versiones estándar, este desarrollo pone especial énfasis en los parámetros de normalización necesarios para el entorno de producción. Para ello, se realiza una extracción de características reales procesando las señales de los sensores manteniendo la estructura de datos que la nariz electrónica enviará en tiempo real. Además se lleva a cabo una exportación de parámetros del ``Scaler'' siendo un paso crítico en esta sección es la extracción de las medias (\texttt{scaler.mean\_}) y desviaciones típicas (\texttt{scaler.var\_}) del StandardScaler. Estos valores son fundamentales para que la aplicación móvil pueda normalizar las nuevas lecturas de los sensores de la misma forma en que se normalizaron los datos de entrenamiento, garantizando la fidelidad de la predicción.
 \par
 
 Se mantiene una arquitectura de red neuronal densa (MLP) mediante la API Keras Sequential, optimizada para un equilibrio entre bajo consumo de recursos y precisión con una capa de entrada adaptada a la dimensionalidad de las señales capturadas, capas ocultas de 32 y 16 neuronas configuradas con funciones de activación ReLU y una capa intermedia de Dropout (0.2) para asegurar que el modelo sea robusto frente al ruido eléctrico que pueden presentar los sensores en uso real, y una capa de salida con activación Sigmoide para clasificación binaria.
@@ -244,23 +175,25 @@ Una vez instalado todo el software necesario y creado el proyecto Flutter usando
 La aplicación sigue una arquitectura modular para separar la lógica de comunicación de la interfaz de usuario.
 \par
 
-La estructura de ficheros de la aplicación móvil se muestra en la Figura~\ref{fig:estructura_app}. La carpeta \texttt{screens} contiene las distintas pantallas de la aplicación, como la pantalla principal (Donde se encuentra la lista de dispositivos disponibles), la pantalla de análisis (Donde se controla el análisis de datos) y la pantalla de configuración (Donde se puede modificar los ajustes del análisis). La carpeta \texttt{utils} alberga funciones auxiliares, en este caso, la navegación entre pantallas. La carpeta \texttt{widgets} contiene componentes reutilizables, actualmente solo la barra de navegación superior. El archivo \texttt{main.dart} es el punto de entrada de la aplicación, donde se inicializan las dependencias y se configura la navegación entre pantallas.
+La estructura de ficheros de la aplicación móvil se muestra en la Figura~\ref{fig:estructura_app}. En el proyecto hay dos carpetas importantes: la carpeta \texttt{assets}, donde estan el icono de la aplicación y los modelos y su configuración, y la carpeta \texttt{lib}, donde hay otras subcarpetas. La carpeta \texttt{screens} contiene las distintas pantallas de la aplicación, como la pantalla principal (Donde se encuentra la lista de dispositivos disponibles), la pantalla de análisis (Donde se controla el análisis de datos) y la pantalla de configuración (Donde se puede modificar los ajustes del análisis). La carpeta \texttt{utils} alberga funciones auxiliares, en este caso, la navegación entre pantallas. La carpeta \texttt{widgets} contiene componentes reutilizables, actualmente solo la barra de navegación superior. El archivo \texttt{main.dart} es el punto de entrada de la aplicación, donde se inicializan las dependencias y se configura la navegación entre pantallas.
 
 \begin{figure}[H]
     \centering
     \shadowbox{\renewcommand*\DTstylecomment{\rmfamily\color{blue}\textsc}
     \begin{minipage}{0.5\textwidth}
         \dirtree{%
-            .1 /lib.
-            .2 screens.
-            .3 analysis\_screen.dart.
-            .3 main\_screen.dart.
-            .3 settings\_screen.dart.
-            .2 utils.
-            .3 navigation.dart.
-            .2 widgets.
-            .3 app\_bar.dart.
-            .2 main.dart.
+            .1 sniffer.
+            .2 /assets.
+            .2 /lib.
+            .3 screens.
+            .4 analysis\_screen.dart.
+            .4 main\_screen.dart.
+            .4 settings\_screen.dart.
+            .3 utils.
+            .4 navigation.dart.
+            .3 widgets.
+            .4 app\_bar.dart.
+            .3 main.dart.
         }
     \end{minipage}}
     \caption{Estructura de ficheros de la aplicación móvil}\label{fig:estructura_app}
@@ -333,7 +266,7 @@ En caso de querer volver a buscar dispositivos, se puede pulsar el botón de bú
 Una vez se ha realizado la conexión con la nariz electrónica, se accederá a la pantalla de analisis de sustancias.
 
 \subsubsection{Detección de sustancias}
-La pantalla de analisis cuenta con la opción de elegir que modelo de red neuronal se desea usar para analizar las muestras recibidas por la nariz electrónica. Esta opción puede verse en la Figura~\ref{fig:seleccion_modelo}. 
+La pantalla de analisis cuenta con la opción de elegir que modelo de red neuronal se desea usar para analizar las muestras recibidas por la nariz electrónica. Esta opción puede verse en la Figura~\ref{fig:seleccion_modelo}. Para ello, la aplicación lee la información de los mdoelos guardada en \texttt{assets/models\_config.json} donde están los ficheros de los modelos, sus medias y desviaciones estándar para la normalización, y los nombres que se mostrarán en el desplegable. 
 
 \begin{figure}[H]
     \centering
