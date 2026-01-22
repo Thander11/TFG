@@ -137,3 +137,130 @@ De manera similar, en las Figuras~\ref{fig:curvas_entrenamiento_PyTorch} y~\ref{
     \caption{Matriz de confusión del modelo entrenado en PyTorch con datos ampliados.}\label{fig:matriz_confusion_PyTorch-plus}
 \end{figure}
 
+En este caso es posible observar que, a diferencia de Keras, los resultados del entrenamiento del modelo normal son algo mejores, pese a que la precisión sea la misma (93.75\%) y sigue habiendo una ligera diferencia entre las curvas de entrenamiento y validación, siendo esta ultima inferior a la otra, dicha diferencia es algo menor que con Keras. Lo mismo pasa en el caso de la gráfica de la perdida. El resultado es parecido al de Keras, con una pérdida de validación mayor que la de entrenamiento (Aunque menor que en el caso de Keras), lo que indica que el modelo ha memorizado patrones específicos del conjunto de entrenamiento que no se generalizan bien a datos nuevos. En el modelo aumentado, la cuerva de precisión de validación es algo inestable, además de que no supone una gran mejora respecto al modelo normal (Con una precisión del 98.03\%), ya que la precisión de validación sigue siendo inferior a la de entrenamiento. En cuanto a la pérdida, esta sigue siendo mayor en el conjunto de validación que en el de entrenamiento, lo que indica que el modelo sigue memorizando patrones específicos del conjunto de entrenamiento.
+\par
+
+Por otra parte, comparando ambos frameworks directamente, se puede observar que Keras presenta una mayor brecha entre las curvas de entrenamiento y validación en el modelo normal, lo que sugiere un mayor sobreajuste en comparación con los modelos de PyTorch. En el caso del modelo aumentado, Keras muestra una mejor alineación entre las curvas, indicando una mejor generalización en comparación con PyTorch, donde hay indicios de sobreajuste en ambos modelos.
+\par
+
+Tras analizar estos resultados, es posible concluir que el uso de datos ampliados ha mejorado la robustez y capacidad de generalización de los modelos en ambos frameworks, aunque Keras parece beneficiarse más de esta técnica en términos de reducción del sobreajuste, quedando el modelo normal de Keras como el que peor resultados presenta de los cuatro modelos entrenados seguido del modelo normal de PyTorch, el cual a su vez es superado por su versión aumentada, quedando el modelo de Keras con datos ampliados como el mejor de los cuatro modelos estandar.
+
+\subsection{Pseudocódigos}
+A continuación se presentan los pseudocódigos de los procedimientos de entrenamiento implementados en Keras y PyTorch. Es el mismo para ambos modelos normales y aumentados, con la única diferencia en el dataset utilizado para el entrenamiento, y las etapas y tamaño de lote mencionados anteriormente.
+
+\subsubsection{Keras}
+
+\noindent\textbf{Algoritmo: Flujo de entrenamiento de la Red Neuronal para detección de sustancias (Keras).}
+
+\begin{algorithmic}[1]
+\State~\textbf{Entrada:} Archivos espectrales (.txt) en directorios \textit{BUENO} y \textit{MALO}
+\State~\textbf{Salida:} Modelo clasificador optimizado en formato \.keras y \.tflite
+
+\State~\textit{Fase 1: Preprocesamiento de Datos}{}
+\State~Inicializar listas $X$ (características) e $y$ (etiquetas)
+\For{cada archivo en directorios}%
+    \State~Leer datos numéricos omitiendo metadatos
+    \State~Aplanar matriz de datos a vector unidimensional
+    \If{longitud $<$ $L_{\max}$}%
+        \State~Aplicar \textit{Padding}{} con valores NaN hasta alcanzar $L_{\max}$%
+    \EndIf%
+    \State~Asignar etiqueta (1 para Bueno, 0 para Malo)
+\EndFor%
+\State~Imputar valores faltantes (NaN) utilizando estrategia de constante (0)
+\State~Dividir dataset: 80\% Entrenamiento/Validación, 20\% Prueba Final
+
+\State~\textit{Fase 2: Normalización}{}
+\State~Calcular $\mu, \sigma$ de media y desviación estándar del conjunto de entrenamiento
+\State~$X_{scaled} \leftarrow \frac{X - \mu}{\sigma}$ (Escalado estándar para convergencia de ANN)
+
+\State~\textit{Fase 3: Construcción de la Red Neuronal (ANN)}{}
+\State~Definir arquitectura secuencial:
+\State~\quad 1. Capa Densa (32 neuronas, activación ReLU, entrada de tamaño 242676)
+\State~\quad 2. Capa Dropout (0.2) para evitar sobreajuste
+\State~\quad 3. Capa Densa (16 neuronas, activación ReLU)
+\State~\quad 4. Capa de Salida (1 neurona, activación Sigmoide)
+\State~Configurar optimizador \textit{Adam}{} (tasa: 0.001) y función de pérdida \textit{Binary Crossentropy}{}
+
+\State~\textit{Fase 4: Entrenamiento y Evaluación}{}
+\State~Configurar \textit{Early Stopping}{} monitoreando la pérdida de validación
+\State~Entrenar modelo por 50 épocas con tamaño de lote (\textit{batch}{}) de 5
+\State~Evaluar precisión final en el conjunto de prueba (Test)
+
+\State~\textit{Fase 5: Exportación}{}
+\State~Guardar modelo en formato nativo Keras (.keras)
+\State~Convertir modelo a TensorFlow Lite (.tflite) para despliegue móvil/embebido
+\end{algorithmic}
+
+\subsubsection{PyTorch}
+
+\noindent\textbf{Algoritmo: Flujo de entrenamiento de la Red Neuronal para detección de sustancias (PyTorch).}
+
+\begin{algorithmic}[1]
+\State~\textbf{Entrada:} Archivos espectrales (.txt) en directorios \textit{BUENO} y \textit{MALO}
+\State~\textbf{Salida:} Modelo clasificador optimizado en formato \.pth y \.tflite
+
+\State~\textit{Fase 1: Preprocesamiento de Datos}{}
+\State~Inicializar listas $X$ (características) e $y$ (etiquetas)
+\For{cada archivo en directorios}%
+    \State~Leer datos numéricos usando pandas
+    \State~Convertir a numérico forzando errores a NaN
+    \State~Aplanar matriz de datos a vector unidimensional
+    \If{todos los valores son NaN}%
+        \State~Ignorar archivo y mostrar advertencia
+    \Else%
+        \State~Añadir datos a $X$ y etiqueta (1 para BUENO, 0 para MALO) a $y$
+    \EndIf%
+\EndFor%
+\State~Encontrar longitud máxima entre todos los arrays
+\State~Rellenar (Padding) los arrays más cortos con valores NaN
+
+\State~\textit{Fase 2: División del Dataset y Escalado}{}
+\State~Dividir datos: 80\% Entrenamiento/Validación, 20\% Prueba Final (stratificado)
+\State~Dividir 80\% en 75\% Entrenamiento, 25\% Validación (resultado: 60\%, 20\%, 20\%)
+\State~Imputar valores faltantes (NaN) utilizando estrategia de constante (valor 0)
+\State~Normalizar datos con \textit{StandardScaler} (media 0, varianza 1)
+\State~Convertir datasets a tensores de PyTorch
+
+\State~\textit{Fase 3: Construcción de la Red Neuronal (ANN)}{}
+\State~Definir clase \textit{OlfativaANN} heredando de \textit{nn.Module}:
+\State~\quad 1. Capa Lineal (entrada$\rightarrow$32 neuronas)
+\State~\quad 2. Activación ReLU
+\State~\quad 3. Capa Dropout (0.2) para evitar sobreajuste
+\State~\quad 4. Capa Lineal (32$\rightarrow$16 neuronas)
+\State~\quad 5. Activación ReLU
+\State~\quad 6. Capa Lineal (16$\rightarrow$1 neurona)
+\State~\quad 7. Activación Sigmoide
+\State~Inicializar modelo con dimensión de entrada = tamaño de características
+\State~Configurar función de pérdida \textit{Binary Cross Entropy Loss}
+\State~Configurar optimizador \textit{Adam} (tasa de aprendizaje: 0.001)
+
+\State~\textit{Fase 4: Entrenamiento con Early Stopping}{}
+\State~Configurar parámetros: épocas=15, tamaño de lote=5, paciencia=10 épocas
+\State~Crear \textit{DataLoader} para entrenamiento y validación
+\For{cada época hasta máximo de épocas}%
+    \State~Modo entrenamiento: Forward pass, calcular pérdida, backward, actualizar pesos
+    \State~Modo evaluación: Forward pass en conjunto de validación, calcular pérdida
+    \If{pérdida de validación mejora}%
+        \State~Reiniciar contador de paciencia
+        \State~Guardar el mejor modelo (opcional)
+    \Else%
+        \State~Incrementar contador de paciencia
+        \If{paciencia alcanzada}%
+            \State~Detener entrenamiento (Early Stopping)
+        \EndIf%
+    \EndIf%
+\EndFor%
+
+\State~\textit{Fase 5: Evaluación en Conjunto de Prueba}{}
+\State~Evaluar modelo en datos de prueba
+\State~Calcular precisión y matriz de confusión
+\State~Visualizar curvas de aprendizaje (Accuracy y Loss)
+
+\State~\textit{Fase 6: Exportación del Modelo}{}
+\State~Guardar modelo en formato PyTorch (.pth)
+\State~Exportar modelo a ONNX (.onnx) usando \textit{torch.onnx.export}
+\State~Cargar modelo ONNX y convertir a TensorFlow SavedModel
+\State~Convertir TensorFlow SavedModel a TensorFlow Lite (.tflite)
+\State~Guardar modelo TFLite para despliegue móvil/embebido
+\end{algorithmic}
+

@@ -1,5 +1,5 @@
 % chktex-file 48
-\documentclass[minitoc, hidelinks, headlogo, framedcover]{tfeEPCC}
+\documentclass[hidelinks, headlogo, framedcover]{tfeEPCC}
 \usepackage[spanish, es-tabla]{babel} % Comentar si se va a realizar en inglés
 %\usepackage{parskip} % Quitar comentario si se quieren distinguir los párrafos con saltos y quitar las sangrías
 % Espaciado y sangría de párrafos (manteniendo la sangría)
@@ -20,6 +20,8 @@
 \usepackage[section]{placeins} % Evita que los flotantes crucen secciones (añade \FloatBarrier)
 \usepackage{dirtree} % Para dibujar estructuras de directorios
 \usepackage{fancybox} % Para agregar sombreado a las figuras
+\usepackage{algorithm} % Para pseudocódigos
+\usepackage{algpseudocode} % Para la sintaxis de algoritmos
 
 % Rellenar con los datos del estudiante y el trabajo
 \estudiante{Raúl Martín-Romo Sánchez}{Grado}{Ingeniería Informática en Ingeniería del Software}
@@ -54,9 +56,19 @@
 
 % Dedicatorias del trabajo, pueden ser en español o inglés dependiendo de lo que se considere más apropiado
 
+\cleardoublepage%
 
 \chapter*{Resumen}
-EL RESUMEN EN ESPAÑOL
+
+Este trabajo aborda el estudio de viabilidad de una nariz electrónica (e-nose) basada en sensores de óxido metálico como herramienta de apoyo para agentes caninos en tareas de detección de sustancias. El proyecto surge de la idea de complementar las excepcionales capacidades olfativas de los perros con tecnología avanzada, mejorando la eficiencia operativa de las unidades caninas de seguridad sin pretender reemplazar su labor invaluable.
+
+Se realiza una investigación exhaustiva del estado del arte sobre narices electrónicas, desde sus fundamentos tecnológicos basados en sensores MOS hasta sus aplicaciones actuales. Se describen los requisitos fundamentales para que un dispositivo sea considerado e-nose, incluyendo la capacidad de detectar múltiples compuestos volátiles de forma simultánea, la generación de patrones característicos, la repetibilidad en distintas condiciones ambientales y la entrega de salidas procesadas que clasifiquen olores.
+
+El proyecto incluye la construcción de un dataset equilibrado mediante experimentos espectrales divididos entre muestras positivas (hachís) y negativas (otras sustancias). Se entrenan dos arquitecturas de redes neuronales idénticas implementadas en Keras y PyTorch, ambas con estructura de capas decreciente (32 y 16 neuronas) y regularización mediante Dropout. Los modelos se evalúan con y sin aumento de datos, analizando precisión, matrices de confusión y curvas de aprendizaje para detectar sobreajuste.
+
+Se desarrolla una aplicación móvil que facilita la comunicación Bluetooth con el dispositivo de e-nose y visualiza resultados de clasificación. Los modelos entrenados se exportan a TensorFlow Lite para despliegue en dispositivos móviles y sistemas embebidos. 
+
+Aquí queda hablar de los resultados, conclusiones y trabajos futuros.
 
 \noindent\textbf{Palabras clave}: \printkeywords.
 
