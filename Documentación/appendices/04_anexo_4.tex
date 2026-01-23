@@ -76,7 +76,7 @@ Una vez finalizado el desarrollo, se procedió a la persistencia del modelo medi
 Para el entrenamiento del ``modelo plus'' con el dataset aumentado, se siguió un procedimiento casi idéntico al descrito anteriormente, asegurando la consistencia en la comparación de resultados entre ambos modelos. Los únicos cambios radicaron en el número de épocas, que se incrementó a 50 para permitir un aprendizaje más profundo, y la adaptación del tamaño del lote (batch size) a 10 muestras por iteración, optimizando así el proceso de entrenamiento con el nuevo conjunto de datos.
 
 \section{Resultados}
-Tras el entrenamiento, se evalúa el modelo en el conjunto de prueba para comprobar si los resultados sufren de sobreajuste pese a haber apliacado ``Early Stopping''. El rendimiento se visualiza mediante curvas de aprendizaje Accuracy (Precisión) y Loss (Pérdida) y matrices de confusión.
+Tras el entrenamiento, se evalúa el modelo para comprobar si los resultados sufren de sobreajuste pese a haber apliacado ``Early Stopping''. El rendimiento se visualiza mediante curvas de aprendizaje Accuracy (Precisión) y Loss (Pérdida) y matrices de confusión.
 \par
 
 En las Figuras~\autoref{fig:curvas_entrenamiento_Keras} y~\autoref{fig:matriz_confusion_Keras} se muestran las curvas de aprendizaje y la matriz de confusión del modelo entrenado en Keras, mientras que en las Figuras~\autoref{fig:curvas_entrenamiento_Keras-plus} y~\autoref{fig:matriz_confusion_Keras-plus} se presentan los resultados correspondientes al ``modelo plus''.

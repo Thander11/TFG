@@ -1,15 +1,50 @@
 \chapter{Resultados}
-En este capítulo se presentan los resultados obtenidos tras el entrenamiento y evaluación de los modelos de redes neuronales implementados en Keras y PyTorch, así como una comparación de los resultados de las evaluaciónes. Además, se incluyen los resultados de las pruebas comparativas realizadas entre la nariz electrónica entrenada y el agente canino de la Guardia Civil encargado en la detección de drogas.
+En este capítulo se presentan los resultados obtenidos tras el entrenamiento y evaluación de los modelos de redes neuronales implementados en Keras en tiempo real, así como una comparación de los resultados de las evaluaciónes. Además, se incluyen los resultados de las pruebas comparativas realizadas entre la nariz electrónica entrenada y el agente canino de la Guardia Civil encargado en la detección de drogas.
 
 \section{Resultados de redes neuronales}
-Como se ha mencionado anteriormente se han entrenado redes neuronales usando Keras y PyTorch, concretamente dos modelos con cada framework, uno con el dataset base y otro con el dataset aumentado.
+Para evaluar los modelos y comprobar si los resultados sufren de sobreajuste pese a haber apliacado ``Early Stopping'', el rendimiento se visualiza mediante curvas de aprendizaje Accuracy (Precisión) y Loss (Pérdida) y una matriz de confusión.
 \par
 
-Tras el entrenamiento, se evalúa el modelo en el conjunto de prueba para comprobar si los resultados sufren de sobreajuste pese a haber apliacado ``Early Stopping''. El rendimiento se visualiza mediante curvas de aprendizaje Accuracy (Precisión) y Loss (Pérdida).
+Empezando con el modelo que no cuenta con datos eumentados (con una precisión del 94.67\%), se observan sus graficas en la Figura~\autoref{fig:curvas_keras_real} y su matriz de confusión en la Figura~\autoref{fig:matriz_confusion_keras_real}.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{pictures/Curvas_entrenamiento_keras_real.png}
+    \caption{Curvas de aprendizaje del modelo ANN sin aumento de datos}\label{fig:curvas_keras_real}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{pictures/Matriz_confusion_keras_real.png}
+    \caption{Matriz de confusión del modelo ANN sin aumento de datos}\label{fig:matriz_confusion_keras_real}
+\end{figure}
+
+En la matriz de confusión que, pese a haber falsos positivos y negativos, son pocos en comparación con los aciertos. También es posible observar que el número de falsos positivos es ligeramente mayor que el de falsos negativos, lo cual es beneficioso en este caso ya que se prefiere que el sistema detecte una sustancia cuando no la hay (falso positivo) a que no la detecte cuando sí está presente (falso negativo).
 \par
 
+En la gráfica de precisión se observa que tanto el conjunto de entrenamiento como el de validación alcanzan una precisión alta y similar, lo que indica que el modelo generaliza bien y no sufre de sobreajuste. Esto se respalda con la gráfica de pérdida, que muestra una disminución constante en ambas curvas, lo que también es un buen indicativo del rendimiento del modelo y una muestra de falta se sobreajuste.
+\par
 
+Continuando con el modelo que cuenta con datos aumentados (con una precisión del 92.39\%), se observan sus graficas en la Figura~\autoref{fig:curvas_keras_aumentado} y su matriz de confusión en la Figura~\autoref{fig:matriz_confusion_keras_aumentado}.
 
-Tras completar las épocas de entrenamiento, el modelo fue evaluado con el conjunto de prueba (datos no vistos). Se generaron curvas de Loss y Accuracy, que pueden verse en la Figura~\autoref{fig:curvas_entrenamiento_PyTorch}, para verificar la estabilidad del aprendizaje y una Matriz de Confusión, vease en la figura~\autoref{fig:matriz_confusion_PyTorch}, para analizar el balance entre falsos positivos y falsos negativos.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.8\textwidth]{pictures/Curvas_entrenamiento_keras-plus_real.png}
+    \caption{Curvas de aprendizaje del modelo ANN con aumento de datos}\label{fig:curvas_keras_aumentado}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{pictures/Matriz_confusion_keras-plus_real.png}
+    \caption{Matriz de confusión del modelo ANN con aumento de datos}\label{fig:matriz_confusion_keras_aumentado}
+\end{figure}
+
+En la matriz de confusión se observa un comportamiento similar al del modelo sin aumento de datos, con un número reducido de falsos positivos y negativos en comparación con los aciertos. De nuevo, el número de falsos positivos es ligeramente mayor que el de falsos negativos, lo cual es beneficioso en este caso.
+\par
+
+En la gráfica de precisión, tanto el conjunto de entrenamiento como el de validación alcanzan una precisión alta, aunque en este caso hay una mayor diferencia entre el entrenamiento y la validación, alcanzando valores más altos durante la validación. La gráfica de pérdida muestra una disminución constante en ambas curvas, siendo una disminuación mayor en la validación, lo que también es un buen indicativo de que, pese a haber más direcencia entre entrenamiento y validación en la precisión, no hay sobreajuste.
+\par
+
+Comparando ambos modelos, se observa que el modelo sin aumento de datos tiene una precisión ligeramente superior (94.67\% frente a 92.39\%). Sin embargo, ambos modelos muestran un buen rendimiento y generalización, con matrices de confusión que indican un bajo número de falsos positivos y negativos.
 
 \section{Resultados de pruebas comparativas}
