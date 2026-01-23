@@ -35,7 +35,7 @@ Se trata de un proceso cíclico que consta de dos fases: desorción (toma de air
 Para este proyecto se ha buscado recrear situaciones lo más parecidas posibles a una situación real, por ejemplo, un control de carretera. Para ello, se ha establecido un solo ciclo, con una fase de desorción de 120 segundos (dos minutos), para eliminar cualquier posible resto de impureza que haya posido quedar en los sensores, y una fase de adsorción de 300 segundos (cinco minutos).
 \par
 
-Para que el aire entre en la carcasa y entre en contacto con los sensores, se conectan tubos flexibles a las entradas de la carcasa. En la entrada de desorción (IM\_D) se conecta a un tubo conectado a un pequeño purificador de aire para que el aire esté limpio. En la entrada de adsorción (IM\_A) se conecta a un tubo que conecta con el bote de muestreo donde estará la sustancia. A su vez, este bote de muestreo también esta conectado a otro purificador de aire para que entre aire limpio en el bote y se cree una corriente de aire, permitiendo que el aire de dentro del bote pueda ser absorbido mas facilmente por el tubo conectado a la nariz. Esta disposición puede observarse en la Figura~\ref{fig:setup_muestreo}.
+Para que el aire entre en la carcasa y entre en contacto con los sensores, se conectan tubos flexibles a las entradas de la carcasa. En la entrada de desorción (IM\_D) se conecta a un tubo conectado a un pequeño purificador de aire para que el aire esté limpio. En la entrada de adsorción (IM\_A) se conecta a un tubo que conecta con el bote de muestreo donde estará la sustancia. A su vez, este bote de muestreo también esta conectado a otro purificador de aire para que entre aire limpio en el bote y se cree una corriente de aire, permitiendo que el aire de dentro del bote pueda ser absorbido mas facilmente por el tubo conectado a la nariz. Esta disposición puede observarse en la Figura~\autoref{fig:setup_muestreo}.
 
 \begin{figure}[H]
     \centering
@@ -43,7 +43,7 @@ Para que el aire entre en la carcasa y entre en contacto con los sensores, se co
     \caption{Disposición del equipo para la muestra EXP\_M\_5--1.}\label{fig:setup_muestreo}
 \end{figure}
 
-Por otra parte, también es posible tomar muestras sin necesidad de usar el bote de muestreo, conectando directamente un tubo de adsorción que enctre en contacto con el aire, por ejemplo para tomar muestra de la calidad de aire de una habitación entera, o colocandolo cerca de una sustancia, como ocurre en la Figura~\ref{fig:setup_muestreo_sin_bote}.
+Por otra parte, también es posible tomar muestras sin necesidad de usar el bote de muestreo, conectando directamente un tubo de adsorción que enctre en contacto con el aire, por ejemplo para tomar muestra de la calidad de aire de una habitación entera, o colocandolo cerca de una sustancia, como ocurre en la Figura~\autoref{fig:setup_muestreo_sin_bote}.
 
 \begin{figure}[H]
     \centering
@@ -60,7 +60,7 @@ Una vez los sensores se han calentado y la sustancia está preparada, solo queda
 Una vez haya finalizado la toma de la muestra, los datos se habrán al macenado en un fichero de texto llamado ``DATOS.txt'' en la tarjeta SD de la nariz electrónica. El siguiente paso es copiar este fichero al ordenador y cambiarle el nombre por el correspondiente a la nomenclatura mencionada anteriormente. Es importante borrar el contenido de la tarjeta SD antes de iniciar una nueva toma de muestras. De no hacerse, los datos de la siguiente muestra se añadirán al final del fichero ``DATOS.txt''.
 
 \subsubsection{Muestras negativas}
-Para las muestras negativas, se han utilizado diversas sustancias que pueden encontrarse en un entorno cotidiano y que no deben ser confundidas con la sustancia objetivo. Estas sustancias incluyen alimentos como cacao en polvo, limón exprimido, salsas, etc. Un seguimiento detallado de la obtención de las características de estas sustancias se encuentra en la Tabla~\ref{tab:registro_sustancias_malo} del Anexo 1.
+Para las muestras negativas, se han utilizado diversas sustancias que pueden encontrarse en un entorno cotidiano y que no deben ser confundidas con la sustancia objetivo. Estas sustancias incluyen alimentos como cacao en polvo, limón exprimido, salsas, etc. Un seguimiento detallado de la obtención de las características de estas sustancias se encuentra en la Tabla~\autoref{tab:registro_sustancias_malo} del Anexo 1.
 \par
 
 Para cada sustancia (excepto la primera, que se hizo como una prueba), se han realizado múltiples experimentos bajo diferentes condiciones, como el estado del bote de muestreo (abierto o cerrado) y la presencia o ausencia de corriente de aire. Esto permite evaluar cómo estas variables afectan las lecturas de los sensores y la capacidad de la ANN para distinguir entre la sustancia objetivo y otras sustancias.
@@ -69,7 +69,7 @@ Para cada sustancia (excepto la primera, que se hizo como una prueba), se han re
 Por otra parte, no todas las muestras negativas se han tomado de sutancias usando el bote de muestreo. Algunas muestras se han tomado directamente del aire de una habitación, una caja o de un coche, sitios donde puede encontrase el hachís.
 
 \subsubsection{Muestras positivas}
-Las muestras positivas se han tomado usando hasta cinco tipos diferentes de hachís, es decir, que provienene de cinco fuentes distintas, y cinta de envalar con restos de dicha sustancia. Esto se ha hecho para que la ANN pueda generalizar mejor y no se sobreentrene con las características específicas de un solo tipo de hachís. Pueden verse algunas de estas muestras en las Figuras~\ref{fig:hachis_1},~\ref{fig:cinta_envalar} y~\ref{fig:hachis_2}.
+Las muestras positivas se han tomado usando hasta cinco tipos diferentes de hachís, es decir, que provienene de cinco fuentes distintas, y cinta de envalar con restos de dicha sustancia. Esto se ha hecho para que la ANN pueda generalizar mejor y no se sobreentrene con las características específicas de un solo tipo de hachís. Pueden verse algunas de estas muestras en las Figuras~\autoref{fig:hachis_1},~\autoref{fig:cinta_envalar} y~\autoref{fig:hachis_2}.
 
 \begin{figure}[H]
     \centering
@@ -97,7 +97,7 @@ En el caso del quinto tipo de hachís (la muestra mas grande), los expremientos 
 Además, dado que para las muestras positivas se dispone de un menor numero de muestras en comparación con las negativas, se ha optado por repetir algunos experimentos para aumentar la cantidad de datos disponibles para el entrenamiento de la ANN, ya que, pese a tratarse de la misma muestra, los resiltados pueden ser ligeramente diferentes entre una toma y otra.
 \par
 
-Un seguimiento detallado de estas tomas de muestras se encuentra en la Tabla~\ref{tab:registro_sustancias_bueno} del Anexo 2.
+Un seguimiento detallado de estas tomas de muestras se encuentra en la Tabla~\autoref{tab:registro_sustancias_bueno} del Anexo 2.
 
 \subsubsection{Limpieza del dataset}
 Todos los archivos de texto de las muestras se han ido guardando en una carpeta llamada \texttt{Por\_procesar}, en la que tambien se encuentran divididas en las subcarpetas ``BUENO'' y ``MALO''. Estos archivos cuentan con datos, como la presión o la humedad, que no son útiles para el entrenamiento de la ANN, por lo que se ha llevado a cabo un proceso de limpieza y preprocesamiento de los datos para eliminar información irrelevante y preparar los datos para su uso en el entrenamiento de la red neuronal.
@@ -107,6 +107,173 @@ Este proceso de limpieza se realiza con un script en Python llamado \texttt{Limp
 \par
 
 Para finalizar, el programa pregunta si se desea llevar a cabo un aumento de datos (Data Augmentation). Si se responde afirmativamente, se ejecuta un segundo script llamado \texttt{Aumentador.py}, del que se habla en el siguiente apartado.
+
+El código del script de limpieza de datos es el siguiente:
+
+\begin{verbatim}
+"""
+Uso típico (ejecutar desde la carpeta riz del proyecto):
+
+- Lote por defecto (procesa Por_procesar/BUENO y MALO → BUENO y MALO):
+    python Entrenamiento\Limpiador.py
+
+- Lote explícito:
+    python Entrenamiento\Limpiador.py --batch
+
+- Un solo archivo:
+    python Entrenamiento\Limpiador.py -i "Entrenamiento\Por_procesar\BUENO\{nombre del archivo}" -o "Entrenamiento\BUENO\{nombre del archivo}"
+
+Notas:
+- Los archivos de salida se sobrescriben si ya existen.
+- Las rutas son relativas al directorio del TFG (este repo).
+"""
+
+import pandas as pd
+import argparse
+from pathlib import Path
+import sys
+import subprocess
+
+def procesar_archivo(file_path: str, save_path: str) -> None:
+    """Lee, limpia y guarda un archivo de datos.
+    
+    Elimina columnas innecesarias y filtra por muestras de aire validas.
+    """
+    df = _leer_csv_robusto(file_path)
+
+    # Columnas que se descartan del dataset
+    columnas_a_borrar = [
+        'nº', 'temp(scd40)', 'hum(scd40)', 'temp(ens160)',
+        'etoh(zmod4410)', 'temperatura(bme688)', 'humedad(bme688)', 'presion(bme688)'
+    ]
+
+    # Elimina columnas innecesarias y filtra donde Aire/muestra sea diferente de 0
+    df = df.drop(columns=[c for c in columnas_a_borrar if c in df.columns])
+    df = df[df['Aire/muestra'] != 0]
+    df.to_csv(save_path, sep=' ', decimal=',', index=False)
+
+def _leer_csv_robusto(file_path: str) -> pd.DataFrame:
+    """Lee el TXT/CSV con varios encodings comunes en Windows.
+    
+    Intenta multiples codificaciones en orden de probabilidad.
+    """
+    # Encodings ordenados por frecuencia en sistemas Windows
+    encodings = [
+        'utf-8',        # Estandar moderno
+        'utf-8-sig',    # UTF-8 con marca de orden de bytes
+        'cp1252',       # Windows-1252 (comun en espanol)
+        'latin-1',      # ISO-8859-1 como alternativa
+    ]
+
+    last_error = None
+    # Intenta leer con cada encoding hasta encontrar uno que funcione
+    for enc in encodings:
+        try:
+            return pd.read_csv(
+                file_path,
+                skiprows=1,
+                skipinitialspace=True,
+                encoding=enc,
+            )
+        except UnicodeDecodeError as e:
+            last_error = e
+            continue
+
+    # Ultimo intento con motor Python (mas tolerante)
+    try:
+        return pd.read_csv(
+            file_path,
+            skiprows=1,
+            skipinitialspace=True,
+            encoding='latin-1',
+            engine='python',
+        )
+    except Exception:
+        if last_error:
+            raise last_error
+        raise
+
+def seleccionar_y_limpiar_cli():
+    """Interfaz de linea de comandos para procesar archivos.
+    
+    Soporta dos modos:
+    - Lote: procesa carpetas automaticamente
+    - Archivo individual: con --input y --output
+    """
+    parser = argparse.ArgumentParser(description="Limpia un dataset de sensores y guarda el resultado.")
+    parser.add_argument("--input", "-i", help="Ruta del archivo de entrada (.txt)")
+    parser.add_argument("--output", "-o", help="Ruta del archivo de salida (.txt)")
+    parser.add_argument("--batch", action="store_true", help="Procesa por lotes Por_procesar/BUENO y MALO hacia BUENO y MALO (por defecto si no hay argumentos).")
+    args = parser.parse_args()
+
+    # Modo lote: procesa automaticamente si no hay argumentos de entrada/salida
+    if args.batch or (not args.input and not args.output):
+        procesar_lote()
+        return
+
+    # Valida que se proporcionen ambos argumentos para modo de archivo individual
+    if not args.input or not args.output:
+        parser.error("Debe indicar --batch o bien --input y --output.")
+
+    procesar_archivo(args.input, args.output)
+    print(f"Archivo procesado correctamente: {args.output}")
+
+def procesar_lote() -> None:
+    """Procesa todos los archivos en modo lote.
+    
+    Lee archivos de Por_procesar/BUENO y Por_procesar/MALO,
+    luego guarda los resultados en BUENO y MALO respectivamente.
+    """
+    from pathlib import Path
+    base = Path(__file__).parent
+    in_root = base / "Por_procesar"
+    # Pares (carpeta_entrada, carpeta_salida)
+    parejas = [("BUENO", "BUENO"), ("MALO", "MALO")]
+
+    # Contadores para estadisticas finales
+    total = 0
+    ok = 0
+    err = 0
+
+    # Procesa cada categoria (BUENO, MALO)
+    for sub_in, sub_out in parejas:
+        src_dir = in_root / sub_in
+        dst_dir = base / sub_out
+        dst_dir.mkdir(parents=True, exist_ok=True)
+
+        if not src_dir.exists():
+            print(f"[AVISO] Carpeta no encontrada: {src_dir}")
+            continue
+
+        # Procesa cada archivo de texto en orden alfabetico
+        for txt in sorted(src_dir.glob("*.txt")):
+            total += 1
+            out_path = dst_dir / txt.name
+            try:
+                procesar_archivo(str(txt), str(out_path))
+                ok += 1
+                print(f"[OK] {txt.name} -> {out_path}")
+            except Exception as error:
+                err += 1
+                print(f"[ERROR] {txt.name}: {error}")
+
+    print(f"Resumen lote: {ok}/{total} OK, {err} errores")
+
+if __name__ == "__main__":
+    # Ejecuta el limpiador de datos
+    seleccionar_y_limpiar_cli()
+
+    # Opcion para ejecutar el script de aumento de datos
+    print("\n" + "-"*40)
+    ans = input("¿Desea llevar a cabo el aumento de datos? (s/n): ").strip().lower()
+    if ans == 's':
+        script_path = Path(__file__).parent / "Augmentation.py"
+        if script_path.exists():
+            print(f"Se lanza {script_path.name}...")
+            subprocess.run([sys.executable, str(script_path)])
+        else:
+            print(f"[ERROR] No se encuentra el archivo: {script_path}")
+\end{verbatim}
 
 \subsubsection{Aumento de datos}
 Dado que la obtención de muestras físicas es un proceso costoso en tiempo y recursos, el conjunto de datos original puede resultar limitado para entrenar modelos de aprendizaje profundo robustos. Para mitigar el riesgo de sobreajuste (\textit{overfitting}) y mejorar la capacidad de generalización de la red, se ha implementado una técnica de aumento de datos (\textit{Data Augmentation}) mediante un script desarrollado en Python (\texttt{Augmentation.py}).
@@ -120,6 +287,124 @@ La metodología de generación de datos sintéticos combina dos técnicas princi
     \item \textbf{Ventaneo Adaptativo (Sliding Window):} En lugar de utilizar la señal completa, se extraen ventanas o fragmentos de tamaño fijo (configurado en 100 lecturas temporales). El algoritmo calcula dinámicamente el desplazamiento (\textit{step size}) necesario para repartir estas ventanas a lo largo de toda la duración del experimento original, asegurando que se capturan características de diferentes momentos de la toma de muestra.
     \item \textbf{Inyección de Ruido Proporcional (Jittering):} Para introducir variabilidad, se aplica ruido gaussiano multiplicativo a las lecturas de los sensores. Se utiliza una distribución normal con media 1 y una desviación estándar de 0.005 (0.5\% de ruido). La fórmula empleada es $X_{aug} = X_{orig} \cdot \mathcal{N}(1, 0.005)$, donde $X_{aug}$ es la muestra aumentada, $X_{orig}$ es la muestra original y $\mathcal{N}(1, 0.005)$ es una variable aleatoria con distribución normal. Este enfoque altera ligeramente la amplitud de las señales simulando fluctuaciones en los sensores, pero preservando la morfología y tendencia de la señal original.
 \end{enumerate}
+
+A continuación se muestra el código del script de aumento de datos:
+
+\begin{verbatim}
+import pandas as pd
+import numpy as np
+import os
+
+# Ruta automática al directorio del script
+script_dir = os.path.dirname(os.path.abspath(__file__))
+
+def augment_pipeline_fixed(df, window_size=100, target_files=10, iterations=2, noise_level=0.005):
+    """Aumenta datos extrayendo ventanas y aplicando ruido.
+    
+    Divide el dataframe en ventanas y genera variaciones con ruido proporcional.
+    Garantiza la generacion del numero de archivos especificado.
+    """
+    augmented_samples = []
+    
+    # Calcula cuantas ventanas se necesitan extraer
+    needed_windows = target_files // iterations
+    
+    # Ajusta ventanas si el archivo es mas corto que window_size
+    if len(df) <= window_size:
+        actual_window_size = len(df)
+        actual_windows = 1
+        actual_iterations = target_files
+        step_size = 1 
+    else:
+        actual_window_size = window_size
+        actual_windows = needed_windows
+        actual_iterations = iterations
+        # Calcula el salto para distribuir ventanas uniformemente
+        if actual_windows > 1:
+            step_size = (len(df) - actual_window_size) // (actual_windows - 1)
+        else:
+            step_size = 0
+
+    # Extrae ventanas y genera variaciones con ruido
+    for w in range(actual_windows):
+        start = w * step_size
+        # Evita superar el final del dataframe
+        if start + actual_window_size > len(df):
+            start = len(df) - actual_window_size
+            
+        window = df.iloc[start : start + actual_window_size].copy()
+        
+        # Genera multiples versiones con ruido por cada ventana
+        for _ in range(actual_iterations):
+            # Separa caracteristicas de la etiqueta
+            features = window.iloc[:, :-1].copy()
+            label = window.iloc[:, -1:].copy()
+            
+            # Aplica ruido proporcional (Jittering) a las caracteristicas
+            noise = np.random.normal(1, noise_level, features.shape)
+            features_aug = features * noise
+            
+            # Concatena caracteristicas aumentadas con la etiqueta original
+            df_aug = pd.concat([features_aug, label], axis=1)
+            augmented_samples.append(df_aug)
+            
+    return augmented_samples[:target_files]
+
+def process_balanced_data(input_folder_name, output_folder_name, target_per_file=10):
+    """Procesa todos los archivos de una carpeta y genera datos aumentados.
+    
+    Lee archivos de entrada, aplica aumento de datos y guarda en carpeta de salida.
+    """
+    input_path = os.path.join(script_dir, input_folder_name)
+    output_path = os.path.join(script_dir, output_folder_name)
+
+    # Valida que la carpeta de entrada existe
+    if not os.path.exists(input_path):
+        print(f"Error: No existe {input_folder_name}")
+        return
+
+    # Crea la carpeta de salida si no existe
+    if not os.path.exists(output_path):
+        os.makedirs(output_path)
+
+    # Procesa cada archivo de texto de la carpeta de entrada
+    for filename in os.listdir(input_path):
+        if filename.endswith(".txt"):
+            try:
+                # Lee el archivo CSV con separador espacio y coma decimal
+                df = pd.read_csv(os.path.join(input_path, filename), sep='\s+', decimal=',')
+                
+                # Aplica aumento de datos
+                new_samples = augment_pipeline_fixed(
+                    df, 
+                    window_size=100,
+                    target_files=target_per_file,
+                    iterations=2,
+                    noise_level=0.005
+                )
+                
+                # Guarda cada muestra aumentada con sufijo -P{numero}
+                name_base = os.path.splitext(filename)[0]
+                for idx, aug_df in enumerate(new_samples, 1):
+                    new_name = f"{name_base}-P{idx}.txt"
+                    aug_df.to_csv(os.path.join(output_path, new_name), sep=' ', decimal=',', index=False)
+                
+                print(f"Se generaron {len(new_samples)} archivos exactos de {filename}.")
+            except Exception as error:
+                print(f"Error en {filename}: {error}")
+
+# Numero de archivos aumentados a generar por cada archivo original
+OBJETIVO_POR_ARCHIVO = 10 
+
+# Mapeo de carpetas de entrada a carpetas de salida
+folders = {"BUENO": "BUENO-PLUS", "MALO": "MALO-PLUS"}
+
+# Procesa cada categoria de datos
+for ori, dest in folders.items():
+    process_balanced_data(ori, dest, target_per_file=OBJETIVO_POR_ARCHIVO)
+
+print(f"\nSe finaliza el proceso. Cada archivo original genera {OBJETIVO_POR_ARCHIVO} versiones.")
+\end{verbatim}
 
 El dataset original constaba de 76 muestras (38 positivas y 38 negativas). Tras aplicar el proceso de aumento de datos, se han generado un total de 760 muestras sintéticas adicionales (380 positivas y 380 negativas), resultando en un conjunto de datos final de 836 muestras. El nombre de los archivos aumentados sigue la nomenclatura original, añadiendo un sufijo ``\_PX'' donde ``X'' es un número secuencial que identifica cada muestra sintética generada a partir de la misma muestra original.
 \par
@@ -148,6 +433,76 @@ El modelo se somete a un proceso de conversión para ser ejecutado por el intér
 
 Para finalizar, el proceso termina con la muestra de las medias y desviaciones necesarioas para la normalización en tiempo real, y la exportación del modelo en formato TensorFlow Lite, listo para su integración en la aplicación móvil.
 
+A continuación se muestra un pseudocódigo que resume el proceso de entrenamiento del modelo Keras a tiempo real:
+
+\noindent\textbf{Algoritmo: Flujo de entrenamiento de la Red Neuronal para detección de sustancias en tiempo real (Keras).}
+
+\begin{algorithmic}[1]
+\State~\textbf{Entrada:} Archivos espectrales (.txt) en directorios \textit{BUENO} y \textit{MALO}
+\State~\textbf{Salida:} Modelo clasificador optimizado en formato \.keras y \.tflite
+
+\State~\textit{Fase 1: Carga de datos e importación de librerías}{}
+\State~Importar librerías necesarias (tensorflow, keras, numpy, pandas, sklearn, matplotlib, seaborn)
+
+\State~\textit{Fase 2: Preprocesamiento de datos}{}
+\State~Inicializar listas $X$ (características) e $y$ (etiquetas)
+\For{cada archivo espectrales en directorios BUENO-PLUS y MALO-PLUS}%
+    \State~Leer datos numéricos del archivo \.txt con separador espacios y coma decimal
+    \State~Convertir a numérico y eliminar valores NaN
+    \State~Filtro de fase: seleccionar solo filas donde la columna 14 es 1 (fase de muestra)
+    \State~Extraer únicamente las 13 columnas de sensores de gas
+    \For{cada fila de muestra}%
+        \State~Añadir fila a $X$ (características)
+        \State~Asignar etiqueta correspondiente a $y$ (1 para BUENO, 0 para MALO)
+    \EndFor%
+\EndFor%
+
+\State~\textit{Fase 3: División estratificada del dataset}{}
+\State~Primera división: separar 15\% para prueba final, 85\% para entrenamiento/validación
+\State~$X_{temp}, X_{test}, y_{temp}, y_{test} \leftarrow split(X, y, 0.15, estratificado)$
+\State~Segunda división: del 85\% restante, separar 18\% para validación (resultando en 15\% del total)
+\State~$X_{train}, X_{val}, y_{train}, y_{val} \leftarrow split(X_{temp}, y_{temp}, 0.176, estratificado)$
+\State~Distribución final: 70\% entrenamiento, 15\% validación, 15\% prueba
+
+\State~\textit{Fase 4: Normalización de datos}{}
+\State~Calcular media $\mu$ y desviación estándar $\sigma$ del conjunto de entrenamiento
+\State~$X_{train} \leftarrow \frac{X_{train} - \mu}{\sigma}$ (escalado estándar Z-score)
+\State~$X_{val} \leftarrow \frac{X_{val} - \mu}{\sigma}$
+\State~$X_{test} \leftarrow \frac{X_{test} - \mu}{\sigma}$
+
+\State~\textit{Fase 5: Construcción de la Red Neuronal Artificial}{}
+\State~Definir arquitectura secuencial con 4 capas:
+\State~\quad Primera capa: 16 neuronas, activación ReLU, entrada de tamaño 13
+\State~\quad Segunda capa: Dropout con tasa 0.2 para regularización
+\State~\quad Tercera capa: 8 neuronas, activación ReLU
+\State~\quad Capa de salida: 1 neurona, activación Sigmoide para clasificación binaria
+\State~Compilar con optimizador \textit{Adam} (tasa 0.001) y pérdida \textit{Binary Crossentropy}
+
+\State~\textit{Fase 6: Configuración del entrenamiento}{}
+\State~Configurar \textit{Early Stopping} monitoreando la pérdida de validación
+\State~Paciencia: 10 épocas sin mejora antes de detener
+\State~Restauración automática de los mejores pesos encontrados
+
+\State~\textit{Fase 7: Entrenamiento del modelo}{}
+\State~Entrenar el modelo por hasta 100 épocas:
+\State~\quad Datos de entrada: $X_{train}, y_{train}$
+\State~\quad Tamaño de lote (\textit{batch}): 32 muestras
+\State~\quad Datos de validación: $X_{val}, y_{val}$
+\State~\quad Detención automática al cumplirse criterio de \textit{Early Stopping}
+
+\State~\textit{Fase 8: Evaluación en conjunto de prueba}{}
+\State~Calcular pérdida y precisión sobre datos de prueba: $loss, accuracy \leftarrow model.evaluate(X_{test}, y_{test})$
+\State~Generar predicciones: $y_{pred} \leftarrow (model.predict(X_{test}) > 0.5)$
+\State~Calcular matriz de confusión entre $y_{test}$ e $y_{pred}$
+\State~Visualizar curvas de aprendizaje (precisión y pérdida)
+
+\State~\textit{Fase 9: Exportación del modelo}{}
+\State~Guardar modelo en formato nativo Keras (.keras)
+\State~Convertir modelo a TensorFlow Lite (.tflite) usando \textit{TFLiteConverter}
+\State~Extraer parámetros de normalización (media y desviación estándar) para despliegue móvil
+\State~Guardar artefactos para integración en aplicación móvil
+\end{algorithmic}
+
 \subsection{Desarrollo de la aplicación móvil}
 Anteriormente se ha mencionado que la aplicación se ha desarrollado usando Flutter y es importante destacar que, para que los modelos puedan ser ejecutados en dispositivos móviles, es necesario convertirlos a un formato compatible con TensorFlow Lite (.tflite). Los modelos entrenados en Keras se han convertido a este formato directamente, mientras que los modelos desarrollados en PyTorch requieren una conversión adicional. Esta conversión se realiza primero exportando el modelo a ONNX (Open Neural Network Exchange) y luego utilizando el convertidor de ONNX a TensorFlow Lite. Sin embargo, la conversion de PyTorch a ONNX presenta ciertos problemas de compatibilidad, por lo que no se ha podido completar este proceso para los modelos desarrollados en PyTorch. Por otro lado, los modelos deben de ser entrenados y optimizados específicamente para su uso a tiempo real, ya que la aplicación móvil debe ser capaz de procesar los datos de los sensores y realizar inferencias en tiempo real sin que haya retrasos perceptibles para el usuario.
 \par
@@ -175,7 +530,7 @@ Una vez instalado todo el software necesario y creado el proyecto Flutter usando
 La aplicación sigue una arquitectura modular para separar la lógica de comunicación de la interfaz de usuario.
 \par
 
-La estructura de ficheros de la aplicación móvil se muestra en la Figura~\ref{fig:estructura_app}. En el proyecto hay dos carpetas importantes: la carpeta \texttt{assets}, donde estan el icono de la aplicación y los modelos y su configuración, y la carpeta \texttt{lib}, donde hay otras subcarpetas. La carpeta \texttt{screens} contiene las distintas pantallas de la aplicación, como la pantalla principal (Donde se encuentra la lista de dispositivos disponibles), la pantalla de análisis (Donde se controla el análisis de datos) y la pantalla de configuración (Donde se puede modificar los ajustes del análisis). La carpeta \texttt{utils} alberga funciones auxiliares, en este caso, la navegación entre pantallas. La carpeta \texttt{widgets} contiene componentes reutilizables, actualmente solo la barra de navegación superior. El archivo \texttt{main.dart} es el punto de entrada de la aplicación, donde se inicializan las dependencias y se configura la navegación entre pantallas.
+La estructura de ficheros de la aplicación móvil se muestra en la Figura~\autoref{fig:estructura_app}. En el proyecto hay dos carpetas importantes: la carpeta \texttt{assets}, donde estan el icono de la aplicación y los modelos y su configuración, y la carpeta \texttt{lib}, donde hay otras subcarpetas. La carpeta \texttt{screens} contiene las distintas pantallas de la aplicación, como la pantalla principal (Donde se encuentra la lista de dispositivos disponibles), la pantalla de análisis (Donde se controla el análisis de datos) y la pantalla de configuración (Donde se puede modificar los ajustes del análisis). La carpeta \texttt{utils} alberga funciones auxiliares, en este caso, la navegación entre pantallas. La carpeta \texttt{widgets} contiene componentes reutilizables, actualmente solo la barra de navegación superior. El archivo \texttt{main.dart} es el punto de entrada de la aplicación, donde se inicializan las dependencias y se configura la navegación entre pantallas.
 
 \begin{figure}[H]
     \centering
@@ -247,7 +602,7 @@ Se utiliza un sistema de semáforo en el que si la impureza calculada es $\ge 0.
 Para terminar esta sección, se describe cual es el funcionamiento de la aplicación internamente cuando el usuario interactúa con ella. El flujo de ejecución de la aplicación es el siguiente.
 
 \subsubsection{Conexión con la nariz electrónica}
-Cuando se habre la aplicación por primera vez, hay que aceptar los permisos necesarios para el funcionamiento de la aplicación, como el acceso a Bluetooth y la ubicación. Una vez aceptados los permisos, se muestra la pantalla principal con la lista de dispositivos Bluetooth disponibles, que se ve en la Figura~\ref{fig:pantalla_principal}, omitiendo los dispositivos que aparecen como ``Desconocido'' y resaltando los que contengan ``NOSE'' en su nombre. El usuario selecciona la nariz electrónica de la lista y se establece la conexión BLE\@.
+Cuando se habre la aplicación por primera vez, hay que aceptar los permisos necesarios para el funcionamiento de la aplicación, como el acceso a Bluetooth y la ubicación. Una vez aceptados los permisos, se muestra la pantalla principal con la lista de dispositivos Bluetooth disponibles, que se ve en la Figura~\autoref{fig:pantalla_principal}, omitiendo los dispositivos que aparecen como ``Desconocido'' y resaltando los que contengan ``NOSE'' en su nombre. El usuario selecciona la nariz electrónica de la lista y se establece la conexión BLE\@.
 
 \begin{figure}[H]
     \centering
@@ -255,7 +610,7 @@ Cuando se habre la aplicación por primera vez, hay que aceptar los permisos nec
     \caption{Pantalla principal de la aplicación móvil con la lista de dispositivos Bluetooth disponibles}\label{fig:pantalla_principal}
 \end{figure}
 
-En caso de querer volver a buscar dispositivos, se puede pulsar el botón de búsqueda en la esquina superior derecha de la pantalla. Dicho botón puede verse en la Figura~\ref{fig:boton_busqueda}.
+En caso de querer volver a buscar dispositivos, se puede pulsar el botón de búsqueda en la esquina superior derecha de la pantalla. Dicho botón puede verse en la Figura~\autoref{fig:boton_busqueda}.
 
 \begin{figure}[H]
     \centering
@@ -266,7 +621,7 @@ En caso de querer volver a buscar dispositivos, se puede pulsar el botón de bú
 Una vez se ha realizado la conexión con la nariz electrónica, se accederá a la pantalla de analisis de sustancias.
 
 \subsubsection{Detección de sustancias}
-La pantalla de analisis cuenta con la opción de elegir que modelo de red neuronal se desea usar para analizar las muestras recibidas por la nariz electrónica. Esta opción puede verse en la Figura~\ref{fig:seleccion_modelo}. Para ello, la aplicación lee la información de los mdoelos guardada en \texttt{assets/models\_config.json} donde están los ficheros de los modelos, sus medias y desviaciones estándar para la normalización, y los nombres que se mostrarán en el desplegable. 
+La pantalla de analisis cuenta con la opción de elegir que modelo de red neuronal se desea usar para analizar las muestras recibidas por la nariz electrónica. Esta opción puede verse en la Figura~\autoref{fig:seleccion_modelo}. Para ello, la aplicación lee la información de los mdoelos guardada en \texttt{assets/models\_config.json} donde están los ficheros de los modelos, sus medias y desviaciones estándar para la normalización, y los nombres que se mostrarán en el desplegable. 
 
 \begin{figure}[H]
     \centering
@@ -274,7 +629,7 @@ La pantalla de analisis cuenta con la opción de elegir que modelo de red neuron
     \caption{Selección del modelo de red neuronal en la aplicación Sniffer.}\label{fig:seleccion_modelo}
 \end{figure}
 
-Además cuenta con una terminal donde se muestran los mensajes enviados y recibidos. El usuario puede iniciar el análisis pulsando el botón de iniciar. Esto envía el comando de inicio ``Exper'' a la nariz electrónica y comienza a recibir datos en tiempo real. La aplicación procesa cada trama de datos recibida, aplicando el preprocesamiento necesario (normalización y padding) antes de pasar los datos al modelo de IA seleccionado para obtener una predicción de impureza. La impureza se muestra en la pantalla y se actualiza cada vez que llega una nueva lectura. Si la impureza es mayor o igual al 70\%, la aplicación cambia el indicador a rojo y muestra una alerta de sustancia detectada, además de activar la vibración del dispositivo si está habilitada. La ejecución continúa hasta que acaban los ciclos y se ejecuta el AutoStop, o hasta que el usuario decide cancelar el análisis pulsando el botón de cancelar, lo que envía el comando ``Stop'' a la nariz electrónica y detiene la recepción de datos. En la Figura~\ref{fig:pantalla_analisis_datos} se puede ver la pantalla de análisis en funcionamiento.
+Además cuenta con una terminal donde se muestran los mensajes enviados y recibidos. El usuario puede iniciar el análisis pulsando el botón de iniciar. Esto envía el comando de inicio ``Exper'' a la nariz electrónica y comienza a recibir datos en tiempo real. La aplicación procesa cada trama de datos recibida, aplicando el preprocesamiento necesario (normalización y padding) antes de pasar los datos al modelo de IA seleccionado para obtener una predicción de impureza. La impureza se muestra en la pantalla y se actualiza cada vez que llega una nueva lectura. Si la impureza es mayor o igual al 70\%, la aplicación cambia el indicador a rojo y muestra una alerta de sustancia detectada, además de activar la vibración del dispositivo si está habilitada. La ejecución continúa hasta que acaban los ciclos y se ejecuta el AutoStop, o hasta que el usuario decide cancelar el análisis pulsando el botón de cancelar, lo que envía el comando ``Stop'' a la nariz electrónica y detiene la recepción de datos. En la Figura~\autoref{fig:pantalla_analisis_datos} se puede ver la pantalla de análisis en funcionamiento.
 
 \begin{figure}[H]
     \centering
@@ -282,7 +637,7 @@ Además cuenta con una terminal donde se muestran los mensajes enviados y recibi
     \caption{Pantalla de análisis de sustancias en la aplicación Sniffer.}\label{fig:pantalla_analisis_datos}
 \end{figure}
 
-Desde esta pantalla también es posible acceder a la pantalla de ajustes de la aplicación o volver a la pantalla principal para desconectar la nariz electrónica y conectar otro dispositivo si se desea. En la Figura~\ref{fig:barra_analisis} se pueden ver los botones correspondientes en la barra superior de la pantalla de análisis. La lupa para volver a la pantalla principal y el icono de engranaje para acceder a la pantalla de ajustes.
+Desde esta pantalla también es posible acceder a la pantalla de ajustes de la aplicación o volver a la pantalla principal para desconectar la nariz electrónica y conectar otro dispositivo si se desea. En la Figura~\autoref{fig:barra_analisis} se pueden ver los botones correspondientes en la barra superior de la pantalla de análisis. La lupa para volver a la pantalla principal y el icono de engranaje para acceder a la pantalla de ajustes.
 
 \begin{figure}[H]
     \centering
@@ -291,7 +646,7 @@ Desde esta pantalla también es posible acceder a la pantalla de ajustes de la a
 \end{figure}
 
 \subsubsection{Configuración del análisis}
-Al ir a la pantalla de ajustes (Vease en la Figura~\ref{fig:pantalla_ajustes}), la aplicación enviará el comando ``SETTINGS'' a la nariz electrónica para que esta le devuelva un mensaje con la configuración que incluye el número de ciclos, los tiempos de adsorción y desorción, y el estado del modo AutoStop. Estos datos recibidos se reflejan en los campos correspondientes de la pantalla de ajustes (Además del estado de la vibración). El usuario puede modificar estos parámetros y guardar los cambios pulsando el botón de guardar. Esto envía un comando ``\#NSNC,X'', donde X es el número de ciclos, seguido de los tiempos de adsorción (``\#NSTA,X'') y desorción (``\#NSTD,X''), donde X es el tiempo en segundos, y el estado del modo AutoStop (1 para activado, 0 para desactivado). La nariz electrónica responde con un ``OK'' confirmando que ha recibido y aplicado la nueva configuración. 
+Al ir a la pantalla de ajustes (Vease en la Figura~\autoref{fig:pantalla_ajustes}), la aplicación enviará el comando ``SETTINGS'' a la nariz electrónica para que esta le devuelva un mensaje con la configuración que incluye el número de ciclos, los tiempos de adsorción y desorción, y el estado del modo AutoStop. Estos datos recibidos se reflejan en los campos correspondientes de la pantalla de ajustes (Además del estado de la vibración). El usuario puede modificar estos parámetros y guardar los cambios pulsando el botón de guardar. Esto envía un comando ``\#NSNC,X'', donde X es el número de ciclos, seguido de los tiempos de adsorción (``\#NSTA,X'') y desorción (``\#NSTD,X''), donde X es el tiempo en segundos, y el estado del modo AutoStop (1 para activado, 0 para desactivado). La nariz electrónica responde con un ``OK'' confirmando que ha recibido y aplicado la nueva configuración. 
 
 \begin{figure}[H]
     \centering
@@ -299,7 +654,7 @@ Al ir a la pantalla de ajustes (Vease en la Figura~\ref{fig:pantalla_ajustes}), 
     \caption{Pantalla de ajustes de la aplicación móvil}\label{fig:pantalla_ajustes}
 \end{figure}
 
-También está la opción de volver a la pantalla de análisis sin guardar los cambios. Para ello simplemente hay que pulsar el icono de la flecha hacia atrás en la barra superior, el cual puede observarse en la Figura~\ref{fig:barra_ajustes}.
+También está la opción de volver a la pantalla de análisis sin guardar los cambios. Para ello simplemente hay que pulsar el icono de la flecha hacia atrás en la barra superior, el cual puede observarse en la Figura~\autoref{fig:barra_ajustes}.
 
 \begin{figure}[H]
     \centering
@@ -307,7 +662,7 @@ También está la opción de volver a la pantalla de análisis sin guardar los c
     \caption{Botón de volver en la barra superior de la pantalla de ajustes}\label{fig:barra_ajustes}
 \end{figure}
 
-A continuación se muestra, en la Figura~\ref{fig:diagrama_flujo_tecnico_app}, un diagrama de flujo que resume este funcionamiento de manera gráfica. 
+A continuación se muestra, en la Figura~\autoref{fig:diagrama_flujo_tecnico_app}, un diagrama de flujo que resume este funcionamiento de manera gráfica. 
 
 \begin{figure}[H]
     \centering
@@ -319,7 +674,7 @@ A continuación se muestra, en la Figura~\ref{fig:diagrama_flujo_tecnico_app}, u
 En esta sección se describen las distintas pruebas que se han llevado a cabo para evaluar el rendimiento de la nariz electrónica en comparación con el olfato canino bajo las mismas circunstancias. El modelo utilizado en las pruebas fue ``Modelo Hachís Plus'', el cual ha demostrado ser el más preciso.
 \par
 
-Para estas pruebas se ha contado con la colaboración de un guía canino del cuerpo cinológico de la Guardia Civil, quien ha aportado su experiencia y la de su perro adiestrado para la detección de drogas. En la Figura~\ref{fig:zape} es posible ver Zape, el agente canino que ha participado en las pruebas.
+Para estas pruebas se ha contado con la colaboración de un guía canino del cuerpo cinológico de la Guardia Civil, quien ha aportado su experiencia y la de su perro adiestrado para la detección de drogas. En la Figura~\autoref{fig:zape} es posible ver Zape, el agente canino que ha participado en las pruebas.
 
 \begin{figure}[H]
     \centering
