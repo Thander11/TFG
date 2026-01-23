@@ -16,38 +16,44 @@ Notas:
 """
 
 import pandas as pd
-
-try:
-    import tkinter as tk
-    from tkinter import filedialog, messagebox
-    HAS_TK = True
-except Exception:
-    HAS_TK = False
+import argparse
+from pathlib import Path
+import sys
+import subprocess
 
 def procesar_archivo(file_path: str, save_path: str) -> None:
+    """Lee, limpia y guarda un archivo de datos.
+    
+    Elimina columnas innecesarias y filtra por muestras de aire validas.
+    """
     df = _leer_csv_robusto(file_path)
 
+    # Columnas que se descartan del dataset
     columnas_a_borrar = [
         'nº', 'temp(scd40)', 'hum(scd40)', 'temp(ens160)',
         'etoh(zmod4410)', 'temperatura(bme688)', 'humedad(bme688)', 'presion(bme688)'
     ]
 
+    # Elimina columnas innecesarias y filtra donde Aire/muestra sea diferente de 0
     df = df.drop(columns=[c for c in columnas_a_borrar if c in df.columns])
     df = df[df['Aire/muestra'] != 0]
     df.to_csv(save_path, sep=' ', decimal=',', index=False)
 
 def _leer_csv_robusto(file_path: str) -> pd.DataFrame:
-    """Intenta leer el TXT/CSV con varios encodings comunes en Windows.
-    Evita errores como: "'utf-8' codec can't decode byte 0xBA ...".
+    """Lee el TXT/CSV con varios encodings comunes en Windows.
+    
+    Intenta multiples codificaciones en orden de probabilidad.
     """
+    # Encodings ordenados por frecuencia en sistemas Windows
     encodings = [
-        'utf-8',        # estándar
-        'utf-8-sig',    # UTF-8 con BOM
-        'cp1252',       # Windows-1252 (muy común en ES)
-        'latin-1',      # ISO-8859-1 como red de seguridad
+        'utf-8',        # Estandar moderno
+        'utf-8-sig',    # UTF-8 con marca de orden de bytes
+        'cp1252',       # Windows-1252 (comun en espanol)
+        'latin-1',      # ISO-8859-1 como alternativa
     ]
 
     last_error = None
+    # Intenta leer con cada encoding hasta encontrar uno que funcione
     for enc in encodings:
         try:
             return pd.read_csv(
@@ -60,7 +66,7 @@ def _leer_csv_robusto(file_path: str) -> pd.DataFrame:
             last_error = e
             continue
 
-    # Último intento: engine='python' puede ser más tolerante en casos raros
+    # Ultimo intento con motor Python (mas tolerante)
     try:
         return pd.read_csv(
             file_path,
@@ -70,50 +76,29 @@ def _leer_csv_robusto(file_path: str) -> pd.DataFrame:
             engine='python',
         )
     except Exception:
-        # Re-lanzar el error original para contexto
         if last_error:
             raise last_error
         raise
 
-def seleccionar_y_limpiar():
-    root = tk.Tk()
-    root.withdraw()
-
-    file_path = filedialog.askopenfilename(
-        title="Selecciona el archivo a limpiar",
-        filetypes=[("Archivos de texto", "*.txt"), ("Todos los archivos", "*.*")]
-    )
-    if not file_path:
-        return
-
-    save_path = filedialog.asksaveasfilename(
-        title="Guardar dataset limpio como...",
-        defaultextension=".txt",
-        filetypes=[("Archivos de texto", "*.txt")]
-    )
-    if not save_path:
-        return
-
-    try:
-        procesar_archivo(file_path, save_path)
-        messagebox.showinfo("Éxito", f"Archivo procesado correctamente:\n{save_path}")
-    except Exception as e:
-        messagebox.showerror("Error", f"Ocurrió un error al procesar el archivo:\n{e}")
-
 def seleccionar_y_limpiar_cli():
-    import argparse
-    from pathlib import Path
+    """Interfaz de linea de comandos para procesar archivos.
+    
+    Soporta dos modos:
+    - Lote: procesa carpetas automaticamente
+    - Archivo individual: con --input y --output
+    """
     parser = argparse.ArgumentParser(description="Limpia un dataset de sensores y guarda el resultado.")
     parser.add_argument("--input", "-i", help="Ruta del archivo de entrada (.txt)")
     parser.add_argument("--output", "-o", help="Ruta del archivo de salida (.txt)")
     parser.add_argument("--batch", action="store_true", help="Procesa por lotes Por_procesar/BUENO y MALO hacia BUENO y MALO (por defecto si no hay argumentos).")
     args = parser.parse_args()
 
-    # Sin argumentos => modo lote por defecto
+    # Modo lote: procesa automaticamente si no hay argumentos de entrada/salida
     if args.batch or (not args.input and not args.output):
         procesar_lote()
         return
 
+    # Valida que se proporcionen ambos argumentos para modo de archivo individual
     if not args.input or not args.output:
         parser.error("Debe indicar --batch o bien --input y --output.")
 
@@ -121,15 +106,23 @@ def seleccionar_y_limpiar_cli():
     print(f"Archivo procesado correctamente: {args.output}")
 
 def procesar_lote() -> None:
+    """Procesa todos los archivos en modo lote.
+    
+    Lee archivos de Por_procesar/BUENO y Por_procesar/MALO,
+    luego guarda los resultados en BUENO y MALO respectivamente.
+    """
     from pathlib import Path
     base = Path(__file__).parent
     in_root = base / "Por_procesar"
+    # Pares (carpeta_entrada, carpeta_salida)
     parejas = [("BUENO", "BUENO"), ("MALO", "MALO")]
 
+    # Contadores para estadisticas finales
     total = 0
     ok = 0
     err = 0
 
+    # Procesa cada categoria (BUENO, MALO)
     for sub_in, sub_out in parejas:
         src_dir = in_root / sub_in
         dst_dir = base / sub_out
@@ -139,6 +132,7 @@ def procesar_lote() -> None:
             print(f"[AVISO] Carpeta no encontrada: {src_dir}")
             continue
 
+        # Procesa cada archivo de texto en orden alfabetico
         for txt in sorted(src_dir.glob("*.txt")):
             total += 1
             out_path = dst_dir / txt.name
@@ -146,27 +140,23 @@ def procesar_lote() -> None:
                 procesar_archivo(str(txt), str(out_path))
                 ok += 1
                 print(f"[OK] {txt.name} -> {out_path}")
-            except Exception as e:
+            except Exception as error:
                 err += 1
-                print(f"[ERROR] {txt.name}: {e}")
+                print(f"[ERROR] {txt.name}: {error}")
 
     print(f"Resumen lote: {ok}/{total} OK, {err} errores")
 
 if __name__ == "__main__":
-    # Ejecuta siempre la versión CLI (por defecto, lote si no hay argumentos)
+    # Ejecuta el limpiador de datos
     seleccionar_y_limpiar_cli()
 
-    # Opción para encadenar Augmentation.py
-    import sys
-    import subprocess
-    from pathlib import Path
-
+    # Opcion para ejecutar el script de aumento de datos
     print("\n" + "-"*40)
     ans = input("¿Desea llevar a cabo el aumento de datos? (s/n): ").strip().lower()
     if ans == 's':
         script_path = Path(__file__).parent / "Augmentation.py"
         if script_path.exists():
-            print(f"Lanzando {script_path.name}...")
+            print(f"Se lanza {script_path.name}...")
             subprocess.run([sys.executable, str(script_path)])
         else:
             print(f"[ERROR] No se encuentra el archivo: {script_path}")
