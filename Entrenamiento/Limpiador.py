@@ -37,6 +37,11 @@ def procesar_archivo(file_path: str, save_path: str) -> None:
     # Elimina columnas innecesarias y filtra donde Aire/muestra sea diferente de 0
     df = df.drop(columns=[c for c in columnas_a_borrar if c in df.columns])
     df = df[df['Aire/muestra'] != 0]
+    
+    # Elimina las 15 primeras líneas donde Aire/muestra == 1
+    indices_ones = df[df['Aire/muestra'] == 1].index[:15]
+    df = df.drop(indices_ones)
+    
     df.to_csv(save_path, sep=' ', decimal=',', index=False)
 
 def _leer_csv_robusto(file_path: str) -> pd.DataFrame:
