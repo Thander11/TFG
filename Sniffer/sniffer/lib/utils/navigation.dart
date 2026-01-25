@@ -3,15 +3,20 @@ import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import '../screens/settings_screen.dart';
 import '../screens/main_screen.dart'; 
 
+// Clase utilitaria que centraliza la navegación entre pantallas de la aplicación.
+// Proporciona métodos estáticos para transiciones entre pantallas con parámetros específicos.
 class AppNavigation {
-  // Función para ir a AJUSTES
+  
+  // Navega a la pantalla de ajustes del sistema.
+  // Retorna un valor booleano que indica si la vibración está habilitada después de confirmar.
   static Future<bool?> goToSettings(
     BuildContext context, 
     BluetoothDevice device, 
     BluetoothCharacteristic? uartChar,
     {required Function(String, bool) onMessageSent}
   ) {
-    // Añadimos el return para que devuelva lo que diga el Navigator
+    // Se navega a la pantalla de ajustes con contexto tipo push.
+    // El retorno es un valor booleano que indica el estado de vibración.
     return Navigator.push<bool>(
       context,
       MaterialPageRoute(
@@ -24,14 +29,15 @@ class AppNavigation {
     );
   }
 
-  // Función para ir (o volver) a la PANTALLA PRINCIPAL
+  // Navega a la pantalla principal eliminando todo el historial de navegación.
+  // Evita que el usuario pueda volver a pantallas cerradas presionando la tecla atrás del dispositivo.
   static void goToHome(BuildContext context) {
-    // Usamos pushAndRemoveUntil para que la pantalla principal sea la única en la pila.
-    // Esto evita que si el usuario da a "atrás" en el móvil, vuelva a entrar en un análisis ya cerrado.
+    // Se utiliza pushAndRemoveUntil para reemplazar toda la pila de navegación.
+    // Esto asegura que la pantalla principal sea el punto de entrada único.
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => const MainScreen()),
-      (route) => false, // Elimina todas las rutas anteriores
+      (route) => false,
     );
   }
 }

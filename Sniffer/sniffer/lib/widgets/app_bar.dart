@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 
+// Barra de aplicación personalizada con diseño redondeado y acciones dinámicas.
+// Se adapta según la pantalla actual mostrando botones de configuración o búsqueda.
 class CustomSearchAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final VoidCallback? onSettingsPressed;
   final VoidCallback? onSearchPressed;
-  final bool isSettingsScreen; // Nueva variable para saber si estamos en ajustes
+  final bool isSettingsScreen;
   final VoidCallback? onBackAction;
 
   const CustomSearchAppBar({
@@ -12,7 +14,7 @@ class CustomSearchAppBar extends StatelessWidget implements PreferredSizeWidget 
     required this.title,
     this.onSettingsPressed,
     this.onSearchPressed,
-    this.isSettingsScreen = false, // Por defecto es falso
+    this.isSettingsScreen = false,
     this.onBackAction,
   });
 
@@ -34,20 +36,25 @@ class CustomSearchAppBar extends StatelessWidget implements PreferredSizeWidget 
         ),
         child: Row(
           children: [
-            // Lógica dinámica para el botón izquierdo
+            // Se muestra el botón izquierdo según el contexto.
+            // En la pantalla de ajustes muestra flecha atrás, en otros casos botón de configuración.
             if (isSettingsScreen)
+              // Se muestra un botón de retroceso en la pantalla de ajustes.
               IconButton(
                 icon: const Icon(Icons.arrow_back, color: Colors.white),
-                onPressed: onBackAction ?? () => Navigator.pop(context), // Vuelve a la pantalla de análisis e informa del cambio
+                onPressed: onBackAction ?? () => Navigator.pop(context),
               )
             else if (onSettingsPressed != null)
+              // Se muestra el botón de configuración si se proporciona callback.
               IconButton(
                 icon: const Icon(Icons.settings, color: Colors.white),
                 onPressed: onSettingsPressed,
               )
             else
+              // Se reserva espacio si no hay botón izquierdo.
               const SizedBox(width: 48),
 
+            // Se muestra el título centrado con formato en mayúsculas.
             Expanded(
               child: Center(
                 child: Text(
@@ -62,12 +69,14 @@ class CustomSearchAppBar extends StatelessWidget implements PreferredSizeWidget 
               ),
             ),
 
+            // Se muestra el botón derecho de búsqueda si se proporciona callback.
             if (onSearchPressed != null)
               IconButton(
                 icon: const Icon(Icons.search, color: Colors.white),
                 onPressed: onSearchPressed,
               )
             else
+              // Se reserva espacio si no hay botón derecho.
               const SizedBox(width: 48),
           ],
         ),

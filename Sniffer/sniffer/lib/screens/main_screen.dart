@@ -4,6 +4,8 @@ import 'package:permission_handler/permission_handler.dart';
 import '../widgets/app_bar.dart';
 import 'analysis_screen.dart';
 
+// Pantalla principal que gestiona la búsqueda y conexión de dispositivos Bluetooth.
+// Permite al usuario escanear dispositivos disponibles e identificar la nariz electrónica.
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
@@ -11,6 +13,7 @@ class MainScreen extends StatefulWidget {
   State<MainScreen> createState() => _MainScreenState();
 }
 
+// Estado que gestiona el escaneo de dispositivos Bluetooth y la UI de selección.
 class _MainScreenState extends State<MainScreen> {
   List<ScanResult> scanResults = [];
   bool isScanning = false;
@@ -18,28 +21,29 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
-    // Iniciamos el flujo automático de permisos y escaneo
+    // Se inicia el flujo de permisos y escaneo automáticamente.
     initBluetoothFlow();
 
-    // Escuchamos los resultados del escaneo
+    // Se escuchan los resultados del escaneo en tiempo real.
     FlutterBluePlus.scanResults.listen((results) {
       if (mounted) {
         setState(() {
-          // 1. Obtenemos los IDs de los dispositivos ya conectados
+          // Se obtienen los IDs de los dispositivos ya mostrados.
           final existingIds = scanResults.map((r) => r.device.remoteId).toSet();
           
-          // 2. Filtramos los nuevos: que tengan nombre Y que no estén repetidos
+          // Se filtran solo dispositivos nuevos con nombre que no estén duplicados.
           final filteredResults = results.where((r) {
             final name = r.device.platformName;
             return name.isNotEmpty && !existingIds.contains(r.device.remoteId);
           });
           
+          // Se agregan los dispositivos nuevos a la lista.
           scanResults.addAll(filteredResults);
         });
       }
     });
 
-    // Escuchamos si está escaneando para mostrar el indicador de carga
+    // Se escucha el estado de escaneo para mostrar indicador de carga.
     FlutterBluePlus.isScanning.listen((scanning) {
       if (mounted) {
         setState(() => isScanning = scanning);
@@ -47,53 +51,62 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
+  // Desconecta todos los dispositivos activos y reinicia el escaneo.
+  // Útil para limpiar conexiones previas antes de buscar nuevos dispositivos.
   Future<void> disconnectAllAndScan() async {
-    // 1. Buscamos dispositivos que la App tenga conectados actualmente
+    // Se obtienen todos los dispositivos actualmente conectados.
     List<BluetoothDevice> connectedDevices = FlutterBluePlus.connectedDevices;
     
-    // 2. Los desconectamos todos para liberar el hardware
+    // Se desconectan todos para liberar recursos.
     for (BluetoothDevice device in connectedDevices) {
       await device.disconnect();
       debugPrint("Dispositivo ${device.platformName} desconectado automáticamente.");
     }
 
-    // 3. Una vez limpio, iniciamos el escaneo normal
+    // Se inicia un nuevo escaneo después de la limpieza.
     startScan();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    // Al volver a la pantalla principal, ejecutamos la limpieza automática
+    // Se ejecuta la limpieza automática al volver a esta pantalla.
     disconnectAllAndScan();
   }
 
+  // Solicita permisos necesarios para Bluetooth en Android.
+  // Incluye permisos de escaneo, conexión y ubicación.
   Future<void> initBluetoothFlow() async {
-    // 1. Pedir permisos necesarios para Android
+    // Se solicitan los tres permisos requeridos para Bluetooth.
     Map<Permission, PermissionStatus> statuses = await [
       Permission.bluetoothScan,
       Permission.bluetoothConnect,
       Permission.location,
     ].request();
 
+    // Se verifica que ambos permisos Bluetooth hayan sido otorgados.
     if (statuses[Permission.bluetoothScan]!.isGranted &&
         statuses[Permission.bluetoothConnect]!.isGranted) {
+      // Se procede con el escaneo si los permisos están disponibles.
       startScan();
     } else {
+      // Se notifica al usuario si falta algún permiso.
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Se necesitan permisos para buscar la nariz")),
       );
     }
   }
 
+  // Inicia el escaneo de dispositivos Bluetooth disponibles.
+  // Incluye dispositivos ya conectados y busca nuevos durante 15 segundos.
   Future<void> startScan() async {
-    // 1. Detener escaneo previo por seguridad
+    // Se detiene cualquier escaneo previo por seguridad.
     await FlutterBluePlus.stopScan();
 
-    // 2. Obtener los dispositivos que ya están conectados [Importante para tu TFG]
+    // Se obtienen los dispositivos ya conectados.
     List<BluetoothDevice> connectedDevices = FlutterBluePlus.connectedDevices;
     
-    // 3. Convertirlos a ScanResult para que la interfaz los vea
+    // Se convierten los dispositivos conectados a ScanResult para mostrarlos en la UI.
     List<ScanResult> connectedResults = connectedDevices.map((device) {
       return ScanResult(
         device: device,
@@ -106,26 +119,25 @@ class _MainScreenState extends State<MainScreen> {
           serviceData: {},
           appearance: 0,
         ),
-        rssi: -10, // Valor ficticio para dispositivos conectados
+        rssi: -10,
         timeStamp: DateTime.now(),
       );
     }).toList();
 
     setState(() {
-      // Inicializamos la lista con los ya conectados
+      // Se inicializa la lista con los dispositivos ya conectados.
       scanResults = connectedResults;
     });
 
-    // 4. Iniciar escaneo normal para buscar los que NO están conectados
+    // Se inicia el escaneo normal para buscar dispositivos no conectados.
     await FlutterBluePlus.startScan(timeout: const Duration(seconds: 15));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // Usamos tu barra azul personalizada
       appBar: CustomSearchAppBar(
-        title: "Dispositivos Disponibles", // <--- Título de inicio
+        title: "Dispositivos Disponibles",
         onSearchPressed: () => startScan(),
         onSettingsPressed: null,
       ),
@@ -147,12 +159,11 @@ class _MainScreenState extends State<MainScreen> {
                       final data = scanResults[index];
                       final deviceName = data.device.platformName;
                       
-                      // 1. Identificación de la Nariz Electrónica
+                      // Se identifica si es la nariz electrónica buscando palabras clave.
                       bool isENose = deviceName.toUpperCase().contains("NOSE") || 
                                     deviceName.toUpperCase().contains("ESP32");
 
-                      // 2. Comprobación de estado de conexión
-                      // Usamos el stream para saber si ya estamos conectados a este dispositivo
+                      // Se monitorea el estado de conexión en tiempo real con StreamBuilder.
                       return StreamBuilder<BluetoothConnectionState>(
                         stream: data.device.connectionState,
                         initialData: BluetoothConnectionState.disconnected,
@@ -180,15 +191,16 @@ class _MainScreenState extends State<MainScreen> {
                                 ),
                               ),
                               subtitle: Text(isConnected ? "CONECTADO" : data.device.remoteId.toString()),
-                              
-                              
 
                               onTap: () async {
+                                // Se detiene el escaneo si el dispositivo aún no está conectado.
                                 if (!isConnected) {
                                   await FlutterBluePlus.stopScan();
+                                  // Se establece la conexión.
                                   await data.device.connect();
                                 }
                                 
+                                // Se navega a la pantalla de análisis.
                                 if (mounted) {
                                   Navigator.push(
                                     context,

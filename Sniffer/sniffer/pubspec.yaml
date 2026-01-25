@@ -64,6 +64,7 @@ flutter:
     - assets/modelo_hachis-plus.tflite
     - assets/modelo_hachis.tflite
     - assets/icon.png
+    - assets/models_config.json
 
 flutter_launcher_icons:
   android: "launcher_icon"

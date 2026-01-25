@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:sniffer/utils/navigation.dart';
@@ -7,6 +8,8 @@ import '../widgets/app_bar.dart';
 import 'package:flutter/services.dart';
 import 'package:vibration/vibration.dart';
 
+// Pantalla de análisis de muestras que gestiona la comunicación Bluetooth
+// y la ejecución de modelos de inteligencia artificial para detección de sustancias.
 class AnalysisScreen extends StatefulWidget {
   final BluetoothDevice device;
   const AnalysisScreen({super.key, required this.device});
@@ -15,42 +18,103 @@ class AnalysisScreen extends StatefulWidget {
   State<AnalysisScreen> createState() => _AnalysisScreenState();
 }
 
+// Representa un mensaje que aparece en la consola de la pantalla de análisis.
+// Se diferencia entre comandos enviados por la aplicación y datos recibidos del dispositivo.
 class ConsoleMessage {
   final String text;
-  final bool isCommand; // true si lo envía la app, false si viene de la nariz
+  final bool isCommand;
 
   ConsoleMessage(this.text, this.isCommand);
 }
 
+// Almacena la configuración y parámetros estadísticos de un modelo de red neuronal.
+// Contiene la información necesaria para normalizar datos antes de la inferencia.
+class ModelConfig {
+  final String id;
+  final String displayName;
+  final String fileName;
+  final List<double> medias;
+  final List<double> desviaciones;
+
+  ModelConfig({
+    required this.id,
+    required this.displayName,
+    required this.fileName,
+    required this.medias,
+    required this.desviaciones,
+  });
+
+  // Convierte los datos JSON en una instancia de ModelConfig.
+  factory ModelConfig.fromJson(Map<String, dynamic> json) {
+    return ModelConfig(
+      id: json['id'] ?? '',
+      displayName: json['displayName'] ?? 'Sin nombre',
+      fileName: json['fileName'] ?? '',
+      medias: List<double>.from(json['medias'].map((x) => x.toDouble())),
+      desviaciones: List<double>.from(json['desviaciones'].map((x) => x.toDouble())),
+    );
+  }
+}
+
+// Estado de la pantalla de análisis que gestiona la lógica de detección y comunicación.
 class _AnalysisScreenState extends State<AnalysisScreen> {
   BluetoothCharacteristic? uartChar;
   List<ConsoleMessage> consoleHistory = [];
-  String? selectedModel = "modelo_hachis-plus.tflite"; // Aquí conectarás tus .tflite
+  String? selectedModel = "modelo_hachis-plus.tflite";
   bool isAnalyzing = false;
-  double resultadoIA = 0.0; // Resultado de la inferencia de la IA
+  double resultadoIA = 0.0;
   Timer? timeoutTimer;
   DateTime lastCommandTime = DateTime.now();
   Interpreter? _interpreter;
   bool vibracionActiva = true;
   String _rawBuffer = "";
+  List<ModelConfig> availableConfigs = [];
+  ModelConfig? currentConfig;
 
   @override
   void initState() {
     super.initState();
-    loadModel(selectedModel!); // Cargamos el primer modelo al entrar
+    loadJsonConfigs();
     connectToDevice();
   }
 
-  // Función para cargar el archivo .tflite
-  Future<void> loadModel(String modelName) async {
+  // Carga la configuración de modelos desde el archivo JSON almacenado en assets.
+  Future<void> loadJsonConfigs() async {
     try {
-      _interpreter = await Interpreter.fromAsset('assets/$modelName');
-      debugPrint("Modelo $modelName cargado correctamente");
+      debugPrint("Iniciando carga de JSON...");
+      final String response = await rootBundle.loadString('assets/models_config.json');
+      final data = json.decode(response);
+      
+      final List<ModelConfig> loadedConfigs = (data['models'] as List)
+          .map((m) => ModelConfig.fromJson(m))
+          .toList();
+
+      setState(() {
+        availableConfigs = loadedConfigs;
+        if (availableConfigs.isNotEmpty) {
+          currentConfig = availableConfigs.first;
+          // Cargamos el archivo .tflite del primer modelo por defecto
+          loadModel(currentConfig!.fileName); 
+        }
+      });
+      debugPrint("Modelos cargados: ${availableConfigs.length}");
     } catch (e) {
-      debugPrint("Error al cargar el modelo: $e");
+      debugPrint("ERROR cargando JSON de modelos: $e");
     }
   }
 
+  // Carga un modelo de red neuronal TFLite especificado por su nombre de archivo.
+  Future<void> loadModel(String fileName) async {
+    try {
+      _interpreter = await Interpreter.fromAsset("assets/$fileName"); 
+      debugPrint("Modelo $fileName cargado exitosamente.");
+    } catch (e) {
+      debugPrint("Error al cargar el archivo TFLite: $e");
+      _interpreter = null;
+    }
+  }
+
+  // Actualiza el modelo seleccionado y carga el archivo TFLite correspondiente.
   void onModelChanged(String? newModel) {
     if (newModel != null) {
       setState(() {
@@ -60,63 +124,10 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
     }
   }
 
-  void runInference(List<double> inputData) {
-    if (_interpreter == null) return;
-
-    // El modelo espera una lista de 13 valores (forma [1, 13])
-    var input = [inputData]; 
-    // La salida es la probabilidad (forma [1, 1])
-    var output = List<double>.filled(1, 0).reshape([1, 1]);
-
-    try {
-      _interpreter!.run(input, output);
-
-      setState(() {
-        resultadoIA = output[0][0]; // Probabilidad entre 0.0 y 1.0
-      });
-
-      // Nueva lógica: Vibración y parada si supera el 0.7 (70%)
-      if (resultadoIA >= 0.7) { 
-        // Hacemos que el móvil vibre de forma intermitente (patrón de alerta)
-        HapticFeedback.vibrate(); 
-        print("¡ALERTA! Probabilidad alta detectada: ${resultadoIA}");
-        
-        // Detener la detección automáticamente si ya estamos seguros
-        stopDetection(true); 
-      }
-    } catch (e) {
-      debugPrint("Error durante la inferencia: $e");
-    }
-  }
-
-  void stopDetection(bool positivo) {
-    timeoutTimer?.cancel(); // Cancelamos el cronómetro de 30s
-    
-    setState(() {
-      isAnalyzing = false;
-    });
-
-    // Enviamos comando STOP a la placa para que deje de gastar batería/sensores
-    sendCommand("Stop");
-
-    // Mostramos el resultado
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(positivo ? "¡Sustancia Detectada!" : "Fin de tiempo"),
-        content: Text(positivo 
-          ? "La Red Neuronal ha identificado la sustancia correctamente." 
-          : "No se ha detectado nada en el tiempo establecido."),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text("OK"))
-        ],
-      ),
-    );
-  }
-
+  // Detiene el análisis completamente y muestra un diálogo informativo.
   void detenerTodo({required String titulo, required String mensaje, bool enviarStop = true}) {
     if (enviarStop) {
-      sendCommand("Stop"); // Enviamos el comando físico
+      sendCommand("Stop");
     }
 
     setState(() {
@@ -135,6 +146,7 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
     );
   }
 
+  // Muestra un diálogo final con el resultado de la detección.
   void _mostrarDialogoFin(String titulo, String mensaje) {
     setState(() {
       isAnalyzing = false;
@@ -149,13 +161,12 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
           children: [
             Icon(Icons.check_circle, color: Colors.green.shade700),
             const SizedBox(width: 10),
-            // Usamos Expanded para evitar el error de Overflow
             Expanded(
               child: Text(
                 titulo,
                 style: const TextStyle(fontSize: 18),
-                overflow: TextOverflow.ellipsis, // Opcional: añade puntos suspensivos si es muy largo
-                maxLines: 2, // Permite que el título ocupe hasta dos líneas
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
               ),
             ),
           ],
@@ -171,47 +182,47 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
     );
   }
 
+  // Establece la conexión con el dispositivo Bluetooth y descubre sus servicios.
   void connectToDevice() async {
     try {
-      // 1. Esperamos a que el dispositivo esté realmente conectado
-      // A veces Navigator.push ocurre mientras el estado aún es "connecting"
+      // Se espera a que el dispositivo esté completamente conectado.
       await widget.device.connectionState.where((s) => s == BluetoothConnectionState.connected).first;
       
-      // 2. Pequeño respiro para el hardware (RN4871)
+      // Se añade un pequeño retardo para permitir que el hardware se estabilice.
       await Future.delayed(const Duration(milliseconds: 500));
 
       print("Estado confirmado: Conectado. Descubriendo servicios...");
 
+      // Se descubren todos los servicios disponibles en el dispositivo.
       List<BluetoothService> services = await widget.device.discoverServices();
       
       for (var service in services) {
-        // UUID del servicio transparente según el manual 
+        // Se busca el servicio UART transparente específico del dispositivo.
         if (service.uuid.toString() == "49535343-fe7d-4ae5-8fa9-9fafd205e455") {
           for (var char in service.characteristics) {
+            // Se identifica la característica de comunicación UART.
             if (char.uuid.toString().contains("9616")) { 
               uartChar = char;
+              // Se habilitan las notificaciones para recibir datos en tiempo real.
               await char.setNotifyValue(true);
 
-              // Dentro de tu Bluetooth Listener
+              // Escucha los datos recibidos del dispositivo Bluetooth y los procesa.
               char.lastValueStream.listen((value) {
-                // 1. Acumulamos lo que llega sin limpiar todavía
+                // Se acumulan los bytes recibidos en el buffer.
                 _rawBuffer += String.fromCharCodes(value);
 
-                // 2. Solo procesamos si el buffer contiene un salto de línea completo (\n)
+                // Se procesan solo cuando se recibe un salto de línea completo.
                 if (_rawBuffer.contains('\n')) {
-                  // Dividimos por saltos de línea por si han llegado varias juntas
+                  // Se divide el buffer por saltos de línea en caso de múltiples tramas juntas.
                   List<String> lines = _rawBuffer.split('\n');
-                  
-                  // El último elemento puede estar incompleto, lo guardamos para la siguiente vez
+                  // Se preserva la última línea incompleta para la siguiente iteración.
                   _rawBuffer = lines.removeLast();
 
                   for (String line in lines) {
                     String rawLine = line.trim();
                     if (rawLine.isEmpty) continue;
 
-                    // --- AQUÍ VA TU LÓGICA DE FILTRADO REFORZADA ---
-                    
-                    // A. Prioridad: AutoStop
+                    // Se detectan señales de finalización automática del experimento.
                     if (rawLine == "STOP" || rawLine.contains("AutoStop Mode enabled")) {
                       if (isAnalyzing) {
                         setState(() => isAnalyzing = false);
@@ -220,23 +231,21 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                       continue;
                     }
 
-                    // B. Filtro de Ecos de comandos (No mostrar lo que empieza por #)
+                    // Se filtran los ecos de comandos (líneas que comienzan con #).
                     if (rawLine.startsWith("#")) continue;
 
-                    // C. Filtro de comandos enviados y confirmaciones redundantes
+                    // Se valida que no sea un comando enviado previamente.
                     if (rawLine != "Exper" && rawLine != "Stop" && rawLine != "SETTINGS") {
-                      
-                      // D. Tratamiento especial para el OK
+                      // Se trata especialmente el mensaje de confirmación OK.
                       if (rawLine == "OK") {
                         addMessage("OK - Comando aceptado", false);
                       } else {
-                        // E. PROCESAMIENTO IA (Tu función personalizada)
+                        // Se procesan los datos de sensores para la inferencia de IA.
                         List<double>? datosLimpios = procesarTramaParaIA(rawLine);
                         if (datosLimpios != null && isAnalyzing) {
                           checkNeuralNetwork(datosLimpios); 
                         }
-                        
-                        // F. Mostrar en consola solo si no es ruido repetido
+                        // Se muestran los datos en la consola.
                         addMessage(rawLine, false);
                       }
                     }
@@ -252,8 +261,9 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
     }
   }
 
+  // Envía un comando al dispositivo Bluetooth.
+  // Incluye un sistema de anticebo para evitar envíos duplicados.
   void sendCommand(String cmd) async {
-    // Evita enviar el mismo comando si se pulsó hace menos de 500ms
     if (DateTime.now().difference(lastCommandTime).inMilliseconds < 500) return;
     
     if (uartChar != null) {
@@ -263,133 +273,110 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
     }
   }
 
+  // Añade un mensaje al historial de consola.
+  // Limita el historial a 100 mensajes para optimizar el rendimiento.
   void addMessage(String text, bool isCommand) {
     setState(() {
-      // Insertamos al principio para que lo nuevo aparezca arriba
       consoleHistory.insert(0, ConsoleMessage(text, isCommand));
-      
-      // Limitamos a 100 mensajes para no ralentizar el móvil
       if (consoleHistory.length > 100) consoleHistory.removeLast();
     });
   }
 
+  // Inicia el proceso de detección y resetea el resultado anterior.
   void startDetection() {
     setState(() {
       isAnalyzing = true;
-      resultadoIA = 0.0; // Reiniciamos el umbral al empezar
+      resultadoIA = 0.0;
     });
   }
 
+  // Procesa una trama de datos del dispositivo para extraer los valores de sensores.
+  // Valida que se encuentre en la fase de muestra y retorna los 13 valores de gas.
   List<double>? procesarTramaParaIA(String rawLine) {
-    // 1. Quita el espacio al inicio y al final (Regla: La primera fila de datos tiene un espacio al inicio)
-    String cleanLine = rawLine.trim();
-
-    // 2. Elimina la primera fila del archivo (Título: "Cabecera experimento NoseCris")
-    // También filtramos otros mensajes decorativos del firmware para evitar errores
-    if (cleanLine.isEmpty || 
-        cleanLine.contains('Cabecera') || 
-        cleanLine.contains('eNOSE v3') || 
-        cleanLine.contains('====') ||
-        cleanLine.contains('Starting Test') ||
-        cleanLine.contains('SW Version')) {
-      return null;
-    }
-
-    // 3. Ignorar la fila de nombres de columnas (nº, Co2(scd40)...)
-    // Es necesario para que el programa no intente convertir texto en números
-    if (cleanLine.startsWith('nº')) {
-      return null;
-    }
-
-    // 4. Separación por comas (Regla: Cambia comas por espacios en Python, aquí las usamos como separador)
-    // Nota: Dart usa el punto como decimal por defecto, así que no necesitamos cambiar puntos por comas.
+    // Se limpia la trama de prefijos y espacios innecesarios.
+    String cleanLine = rawLine.replaceAll('>> Recibido: ', '').trim();
+    // Se divide la cadena por comas para extraer los tokens individuales.
     List<String> tokens = cleanLine.split(',');
 
-    // 5. Verificación de la columna 'Aire/muestra' (Es la última columna, índice 21)
-    if (tokens.length >= 22) {
-      // Intentamos obtener el valor de la columna 21
-      double aireMuestra = double.tryParse(tokens[21]) ?? 0.0;
-
-      // Regla: Elimina las filas cuya columna Aire/muestra es 0
-      if (aireMuestra == 0) {
-        return null; 
-      }
+    // Se valida que la trama contenga suficientes valores.
+    if (tokens.length >= 21) {
+      // Se definen los índices de los 13 sensores de gas a extraer.
+      List<int> indicesGas = [1, 4, 5, 6, 7, 8, 9, 10, 12, 14, 15, 16, 20];
+      List<double> sensoresLimpios = [];
 
       try {
-        // 6. Selección de columnas (Elimina 'nº', 'temp(scd40)', 'hum(scd40)', etc.)
-        // Solo devolvemos las 13 columnas que tu script Python mantiene para el entrenamiento:
-        return [
-          double.parse(tokens[1]),  // Co2(scd40)
-          double.parse(tokens[4]),  // raw_signla(sgp40)
-          double.parse(tokens[5]),  // aiq(ens160)
-          double.parse(tokens[6]),  // tvoc(ens160)
-          double.parse(tokens[7]),  // eco2(ens160)
-          double.parse(tokens[8]),  // rs1(ens160)
-          double.parse(tokens[9]),  // rs3(ens160)
-          double.parse(tokens[10]), // rs4(ens160)
-          double.parse(tokens[12]), // rmox(zmod4410)
-          double.parse(tokens[14]), // tvoc(zmod4410)
-          double.parse(tokens[15]), // eco2(zmod4410)
-          double.parse(tokens[16]), // iaq(zmod4410)
-          double.parse(tokens[20]), // resistencia(bme688)
-        ];
+        // Se extraen los valores en los índices especificados y se convierten a double.
+        for (int idx in indicesGas) {
+          String valorS = tokens[idx].trim().replaceAll(',', '.');
+          sensoresLimpios.add(double.parse(valorS));
+        }
+
+        // Se obtiene el indicador de fase (Aire=0, Muestra=1) del final de la trama.
+        int idxFase = tokens.length - 1; 
+        double fase = double.tryParse(tokens[idxFase].trim().replaceAll(',', '.')) ?? 0.0;
+        
+        // Se retornan los sensores solo si la fase es Muestra (1.0).
+        if (fase == 1.0) return sensoresLimpios;
+        
       } catch (e) {
-        // Si alguna columna no es un número válido (ej. una celda vacía), devolvemos null
-        debugPrint("Error al parsear fila de datos: $e");
         return null;
       }
     }
-
-    return null; // Si la línea no tiene suficientes columnas
+    return null;
   }
 
+  // Ejecuta la red neuronal con los datos de sensores normalizados.
+  // Normaliza los datos usando las medias y desviaciones del modelo configurado.
   Future<void> checkNeuralNetwork(List<double> inputData) async {
-    const List<double> medias = [
-      1169.46, 26872.82, 83.52, 250.1, 500.5, 31000.2, 1200.4, 650.3, 450.8, 150.2, 400.1, 12.5, 95000.0
-    ];
+    // Se valida que el intérprete TFLite esté cargado.
+    if (_interpreter == null) {
+      debugPrint("Inferencia abortada: El intérprete aún no está cargado.");
+      return;
+    }
+    
+    // Se valida que exista una configuración de modelo seleccionada.
+    if (currentConfig == null) {
+      debugPrint("Inferencia abortada: No hay configuración de modelo seleccionada.");
+      return;
+    }
 
-    const List<double> desviaciones = [
-      647.36, 11313.59, 201.75, 120.4, 250.1, 5000.5, 300.2, 150.8, 120.4, 45.2, 80.5, 5.2, 12000.0
-    ];
-
+    final medias = currentConfig!.medias;
+    final desviaciones = currentConfig!.desviaciones;
     try {
-      // 1. ESCALADO (StandardScaler: z = (x - u) / s)
+      // Se normalizan los datos de entrada utilizando la media y desviación estándar.
       List<double> xScaled = [];
       for (int i = 0; i < inputData.length; i++) {
-        // Evitamos división por cero si la desviación es 0
+        // Se evita división por cero usando 1.0 como valor por defecto.
         double std = desviaciones[i] == 0 ? 1.0 : desviaciones[i];
+        // Se aplica la fórmula de normalización: (valor - media) / desviación.
         xScaled.add((inputData[i] - medias[i]) / std);
       }
 
-      // 2. ADAPTACIÓN AL MODELO (FLATTEN)
-      // Tu modelo espera una entrada de tamaño 242676. 
-      // Para una prueba en tiempo real, rellenamos el resto con 0.
-      var fullInput = List<double>.filled(242676, 0.0);
-      for (int i = 0; i < xScaled.length; i++) {
-        fullInput[i] = xScaled[i];
-      }
-
-      // 3. INFERENCIA TFLITE
-      var input = fullInput.reshape([1, 242676]);
+      // Se reshape los datos a la forma esperada por el modelo [1, 13].
+      var input = xScaled.reshape([1, 13]); 
+      // Se prepara el tensor de salida para almacenar la probabilidad.
       var output = List.filled(1, 0.0).reshape([1, 1]);
 
+      // Se ejecuta la inferencia con los datos normalizados.
       _interpreter!.run(input, output);
-      // double probabilidad = 0.85; // Valor de prueba
+    
+      // Se extrae la probabilidad de resultado.
       double probabilidad = output[0][0];
+      probabilidad = 1 - probabilidad;
 
-      // 4. ACTUALIZACIÓN DE INTERFAZ
+      // Se actualiza el estado con el nuevo resultado.
       setState(() {
         resultadoIA = probabilidad;
       });
 
-      // Alerta física si se supera el umbral del 70%
+      // Se activa la vibración si la probabilidad supera el umbral y la vibración está habilitada.
       if (resultadoIA >= 0.7 && vibracionActiva) {
         if (await Vibration.hasVibrator()) {
           Vibration.vibrate(duration: 500);
         }
       }
     } catch (e) {
-      debugPrint("Error en inferencia IA: $e");
+      debugPrint("Error en inferencia: $e");
     }
   }
 
@@ -421,38 +408,46 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // 1. Selector de Modelo (Parte Superior)
             Text("Modelo Detector", style: TextStyle(fontWeight: FontWeight.bold, color: Colors.blue.shade900)),
             const SizedBox(height: 10),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 12),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15),
-                border: Border.all(color: Colors.blue.shade200),
-              ),
+            currentConfig == null 
+            ? CircularProgressIndicator()
+            : Container(
+                padding: EdgeInsets.symmetric(horizontal: 12),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(color: Colors.grey),
+                ),
               child: DropdownButtonHideUnderline(
-                child: DropdownButton<String>(
-                  value: selectedModel,
+                child: DropdownButton<ModelConfig>(
+                  value: currentConfig,
                   isExpanded: true,
-                  onChanged: onModelChanged,
-                  items: ["modelo_hachis-plus.tflite", "modelo_hachis.tflite"].map((String val) {
-                    return DropdownMenuItem<String>(
-                      value: val,
-                      child: Text(val == "modelo_hachis-plus.tflite" ? "Modelo Hachís Plus" : "Modelo Hachís"),
+                  items: availableConfigs.map((ModelConfig config) {
+                    return DropdownMenuItem<ModelConfig>(
+                      value: config,
+                      child: Text(config.displayName),
                     );
                   }).toList(),
+                  onChanged: (ModelConfig? newValue) {
+                    if (newValue != null) {
+                      setState(() {
+                        currentConfig = newValue;
+                        resultadoIA = 0.0;
+                      });
+                      loadModel(newValue.fileName);
+                    }
+                  },
                 ),
               ),
             ),
 
             const SizedBox(height: 20),
 
-            // 2. Área de Sensores (Ocupa todo el espacio central)
             Expanded(
               child: Container(
                 width: double.infinity,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF1E1E1E), // Fondo negro terminal
+                  color: const Color(0xFF1E1E1E),
                   borderRadius: BorderRadius.circular(15),
                   border: Border.all(color: Colors.blue.shade900, width: 2),
                 ),
@@ -469,7 +464,6 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                         style: TextStyle(
                           fontFamily: 'monospace',
                           fontSize: 13,
-                          // VERDE para datos de sensores, NARANJA/AMARILLO para tus comandos
                           color: msg.isCommand ? Colors.orangeAccent : Colors.greenAccent,
                           fontWeight: msg.isCommand ? FontWeight.bold : FontWeight.normal,
                         ),
@@ -486,7 +480,6 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
               width: double.infinity,
               padding: const EdgeInsets.symmetric(vertical: 10),
               decoration: BoxDecoration(
-                // Ahora cambia a rojo a partir de 0.7
                 color: resultadoIA >= 0.7 ? Colors.red.withOpacity(0.2) : Colors.green.withOpacity(0.2),
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
@@ -510,10 +503,8 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
 
             const SizedBox(height: 15),
 
-            // 3. Botones de Control (Parte Inferior)
             Row(
               children: [
-                // Botón Cancelar
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
@@ -533,7 +524,6 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
                   ),
                 ),
                 const SizedBox(width: 15),
-                // Botón Iniciar
                 Expanded(
                   child: ElevatedButton(
                     onPressed: isAnalyzing ? null : () {
