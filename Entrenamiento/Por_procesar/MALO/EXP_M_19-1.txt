@@ -1,5 +1,8 @@
 Cabecera experimento NoseCris
 nº,Co2(scd40),temp(scd40),hum(scd40),raw_signla(sgp40),aiq(ens160),tvoc(ens160),eco2(ens160),rs1(ens160),rs3(ens160),rs4(ens160),temp(ens160),rmox(zmod4410),etoh(zmod4410),tvoc(zmod4410),eco2(zmod4410),iaq(zmod4410),temperatura(bme688),humedad(bme688),presion(bme688),resistencia(bme688),Aire/muestra
+ 1,1730,31.15,32.66,32485,3,217,748,445.67,485.02,83.88,25.14,5.35,0.0084,0.0159, 400, 1,33.84,27.37,94789.44,424455.968750,0
+Cabecera experimento NoseCris
+nº,Co2(scd40),temp(scd40),hum(scd40),raw_signla(sgp40),aiq(ens160),tvoc(ens160),eco2(ens160),rs1(ens160),rs3(ens160),rs4(ens160),temp(ens160),rmox(zmod4410),etoh(zmod4410),tvoc(zmod4410),eco2(zmod4410),iaq(zmod4410),temperatura(bme688),humedad(bme688),presion(bme688),resistencia(bme688),Aire/muestra
  1,1731,31.29,32.37,32460,2,232,732,439.38,476.40,82.61,25.14,5.35,0.0084,0.0159, 400, 1,33.86,27.34,94792.86,424192.218750,0
 2,1732,31.29,32.38,32449,3,237,737,441.92,473.83,82.16,25.14,5.35,0.0084,0.0159, 400, 1,33.86,27.34,94792.86,424192.218750,0
 3,1732,31.29,32.38,32449,3,237,737,441.92,473.83,82.16,25.14,5.35,0.0084,0.0159, 400, 1,33.87,27.30,94793.26,423928.781250,0
