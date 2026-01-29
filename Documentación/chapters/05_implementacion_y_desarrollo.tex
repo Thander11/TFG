@@ -13,10 +13,13 @@ La implementación y el desarrollo de la nariz electrónica se estructuran en tr
 A continuación, se detallan cada una de estas fases.
 
 \subsection{Construcción del dataset}
-Para la construcción del conjunto de datos, se llevaron a cabo múltiples experimentos (tomas de muestras) utilizando la nariz electrónica para recopilar datos de diversas muestras. En total se realizaron 76 experimentos, de los cueles los datos son almacenados en ficheros de texto (uno por cada experimento) que contienen las lecturas de los sensores. Estos ficheros se encuentran disponibles en el repositorio del proyecto mencionado en el capítulo de metodología.
+Para la construcción del conjunto de datos, se llevaron a cabo múltiples experimentos (tomas de muestras) utilizando la nariz electrónica para recopilar datos de diversas muestras. En total se realizaron 144 experimentos, de los cueles los datos son almacenados en ficheros de texto (uno por cada experimento) que contienen las lecturas de los sensores. Estos ficheros se encuentran disponibles en el repositorio del proyecto mencionado en el capítulo de metodología.
 \par
 
-Se busca hacer una clasificación binaria, es decir, distinguir entre dos clases, además de que el entrenamiento de la ANN se realice con un conjunto de datos equilibrado. Para ello, se ha dividido el dataset en dos carpetas (``BUENO'' y ``MALO''): una para las muestras positivas (hachís) y otra para las muestras negativas (otras sustancias) respectivamente. Cada carpeta contiene 38 ficheros de texto correspondientes a los experimentos realizados con cada tipo de muestra.
+Se busca hacer una clasificación binaria, es decir, distinguir entre dos clases, además de que el entrenamiento de la ANN se realice con un conjunto de datos equilibrado. Para ello, se ha dividido el dataset en dos carpetas (``BUENO'' y ``MALO''): una para las muestras positivas (hachís) y otra para las muestras negativas (otras sustancias) respectivamente. La primera capeta tiene 62 archivos, miesntras que La segunda tiene 82 archivos.
+\par
+
+En principio se realizaron 76 experimentos (38 de muestras negativas y 38 de muestras positivas). Sin embargo, tras probar la red neuronal en un entorno real, se observó que la ANN captaba bien la sustancia objetivo pero solo si se acercaba mucho el tubo de la nariz a dicha sustancia. Esto es debido a que casi todos los datos positivos eran de la sustancia pura en un bote de muestreo. Por ello, se añadieron más experimentos, tanto positivos como negativos, hasta llegar 58 muestras de cada tipo. No obstante, pese a que en este punto la red neuronal detectaba con precisión la sustancia objetivo, el número de falsos positivos era demasiado alto. Para reducir estos falsos positivos, se añadieron más muestras negativas (además de 4 muestras positivas más como pequeña ampliación), llegando a un total de 82 muestras negativas (y 62 positivas), dando como resultado final las 144 muestras mencionadas anteriormente.
 \par
 
 Para asignarle un nombre identificativo a cada experimento, se ha usado la nomenclatura EXP\_X\_Y-Z, donde:
@@ -27,6 +30,17 @@ Para asignarle un nombre identificativo a cada experimento, se ha usado la nomen
     \item \textbf{Y:} Es un índicie que, en la muestras positivias, sirve para llevar un conteo de los experimentos realizados, mientras que, en las muestras negativas, se aumenta dicho índice cada vez que se cambia de sustancia.
     \item \textbf{Z:} Es un número secuencial que identifica el experimento dentro de cada sustancia. Es usado en las muestras negativas para diferenciar entre experimentos realizados con la misma sustancia bajo distintas condiciones. En las muestras positivas se omite ya que siempre se trabaja con hachís.
 \end{itemize}
+
+En cada archivo hay hasta 210 filas de datos, y en un entrenamiento a tiempo real cada una de las filas será una entrada independiente para la ANN\. Al procesar los archivos se eliminan varias de estas filas de datos. Tras el procesamiento de archivos, se eliminan las 59 primeras filas que corresponden a la fase de desorción, la última fila, que también corresponde a esta fase y las 15 primeras filas de la fase de adsorción.
+\par
+
+El cálculo del número total de entradas después del procesamiento se puede expresar matemáticamente como:
+
+\[\text{Filas útiles por experimento} = 210 - 59 - 1 - 15 = 135\]
+
+\[\text{Total de entradas} = 135 \times 144 = 19.440\]
+
+donde 210 representa las filas iniciales por archivo, se restan las 59 filas de desorción inicial, 1 fila de desorción final, y 15 filas iniciales de adsorción, resultando en 135 filas de datos válidos. Al multiplicar por los 144 experimentos realizados, se obtiene un total de 19.440 entradas para el entrenamiento de la red neuronal.
 
 \subsubsection{Proceso de toma de muestras}
 Se trata de un proceso cíclico que consta de dos fases: desorción (toma de aire limpio para limpiar los sensores y establecer la linea base) y adsorción (toma de la muestra).
@@ -54,13 +68,13 @@ Por otra parte, también es posible tomar muestras sin necesidad de usar el bote
 Antes de poder empezar a tomar muestras, es imprescidible encender la nariz electrónica con una hora o 45 minutos de antelación para que los sensores se estabilicen térmicamente y las lecturas sean fiables.
 \par
 
-Una vez los sensores se han calentado y la sustancia está preparada, solo queda conectar la nariz electrónica a un telefono movil android mediante Bluetooth y usar la aplicación móvil desarrollada para controlar la toma de muestras. Habría que configurar en número de ciclos y los tiempos de adsorción y desorción en las condiciones que se han mencionado anteriormente (1 ciclo, 120 segundos de desorción y 300 segundos de adsorción) y ya podría iniciarse la toma de muestras enviando el comando a través de la aplicación. Para saber como configurar la aplicación y conectarla a la nariz electrónica, se puede consultar el Anexo 3.
+Una vez los sensores se han calentado y la sustancia está preparada, solo queda conectar la nariz electrónica a un telefono movil android mediante Bluetooth y usar la aplicación móvil desarrollada para controlar la toma de muestras. Habría que configurar en número de ciclos y los tiempos de adsorción y desorción en las condiciones que se han mencionado anteriormente (1 ciclo, 120 segundos de desorción y 300 segundos de adsorción) y ya podría iniciarse la toma de muestras enviando el comando a través de la aplicación. Para saber como configurar la aplicación y conectarla a la nariz electrónica, se puede consultar el Anexo C.
 \par
 
 Una vez haya finalizado la toma de la muestra, los datos se habrán al macenado en un fichero de texto llamado ``DATOS.txt'' en la tarjeta SD de la nariz electrónica. El siguiente paso es copiar este fichero al ordenador y cambiarle el nombre por el correspondiente a la nomenclatura mencionada anteriormente. Es importante borrar el contenido de la tarjeta SD antes de iniciar una nueva toma de muestras. De no hacerse, los datos de la siguiente muestra se añadirán al final del fichero ``DATOS.txt''.
 
 \subsubsection{Muestras negativas}
-Para las muestras negativas, se han utilizado diversas sustancias que pueden encontrarse en un entorno cotidiano y que no deben ser confundidas con la sustancia objetivo. Estas sustancias incluyen alimentos como cacao en polvo, limón exprimido, salsas, etc. Un seguimiento detallado de la obtención de las características de estas sustancias se encuentra en la Tabla~\autoref{tab:registro_sustancias_malo} del Anexo 1.
+Para las muestras negativas, se han utilizado diversas sustancias que pueden encontrarse en un entorno cotidiano y que no deben ser confundidas con la sustancia objetivo. Estas sustancias incluyen alimentos como cacao en polvo, limón exprimido, salsas, cajas vacias, aire limpio, etc. Un seguimiento detallado de la obtención de las características de estas sustancias se encuentra en la Tabla~\autoref{tab:registro_sustancias_malo} del Anexo A.
 \par
 
 Para cada sustancia (excepto la primera, que se hizo como una prueba), se han realizado múltiples experimentos bajo diferentes condiciones, como el estado del bote de muestreo (abierto o cerrado) y la presencia o ausencia de corriente de aire. Esto permite evaluar cómo estas variables afectan las lecturas de los sensores y la capacidad de la ANN para distinguir entre la sustancia objetivo y otras sustancias.
@@ -89,24 +103,32 @@ Las muestras positivas se han tomado usando hasta cinco tipos diferentes de hach
     \caption{Muestra de hachis usada de la toma 33 a la 38.}\label{fig:hachis_2}
 \end{figure}
 
-Para los cuatro primeros tipos y la cinta de envalar, se han realizado multiples experimentos bajo distintas condiciones, como el estado del bote de muestreo (abierto o cerrado) o si la tapa del recipiente donde se encontraba el hachís estaba puesta o no. \par
+Para los cuatro primeros tipos se han realizado multiples experimentos bajo distintas condiciones, como el estado del bote de muestreo (abierto o cerrado) o si la tapa del recipiente donde se encontraba el hachís estaba puesta o no.
+\par
 
 En el caso del quinto tipo de hachís (la muestra mas grande), los expremientos se han realizado sin usar el bote de muestreo, tomando los datos de la muestra directamente del aire de una caja cerrada y de un coche cerrado. Esto se ha hecho para simular situaciones reales donde el hachís puede estar oculto en espacios cerrados.
+\par
+
+Por otro lado, la cinta de envalar se ha usado para tomar muestras, tanto usando el bote de muestreo, como en distintas situaciones como puede ser dentro de una caja o una maleta, o incluso simplemente con el bote donde esta almacenada abierto en una habitación.
 \par
 
 Además, dado que para las muestras positivas se dispone de un menor numero de muestras en comparación con las negativas, se ha optado por repetir algunos experimentos para aumentar la cantidad de datos disponibles para el entrenamiento de la ANN, ya que, pese a tratarse de la misma muestra, los resiltados pueden ser ligeramente diferentes entre una toma y otra.
 \par
 
-Un seguimiento detallado de estas tomas de muestras se encuentra en la Tabla~\autoref{tab:registro_sustancias_bueno} del Anexo 2.
+Un seguimiento detallado de estas tomas de muestras se encuentra en la Tabla~\autoref{tab:registro_sustancias_bueno} del Anexo B.
 
 \subsubsection{Limpieza del dataset}
 Todos los archivos de texto de las muestras se han ido guardando en una carpeta llamada \texttt{Por\_procesar}, en la que tambien se encuentran divididas en las subcarpetas ``BUENO'' y ``MALO''. Estos archivos cuentan con datos, como la presión o la humedad, que no son útiles para el entrenamiento de la ANN, por lo que se ha llevado a cabo un proceso de limpieza y preprocesamiento de los datos para eliminar información irrelevante y preparar los datos para su uso en el entrenamiento de la red neuronal.
 \par
 
-Este proceso de limpieza se realiza con un script en Python llamado \texttt{Limpiador.py}, que inspecciona cada archivo de texto en las carpetas \texttt{Entrenamiento/Por\_procesar/BUENO} y \texttt{Entrenamiento/Por\_procesar/MALO}, extrae únicamente las columnas correspondientes a las lecturas de los sensores relevantes para el análisis y elimina las filas de la fase de desorción para solo tener datos de la fase de adsorción. Los archivos limpios se guardan en nuevas carpetas llamadas \texttt{Entrenamiento/BUENO} y \texttt{Entrenamiento/MALO} respectivamente, manteniendo la misma estructura de nombres de archivo para facilitar su identificación.
+Este proceso de limpieza se realiza con un script en Python llamado \texttt{Limpiador.py}, que inspecciona cada archivo de texto en las carpetas \texttt{Entrenamiento/Por\_procesar/BUENO} y \texttt{Entrenamiento/Por\_procesar/MALO}, y procede a su procesamiento para poder ser usado para llevar a cabo el entrenamiento de la ANN\: elimina la cabecera y un espacio que hay en la priemra fila de datos, cambia las comas separadoras por espacios y los puntos de los decimales por comas. Además adapta del fichero para solo tener los datos necesarios: extrae únicamente las columnas correspondientes a las lecturas de los sensores relevantes para el análisis (Omitiendo la priemra columna se lelva a cabo la eliminacion de la cavecera y del espacio de la primera fila de datos) y elimina las filas de la fase de desorción para solo tener datos de la fase de adsorción, además de eliminar las primeras 15 lineas de la fase de adsorción para omitir los datos en los que los sensores aún no han empezado a captar del todo bien las particulas. Los archivos limpios se guardan en nuevas carpetas llamadas \texttt{Entrenamiento/BUENO} y \texttt{Entrenamiento/MALO} respectivamente, manteniendo la misma estructura de nombres de archivo para facilitar su identificación.
 \par
 
 Para finalizar, el programa pregunta si se desea llevar a cabo un aumento de datos (Data Augmentation). Si se responde afirmativamente, se ejecuta un segundo script llamado \texttt{Aumentador.py}, del que se habla en el siguiente apartado.
+\par
+
+Este es el funcionamiento por defecto al ejecutar el script sin argumentos. Sin embargo, también es posible ejecutar el script para procesar un solo archivo o para procesar carpetas por lotes indicando los argumentos correspondientes. Para más detalles sobre su uso, se puede consultar la documentación incluida en el propio script.
+\par
 
 El código del script de limpieza de datos es el siguiente:
 
@@ -150,6 +172,11 @@ def procesar_archivo(file_path: str, save_path: str) -> None:
     # Elimina columnas innecesarias y filtra donde Aire/muestra sea diferente de 0
     df = df.drop(columns=[c for c in columnas_a_borrar if c in df.columns])
     df = df[df['Aire/muestra'] != 0]
+
+    # Elimina las 15 primeras líneas donde Aire/muestra == 1
+    indices_ones = df[df['Aire/muestra'] == 1].index[:15]
+    df = df.drop(indices_ones)
+
     df.to_csv(save_path, sep=' ', decimal=',', index=False)
 
 def _leer_csv_robusto(file_path: str) -> pd.DataFrame:
@@ -406,7 +433,10 @@ for ori, dest in folders.items():
 print(f"\nSe finaliza el proceso. Cada archivo original genera {OBJETIVO_POR_ARCHIVO} versiones.")
 \end{verbatim}
 
-El dataset original constaba de 76 muestras (38 positivas y 38 negativas). Tras aplicar el proceso de aumento de datos, se han generado un total de 760 muestras sintéticas adicionales (380 positivas y 380 negativas), resultando en un conjunto de datos final de 836 muestras. El nombre de los archivos aumentados sigue la nomenclatura original, añadiendo un sufijo ``\_PX'' donde ``X'' es un número secuencial que identifica cada muestra sintética generada a partir de la misma muestra original.
+El dataset original constaba de 144 muestras (62 positivas y 82 negativas). Tras aplicar el proceso de aumento de datos, se han generado un total de 1440 muestras sintéticas adicionales (620 positivas y 820 negativas). El nombre de los archivos aumentados sigue la nomenclatura original, añadiendo un sufijo ``\_PX'' donde ``X'' es un número secuencial que identifica cada muestra sintética generada a partir de la misma muestra original.
+\par
+
+En estos nuevos arcvhivos el numero total de filas por archivo es de 100, correspondientes a las 100 lecturas temporales extraídas en cada ventana. Multiplicando estas 100 filas por las 1440 muestras aumentadas, se obtiene un total de 144.000 nuevas entradas para el entrenamiento de la red neuronal.
 \par
 
 De esta forma, se consigue un dataset más rico y variado, permitiendo que la red neuronal aprenda a reconocer patrones incluso en presencia de ruido o variaciones temporales.
@@ -416,7 +446,7 @@ De esta forma, se consigue un dataset más rico y variado, permitiendo que la re
 Como se ha mencionado en apartados enteriores de este documento, no se entrenará una sola ANN, sino que se entrenarán varios modelos con distintos frameworks (Keras y PyTorch) y conjuntos de datos (concretamente con un conjunto de datos normal y otro conjunto de datos aumentado) para comparar resultados y determinar cuál se adapta mejor a las necesidades del proyecto.
 \par
 
-Entre esos modelos se entrenaron modelos estándar y modelos optimizados para su uso en tiempo real en la aplicación móvil que controla la nariz electrónica. Para ver como se han entrenado los modelos estándar y los resultados obtenidos, se puede consultar el Anexo 4.
+Entre esos modelos se entrenaron modelos estándar y modelos optimizados para su uso en tiempo real en la aplicación móvil que controla la nariz electrónica. Para ver como se han entrenado los modelos estándar y los resultados obtenidos, se puede consultar el Anexo D.
 
 \subsubsection{Keras a tiempo real}
 Esta verisión del modelo entrenado en Keras está diseñada para su uso en la aplicación móvil que controla la nariz electrónica en tiempo real. A diferencia del modelo estándar, que procesa datos completos después de la toma de muestras, este modelo está optimizado para realizar inferencias de manera continua a medida que llegan los datos de los sensores.
@@ -554,8 +584,6 @@ La estructura de ficheros de la aplicación móvil se muestra en la Figura~\auto
     \caption{Estructura de ficheros de la aplicación móvil}\label{fig:estructura_app}
 \end{figure}
 
-En el Anexo 4 se encuentra una descripción detallada de cada una de las pantallas y funcionalidades de la aplicación móvil desarrollada para controlar la nariz electrónica.
-
 \subsubsection{Desarrollo del protocolo de comunicación}
 La comunicación entre la aplicación móvil y la nariz electrónica se realiza mediante Bluetooth Low Energy (BLE). El microcontrolador PIC32 en la nariz electrónica actúa como un servidor BLE, mientras que la aplicación móvil funciona como un cliente BLE\@. La comunicación se establece utilizando servicios y características BLE predefinidos.
 
@@ -670,7 +698,7 @@ A continuación se muestra, en la Figura~\autoref{fig:diagrama_flujo_tecnico_app
     \caption{Diagrama de flujo del funcionamiento de la aplicación móvil}\label{fig:diagrama_flujo_tecnico_app}
 \end{figure}
 
-Además, este documento cuenta con los pseudocódigos de los archvios de la aplicación móvil en el Anexo 5.
+Además, este documento cuenta con los pseudocódigos de los archvios de la aplicación móvil en el Anexo E.
 
 \section{Pruebas comparativas}
 En esta sección se describen las distintas pruebas que se han llevado a cabo para evaluar el rendimiento de la nariz electrónica en comparación con el olfato canino bajo las mismas circunstancias. El modelo utilizado en las pruebas fue ``Modelo Hachís Plus'', el cual ha demostrado ser el más preciso.

@@ -5,7 +5,7 @@ En este capítulo se presentan los resultados obtenidos tras el entrenamiento y 
 Para evaluar los modelos y comprobar si los resultados sufren de sobreajuste pese a haber apliacado ``Early Stopping'', el rendimiento se visualiza mediante curvas de aprendizaje Accuracy (Precisión) y Loss (Pérdida) y una matriz de confusión.
 \par
 
-Empezando con el modelo que no cuenta con datos eumentados (con una precisión del 94.67\%), se observan sus graficas en la Figura~\autoref{fig:curvas_keras_real} y su matriz de confusión en la Figura~\autoref{fig:matriz_confusion_keras_real}.
+Empezando con el modelo que no cuenta con datos eumentados (con una precisión del 96\%), se observan sus graficas en la Figura~\autoref{fig:curvas_keras_real} y su matriz de confusión en la Figura~\autoref{fig:matriz_confusion_keras_real}.
 
 \begin{figure}[H]
     \centering
@@ -19,13 +19,13 @@ Empezando con el modelo que no cuenta con datos eumentados (con una precisión d
     \caption{Matriz de confusión del modelo ANN sin aumento de datos}\label{fig:matriz_confusion_keras_real}
 \end{figure}
 
-En la matriz de confusión que, pese a haber falsos positivos y negativos, son pocos en comparación con los aciertos. También es posible observar que el número de falsos positivos es ligeramente mayor que el de falsos negativos, lo cual es beneficioso en este caso ya que se prefiere que el sistema detecte una sustancia cuando no la hay (falso positivo) a que no la detecte cuando sí está presente (falso negativo).
+En la matriz de confusión que, pese a haber falsos positivos y negativos, son pocos en comparación con los aciertos. También es posible observar que el número de falsos negativos es ligeramente mayor que el de falsos positivos, lo cual no es un problema dado que se toman datos cada 2 segundos y, como se toman tantos datos a la hora de buscar la sustancia, no es relevante que alguno de ellos sea un falso negativo.
 \par
 
-En la gráfica de precisión se observa que tanto el conjunto de entrenamiento como el de validación alcanzan una precisión alta y similar, lo que indica que el modelo generaliza bien y no sufre de sobreajuste. Esto se respalda con la gráfica de pérdida, que muestra una disminución constante en ambas curvas, lo que también es un buen indicativo del rendimiento del modelo y una muestra de falta se sobreajuste. Además, se hab conpmetado todas las épocas disponibles sin que se haya activado el ``Early Stopping'', lo que indica que el modelo ha podido aprender de manera efectiva durante todo el proceso de entrenamiento.
+En la gráfica de precisión se observa que tanto el conjunto de entrenamiento como el de validación alcanzan una precisión alta y similar, lo que indica que el modelo generaliza bien y no sufre de sobreajuste. Esto se respalda con la gráfica de pérdida, que muestra una disminución constante en ambas curvas, lo que también es un buen indicativo del rendimiento del modelo y una muestra de falta se sobreajuste. Además, se han completado todas las épocas disponibles sin que se haya activado el ``Early Stopping'', lo que indica que el modelo ha podido aprender de manera efectiva durante todo el proceso de entrenamiento.
 \par
 
-Continuando con el modelo que cuenta con datos aumentados (con una precisión del 92.39\%), se observan sus graficas en la Figura~\autoref{fig:curvas_keras_aumentado} y su matriz de confusión en la Figura~\autoref{fig:matriz_confusion_keras_aumentado}.
+Continuando con el modelo que cuenta con datos aumentados (con una precisión del 94.67\%), se observan sus graficas en la Figura~\autoref{fig:curvas_keras_aumentado} y su matriz de confusión en la Figura~\autoref{fig:matriz_confusion_keras_aumentado}.
 
 \begin{figure}[H]
     \centering
@@ -39,12 +39,12 @@ Continuando con el modelo que cuenta con datos aumentados (con una precisión de
     \caption{Matriz de confusión del modelo ANN con aumento de datos}\label{fig:matriz_confusion_keras_aumentado}
 \end{figure}
 
-En la matriz de confusión se observa un comportamiento similar al del modelo sin aumento de datos, con un número reducido de falsos positivos y negativos en comparación con los aciertos. De nuevo, el número de falsos positivos es ligeramente mayor que el de falsos negativos, lo cual es beneficioso en este caso.
+En la matriz de confusión se observa un comportamiento similar al del modelo sin aumento de datos, con un número reducido de falsos positivos y negativos en comparación con los aciertos. De nuevo, el número de falsos negativos es ligeramente mayor que el de falsos positivos, lo cual no es un problema por el mismo motivo explicado anteriormente.
 \par
 
 En la gráfica de precisión, tanto el conjunto de entrenamiento como el de validación alcanzan una precisión alta, aunque en este caso hay una mayor diferencia entre el entrenamiento y la validación, alcanzando valores más altos durante la validación. La gráfica de pérdida muestra una disminución constante en ambas curvas, siendo una disminuación mayor en la validación, lo que también es un buen indicativo de que, pese a haber más direcencia entre entrenamiento y validación en la precisión, no hay sobreajuste.
 \par
 
-Comparando ambos modelos, se observa que el modelo sin aumento de datos tiene una precisión ligeramente superior (94.67\% frente a 92.39\%). Sin embargo, ambos modelos muestran un buen rendimiento y generalización, con matrices de confusión que indican un bajo número de falsos positivos y negativos.
+Comparando ambos modelos, se observa que el modelo sin aumento de datos tiene una precisión ligeramente superior (96\% frente a 94.67\%). Sin embargo, ambos modelos muestran un buen rendimiento y generalización, con matrices de confusión que indican un bajo número de falsos positivos y falsos negativos.
 
 \section{Resultados de pruebas comparativas}
