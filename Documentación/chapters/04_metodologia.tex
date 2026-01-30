@@ -35,7 +35,85 @@ Para la gestión de tareas, sprints y el seguimiento del progreso del proyecto, 
     \caption{Tablero Kanban del segundo sprint.}\label{fig:tablero_kanban}
 \end{figure}
 
-\subsection{Planificación}
+\section{Planificación}
+Pese a no saber exactamente que tareas se van a realizar en cada sprint, se establece unas fechas aproximadas para cada sprint en base a la duración estimada de cada fase repartiendo el tiempo disponible hasta la fecha límite de entrega del proyecto. Sin embargo, estas fechas son flexibles y pueden ajustarse según las necesidades del proyecto y el progreso real alcanzado en cada fase, el cual puede verse afectado por diversos facotres externos. De esta forma es posible distinguir una planificación inicial (Fechas aproximadas) y una planificación final (Fechas definitivas) al inicio de cada sprint.
+
+\subsection{Planificación inicial}
+Como se ha comentado anteriormente, esa planificación inicial se basa en una estimación del tiempo necesario para completar cada fase del proyecto dentro del tiempo limite, además de tener tener una semana de margen para posibles retrasos o imprevistos. Esta planificación inicial se muestra en la Tabla~\autoref{tab:planificacion_inicial}.
+
+\begin{table}[H]
+	\centering
+	\small
+	\begin{tabularx}{\textwidth}{@{} >{\centering\arraybackslash}p{0.25\textwidth} >{\raggedright\arraybackslash}p{0.25\textwidth} >{\raggedright\arraybackslash}X @{}}
+		\toprule
+		\multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Duración}} & \multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Sprint}} & \multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Descripción}} \\
+		\midrule
+		06/11/2025--14/11/2025 & Sprint 1: Reuniones iniciales y elección del tema & Primera reunión con los guías caninos y decisión del tema del proyecto.\\
+		\midrule
+        20/11/2025--04/12/2025 & Sprint 2: Revisión bibliográfica y estado del arte & Recopilación de información necesaria para el proyecto y redaccón del marco teórico.\\
+        \midrule
+        05/12/2025--10/01/2026 & Sprint 3: Formación y entrenamiento de la nariz electrónica & Cuerpo principal del proyecto. Entrenar una ANN para que detecte hachís y desarrollar una aplicación para controlar la nariz electrónica y que use esta red neuronal.\\
+        \midrule
+        11/01/2026--18/01/2026 & Sprint 4: Diseño del enfoque experimental, comparación y analisis de datos & Realización de pruebas para comparar la nariz electrónica con el olfato canino.\\
+        \midrule
+        19/01/2026--31/01/2026 & Sprint 5: Redacción final del TFG & Finalizar la memoria.\\
+        \bottomrule
+		
+	\end{tabularx}
+	\caption{Planificación inicial de sprints.}\label{tab:planificacion_inicial}
+\end{table}
+
+La fecha límite es el 06 de febrero de 2026, por lo que se deja una semana de margen al final del proyecto para posibles retrasos o imprevistos. Además, hay un sexto sprint dedicado a la preparación de la presentación del TFG, el cual abarca desde el día en el que se entrega el proyecto hasta la fecha de la defensa. Este sprint no se incluye en la tabla ya que no afecta a la planificación del proyecto en sí.
+
+El diagrama de Gantt de la Figura~\autoref{fig:gantt_planificacion_inicial} muestra una representación visual de esta planificación inicial, con las fechas aproximadas para cada fase del proyecto.
+
+\begin{figure}[H]
+	\centering
+    \shadowbox{\includegraphics[width=0.9\textwidth]{pictures/Planificacion_inicial.png}}
+	\caption{Diagrama de Gantt de la planificación inicial.}\label{fig:gantt_planificacion_inicial}
+\end{figure}
+
+\subsection{Planificación final}
+La planificación inicial es una planificación ideal en la que se cumplen todas las fechas establecidas. Sin embargo, en la práctica, es posible que surjan imprevistos o retrasos que hagan que no se pueda terminar lo establecio en un sprint dentro de su tiempo estimado.
+
+\subsubsection{Sprint 1: Reuniones iniciales y elección del tema}
+\textbf{Duración:} 6 de noviembre--14 de noviembre de 2025 (Completado según lo planificado).
+\par
+
+En primer lugar se llevó a cabo una reunión con los guías caninos de la Guadia Civil para discutir posibles temas para el TFG\@. Tras evaluar varias opciones, se decidió centrar el proyecto en la comparación entre una nariz electrónica y agentes caninos para la detección de hachís. Esta decisión se tomó teniendo en cuenta los recursos disponibles, la relevancia del tema y el interés personal del autor. Al principio se preguntó a Jesus Lozano Rogado (Cotutor del TFG y experto en narices electrónicas) si este tema era viable y factible dentro del tiempo y recursos disponibles, a lo que respondió afirmativamente, confirmandose así el tema de este trabjo.
+
+\subsubsection{Sprint 2: Revisión bibliográfica y estado del arte}
+\textbf{Duración:} 20 de noviembre--4 de diciembre de 2025 (Completado según lo planificado).
+\par
+
+Este sprint se dedicó a la recopilación de información relevante sobre narices electrónicas, detección canina y trabajos previos relacionados con el tema del TFG\@. Se revisaron artículos científicos (Algunos de Jesus Lozano), libros y otros recursos para obtener una comprensión sólida del estado del arte en este campo. Esta información se utilizó para redactar el marco teórico del proyecto, que proporciona el contexto necesario para entender la importancia y los desafíos de la comparación entre narices electrónicas y agentes caninos en la detección de sustancias.
+\par
+
+\subsubsection{Sprint 3: Formación y entrenamiento de la nariz electrónica}
+\textbf{Duración:} 5 de diciembre--24 de enero de 2026 (Retraso).
+
+\textbf{Motivo del retraso:} Problemas de funcionamiento de la nariz electrónica para la toma de muestras y cambio de enfoque en el entrenamiento de la ANN\@.
+
+\subsubsection{Sprint 4: Diseño del enfoque experimental, comparación y analisis de datos}
+\textbf{Duración:} 24 de enero--2 de febrero (Retraso)
+
+\textbf{Motivo del retraso:} Retraso acumulado y no disponivilidad del guía hasta el 2 de febrero.
+
+\subsubsection{Sprint 5: Redacción final del TFG}
+\textbf{Duración:} 3 de febrero--6 de febrero (Retraso)
+
+\textbf{Motivo del retraso:} Retraso acumulado.
+\par
+La memoria del proyecto se ha ido redactando de forma progresiva a lo largo de los sprints, aprovechando los tiempos de espera y los momentos en los que no se podía avanzar en otras tareas. Sin embargo, este sprint está dedicado a finalizar la redacción y corregir los posibles errores o inconsistencias en el documento final.
+\par
+
+El diagrama de Gantt de la Figura~\autoref{fig:gantt_planificacion_final} muestra la planificación final del proyecto, con las fechas definitivas para cada fase, teniendo en cuenta los retrasos del proyecto.
+
+\begin{figure}[H]
+    \centering
+    \shadowbox{\includegraphics[width=0.9\textwidth]{pictures/Planificacion_final.png}}
+    \caption{Diagrama de Gantt de la planificación final.}\label{fig:gantt_planificacion_final}
+\end{figure}
 
 \section{Herramientas utilizadas}
 Dada la naturaleza del proyecto, es posible dsitinguir entre dos tipos de herramientas: herramientas hardware y herramientas software.

@@ -15,6 +15,8 @@
 \usepackage{subcaption}
 \usepackage{booktabs}
 \usepackage{tabularx}
+\usepackage{colortbl}
+\usepackage{xcolor}
 \usepackage{amsmath,amssymb}
 
 % Hipervínculos
@@ -26,6 +28,8 @@
 
 \begin{document}
 
+% Definir color azul clarito para cabeceras
+\definecolor{lightblue}{RGB}{173,216,230}
 
 \begin{table}[ht]
     % Portada en la misma primera página (sin página separada)
@@ -42,7 +46,7 @@
   \small
   \begin{tabularx}{\textwidth}{@{}p{4.5cm} p{3.2cm} X@{}}
     \toprule
-    	\textbf{Fase} & \textbf{Fechas} & \textbf{Actividades} \\
+    	\cellcolor{lightblue}\textbf{Fase} & \cellcolor{lightblue}\textbf{Fechas} & \cellcolor{lightblue}\textbf{Actividades} \\
     \midrule
 
     1. Reuniones iniciales y elección del tema
@@ -93,8 +97,6 @@
             \item Definición final de la metodología comparativa.
             \item Coordinación con guías caninos.
             \item Pruebas comparativas (nariz electrónica vs perros) y recogida de datos.
-            \item Limpieza y análisis de datos.
-            \item Comparación entre ambos sistemas.
             \item Elaboración de gráficas y tablas.
           \end{itemize}
         \end{minipage} \\
@@ -106,7 +108,6 @@
       & \begin{minipage}[t]{\linewidth}
           \begin{itemize}
             \item Finalizar redacción.
-            \item Integración completa del documento.
             \item Correcciones finales.
           \end{itemize}
         \end{minipage} \\
