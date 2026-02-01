@@ -13,23 +13,26 @@ Desde el principio se definieron cinco fases principales:
 
 Sin embargo, el contenido específico, la secuencia detallada y la carga de trabajo dentro de cada fase no podían fijarse de antemano, ya que dependen de la disponibilidad de recursos, de las personas implicadas y de la información que se vaya obteniendo durante el avance del proyecto. Por este motivo se adoptó un enfoque ligero, apoyado en metodologías ágiles (Scrum y Kanban), que facilita mantener un ritmo constante y una alta capacidad de adaptación ante cambios y necesidades emergentes.
 
-Si bien se puede considerar a la Guardia Civil como el cliente final del proyecto, existen otros roles en este tipo de metodologías ágiles que también son relevantes, como el Product Owner (Responsable de definir las prioridades y objetivos del proyecto), el Scrum Master (Responsable de facilitar la implementación de la metodología ágil y eliminar obstáculos) y los desarrolladores. En este caso, dada la naturaleza del proyecto (Un trabajo de fin de grado), el propio autor de este trabajo asume todos estos roles, gestionando tanto la planificación y ejecución del proyecto como la comunicación con los guías caninos de la Guardia Civil.
+Si bien se puede considerar a la Guardia Civil como el cliente final del proyecto, existen otros roles en este tipo de metodologías ágiles que también son relevantes, como el Product Owner (responsable de definir las prioridades y objetivos del proyecto), el Scrum Master (responsable de facilitar la implementación de la metodología ágil y eliminar obstáculos) y los desarrolladores. En este caso, dada la naturaleza del proyecto (un trabajo de fin de grado), el propio autor de este trabajo asume todos estos roles, gestionando tanto la planificación y ejecución del proyecto como la comunicación con los guías caninos de la Guardia Civil.
 
 \subsubsection{Control de versiones con Git}
-Para garantizar la trazabilidad y poder revertir cambios si fuera necesario, se utiliza Git como sistema de control de versiones. Esto permite mantener un historial detallado de todas las modificaciones realizadas en el código y la documentación, facilitando la colaboración y la gestión del proyecto.
+Para garantizar la trazabilidad y poder revertir cambios si fuera necesario, se utiliza Git como sistema de control de versiones. Esto permite mantener un historial detallado de todas las modificaciones realizadas en el código y la documentación, facilitando la gestión del proyecto.
 \par
 
 Esto se logra a traves de un repositorio privado en GitHub gestionado mediante ramas, en el que se almacena todo el código fuente, documentación, información recopilada a modo de apuntes y recursos relacionados con el proyecto.
+\par
+
+Este proceso se lleva a cabo usando GitHub Desktop, una aplicación que proporciona una interfaz gráfica para gestionar repositorios Git alojados en GitHub. Esta herramienta facilita la realización de operaciones comunes de Git, como commits, push, pull y la gestión de ramas, sin necesidad de utilizar la línea de comandos.
 
 \subsubsection{Sprints adaptativos}
 Se define como sprint a cada una de las fases anteriormente mencionadas. La duración de cada sprint se fija en funcion de una estimación del tiempo que se cree necesario para lograr los objetivos establecidos para esa fase.
 \par
 
-Antes de que inicie cada sprint (En los ultimos días del sprint anterior), se hace una organiacación aproximada de las tareas a realizar. Al comenzar el sprint, se hace una planificación más detallada de las tareas a realizar, asignando prioridades y fijando fechas de las posibles reuniones con los implicados. Durante el sprint, se revisa periódicamente el progreso y se ajustan las tareas y prioridades según sea necesario.
+Antes de que inicie cada sprint (en los ultimos días del sprint anterior), se hace una organiacación aproximada de las tareas a realizar. Al comenzar el sprint, se hace una planificación más detallada de las tareas a realizar, asignando prioridades y fijando fechas de las posibles reuniones con los implicados. Durante el sprint, se revisa periódicamente el progreso y se ajustan las tareas y prioridades según sea necesario.
 
 \subsubsection{Github Projects y Tablero Kanban}
 
-Para la gestión de tareas, sprints y el seguimiento del progreso del proyecto, se utiliza GitHub Projects (En el repositorio anteriormente mencionado), que cuenta con un tablero Kanban integrado, como el que se muestra en la Figura~\autoref{fig:tablero_kanban}. Este tablero permite visualizar las tareas en diferentes estados (Backlog, Ready, In progress, Done) y facilita la organización y priorización de las actividades. Cada tarea se representa como una tarjeta que puede moverse entre las columnas según su estado actual, proporcionando una visión clara del avance del proyecto.
+Para la gestión de tareas, sprints y el seguimiento del progreso del proyecto, se utiliza GitHub Projects (en el repositorio anteriormente mencionado), que cuenta con un tablero Kanban integrado, como el que se muestra en la~\autoref{fig:tablero_kanban}. Este tablero permite visualizar las tareas en diferentes estados (Backlog, Ready, In progress, Done) y facilita la organización y priorización de las actividades. Cada tarea se representa como una tarjeta que puede moverse entre las columnas según su estado actual, proporcionando una visión clara del avance del proyecto.
 
 Cada estado del tablero Kanban tiene un significado específico:
 \begin{itemize}
@@ -46,10 +49,10 @@ Cada estado del tablero Kanban tiene un significado específico:
 \end{figure}
 
 \section{Planificación}
-Pese a no saber exactamente que tareas se van a realizar en cada sprint, se establece unas fechas aproximadas para cada sprint en base a la duración estimada de cada fase repartiendo el tiempo disponible hasta la fecha límite de entrega del proyecto. Sin embargo, estas fechas son flexibles y pueden ajustarse según las necesidades del proyecto y el progreso real alcanzado en cada fase, el cual puede verse afectado por diversos facotres externos. De esta forma es posible distinguir una planificación inicial (Fechas aproximadas) y una planificación final (Fechas definitivas) al inicio de cada sprint.
+Pese a no saber exactamente que tareas se van a realizar en cada sprint, se establece unas fechas aproximadas para cada sprint en base a la duración estimada de cada fase repartiendo el tiempo disponible hasta la fecha límite de entrega del proyecto. Sin embargo, estas fechas son flexibles y pueden ajustarse según las necesidades del proyecto y el progreso real alcanzado en cada fase, el cual puede verse afectado por diversos facotres externos. De esta forma es posible distinguir una planificación inicial (fechas aproximadas) y una planificación final (fechas definitivas).
 
 \subsection{Planificación inicial}
-Como se ha comentado anteriormente, esa planificación inicial se basa en una estimación del tiempo necesario para completar cada fase del proyecto dentro del tiempo limite, además de tener tener una semana de margen para posibles retrasos o imprevistos. Esta planificación inicial se muestra en la Tabla~\autoref{tab:planificacion_inicial}.
+Como se ha comentado anteriormente, esta planificación inicial se basa en una estimación del tiempo necesario para completar cada fase del proyecto dentro del tiempo limite, además de tener tener una semana de margen para posibles retrasos o imprevistos. Esta planificación inicial se muestra en la~\autoref{tab:planificacion_inicial}.
 
 \begin{table}[H]
 	\centering
@@ -66,16 +69,16 @@ Como se ha comentado anteriormente, esa planificación inicial se basa en una es
         \midrule
         11/01/2026--18/01/2026 & Sprint 4: Diseño del enfoque experimental, comparación y analisis de datos & Realización de pruebas para comparar la nariz electrónica con el olfato canino.\\
         \midrule
-        19/01/2026--31/01/2026 & Sprint 5: Redacción final del TFG & Finalizar la memoria.\\
+        19/01/2026--31/01/2026 & Sprint 5: Redacción final del TFG & Finalizar la memoria y corregir los posibles errores.\\
         \bottomrule
 		
 	\end{tabularx}
 	\caption{Planificación inicial de sprints.}\label{tab:planificacion_inicial}
 \end{table}
 
-La fecha límite es el 06 de febrero de 2026, por lo que se deja una semana de margen al final del proyecto para posibles retrasos o imprevistos. Además, hay un sexto sprint dedicado a la preparación de la presentación del TFG, el cual abarca desde el día en el que se entrega el proyecto hasta la fecha de la defensa. Este sprint no se incluye en la tabla ya que no afecta a la planificación del proyecto en sí.
+La fecha límite es el 6 de febrero de 2026, por lo que se deja una semana de margen al final del proyecto para posibles retrasos o imprevistos. Además, hay un sexto sprint dedicado a la preparación de la presentación del TFG, el cual abarca desde el día en el que se entrega el proyecto hasta la fecha de la defensa. Este sprint no se incluye en la tabla ya que no afecta a la planificación del proyecto en sí.
 
-El diagrama de Gantt de la Figura~\autoref{fig:gantt_planificacion_inicial} muestra una representación visual de esta planificación inicial, con las fechas aproximadas para cada fase del proyecto.
+El diagrama de Gantt de la~\autoref{fig:gantt_planificacion_inicial} muestra una representación visual de esta planificación inicial, con las fechas aproximadas para cada fase del proyecto.
 
 \begin{figure}[H]
 	\centering
@@ -90,7 +93,7 @@ La planificación inicial es una planificación ideal en la que se cumplen todas
 \textbf{Duración:} 6 de noviembre--14 de noviembre de 2025 (Completado según lo planificado).
 \par
 
-En primer lugar se llevó a cabo una reunión con los guías caninos de la Guadia Civil para discutir posibles temas para el TFG\@. Tras evaluar varias opciones, se decidió centrar el proyecto en la comparación entre una nariz electrónica y agentes caninos para la detección de hachís. Esta decisión se tomó teniendo en cuenta los recursos disponibles, la relevancia del tema y el interés personal del autor. Al principio se preguntó a Jesus Lozano Rogado (Cotutor del TFG y experto en narices electrónicas) si este tema era viable y factible dentro del tiempo y recursos disponibles, a lo que respondió afirmativamente, confirmandose así el tema de este trabjo.
+En primer lugar se llevó a cabo una reunión con los guías caninos de la Guadia Civil para discutir posibles temas para el TFG\@. Tras evaluar varias opciones, se decidió centrar el proyecto en la comparación entre una nariz electrónica y agentes caninos para la detección de hachís. Esta decisión se tomó teniendo en cuenta los recursos disponibles, la relevancia del tema y el interés personal del autor. Al principio se preguntó a Jesus Lozano Rogado (cotutor del TFG y experto en narices electrónicas) si este tema era viable y factible dentro del tiempo y recursos disponibles, a lo que respondió afirmativamente, confirmandose así el tema de este trabjo.
 \par
 
 Al comenzo de este capítulo se menciona que las fases se definieron desde el principio, lo cual no es del todo cierto. En realidad, estas fases se definieron durante este sprint, una vez que se decidió el tema del proyecto y se comprendió mejor su alcance y los recursos disponibles.
@@ -100,7 +103,7 @@ Al comenzo de este capítulo se menciona que las fases se definieron desde el pr
 \textbf{Duración:} 20 de noviembre--4 de diciembre de 2025 (Completado según lo planificado).
 \par
 
-Este sprint se dedicó a la recopilación de información relevante sobre narices electrónicas, detección canina y trabajos previos relacionados con el tema del TFG\@. Se revisaron artículos científicos (Algunos de Jesus Lozano), libros y otros recursos para obtener una comprensión sólida del estado del arte en este campo. Esta información se utilizó para redactar el marco teórico del proyecto, que proporciona el contexto necesario para entender la importancia y los desafíos de la comparación entre narices electrónicas y agentes caninos en la detección de sustancias.
+Este sprint se dedicó a la recopilación de información relevante sobre narices electrónicas, detección canina y trabajos previos relacionados con el tema del TFG\@. Se revisaron artículos científicos (algunos de Jesus Lozano), libros y otros recursos para obtener una comprensión sólida del estado del arte en este campo. Esta información se utilizó para redactar el marco teórico del proyecto, que proporciona el contexto necesario para entender la importancia y los desafíos de la comparación entre narices electrónicas y agentes caninos en la detección de sustancias.
 \par
 
 \subsubsection{Sprint 3: Formación y entrenamiento de la nariz electrónica}
@@ -112,7 +115,7 @@ Este sprint se dedicó a la recopilación de información relevante sobre narice
 Este es el sprint más largo y complejo del proyecto, ya que implica el desarrollo del producto principal.
 \par
 
-Pese a haber recopilado información acerca de las narices electrónicas y su funciionamiento, era necesario una explicación más detallada sobre el uso. Por ello, este sprint comienza con el Dr.\ Jesús Lozano Rogado, cotutor del TFG y experto en narices electrónicas, para acordar un día en el que poder visitar el laboratorio de sensores de la Escuela de Ingenierías Industriales de Badajoz y recibir una formación práctica por parte de Cristina Brugera Salas sobre el uso de la nariz electrónica diseñada y construida en por ella. Esta formación fue fundamental para entender cómo utilizar la nariz electrónica de manera efectiva y terminar de enfocar el rumbo que debía tomar el proyecto.
+Pese a haber recopilado información acerca de las narices electrónicas y su funciionamiento, era necesario una explicación más detallada sobre el uso. Por ello, este sprint comienza con una reunión con el Dr.\ Jesús Lozano Rogado para acordar un día en el que poder visitar el laboratorio de sensores de la Escuela de Ingenierías Industriales de Badajoz y recibir una formación práctica por parte de Cristina Brugera Salas sobre el uso de la nariz electrónica diseñada y construida por ella. Esta formación fue fundamental para entender cómo utilizar la nariz electrónica de manera efectiva y terminar de enfocar el rumbo que debía tomar el proyecto.
 \par
 
 Tras la formación se decidió que el ``entrenamiento de la nariz electrónica'' consisitiria en el entrenamiento de una red neuronal artificial (ANN) para que, a partir de los datos obtenidos por la nariz electrónica al analizar diferentes muestras, pudiera detectar la presencia de hachís. Este ``entrenamiento de la nariz electrónica'' se dividió en cinco subtareas principales:
@@ -144,7 +147,7 @@ El mismo día que se finalizó el sprint 3, se contactó con el guía canino par
 La memoria del proyecto se ha ido redactando de forma progresiva a lo largo de los sprints, aprovechando los tiempos de espera y los momentos en los que no se podía avanzar en otras tareas. Sin embargo, este sprint está dedicado a finalizar la redacción y corregir los posibles errores o inconsistencias en el documento final.
 \par
 
-El diagrama de Gantt de la Figura~\autoref{fig:gantt_planificacion_final} muestra la planificación final del proyecto, con las fechas definitivas para cada fase, teniendo en cuenta los retrasos del proyecto.
+El diagrama de Gantt de la~\autoref{fig:gantt_planificacion_final} muestra la planificación final del proyecto, con las fechas definitivas para cada fase, teniendo en cuenta los retrasos del proyecto.
 
 \begin{figure}[H]
     \centering
@@ -152,7 +155,7 @@ El diagrama de Gantt de la Figura~\autoref{fig:gantt_planificacion_final} muestr
     \caption{Diagrama de Gantt de la planificación final.}\label{fig:gantt_planificacion_final}
 \end{figure}
 
-En la Figura~\autoref{fig:seguimiento} se muestra una hoja de calculo en la que se ha llevado un control de las fechas teóricas y reales de cada tarea, así como el estado de cada una de ellas y el desfase (positivo si se ha acabado antes de lo previsto, negativo si se ha acabado después de lo previsto).
+En la~\autoref{fig:seguimiento} se muestra una hoja de calculo en la que se ha llevado un control de las fechas teóricas y reales de cada tarea, así como el estado de cada una de ellas y el desfase (positivo si se ha acabado antes de lo previsto, negativo si se ha acabado después de lo previsto).
 
 \begin{figure}[H]
     \centering
@@ -164,7 +167,7 @@ En la Figura~\autoref{fig:seguimiento} se muestra una hoja de calculo en la que 
 Dada la naturaleza del proyecto, es posible dsitinguir entre dos tipos de herramientas: herramientas hardware y herramientas software.
 
 \subsection{Herramientas hardware}
-Aquí se encuentra la principal herramienta para este estudio: la nariz electrónica utilizada para la toma de datos de las ditintas muestras y, posteriormente, para la realización de las pruebas con la ANN y la neuva aplicación móvil. Esta nariz electrónica ha sido diseñada y construida en el laboratorio de sensores de la Escuela de Ingenierías Industriales de Badajoz por Cristina Brugera Salas, bajo la supervisión del Dr.\ Jesús Lozano Rogado, cotutor de este trabajo.
+Aquí se encuentra la principal herramienta para este estudio: la nariz electrónica utilizada para la toma de datos de las ditintas muestras y, posteriormente, para la realización de las pruebas con la ANN y la neuva aplicación móvil. 
 \par
 
 \begin{figure}[H]
@@ -173,7 +176,7 @@ Aquí se encuentra la principal herramienta para este estudio: la nariz electró
     \caption{Carcasa de la nariz electrónica.}\label{fig:nariz_electronica}
 \end{figure}
 
-En la Figura~\autoref{fig:nariz_electronica} se puede observar dicha nariz electrónica desde una vista exterior (La carcasa), donde están los orificios de entrada y salida de aire. La ``verdadera'' nariz electrónica es una placa PCB, diseñada y programada en el laboratorio de sensores de la Esuela de Ingenierias Industriales de Badajoz, que se encuentra en el interior de la carcasa. En esta placa es donde se encuentran los sensores de gases y el microcontrolador PIC32MM0256GPM048, además de contar con un módulo Bluetooth Rn4871 para la comunicación con una aplicación movil que la controla, y una entrada microUSB para poder conectarla a la corriente y cargar la bateria con la que cuenta. Toda esta placa se muestra en la Figura~\autoref{fig:placa_pcb}.
+En la~\autoref{fig:nariz_electronica} se puede observar dicha nariz electrónica desde una vista exterior (la carcasa), donde están los orificios de entrada y salida de aire. La ``verdadera'' nariz electrónica es una placa PCB, diseñada y programada en el laboratorio de sensores de la Esuela de Ingenierias Industriales de Badajoz, que se encuentra en el interior de la carcasa. En esta placa es donde se encuentran los sensores de gases y el microcontrolador PIC32MM0256GPM048, además de contar con un módulo Bluetooth Rn4871 para la comunicación con una aplicación movil que la controla, y una entrada microUSB para poder conectarla a la corriente y cargar la bateria con la que cuenta. Toda esta placa se muestra en la~\autoref{fig:placa_pcb}.
 \par
 
 \begin{figure}[H]
@@ -193,7 +196,7 @@ El conjunto de sensores que componen esta nariz electrónica es el siguiente:
 \subsection{Herramientas software}
 
 \subsubsection{Toma de muestras}
-Para la fase de toma de muestras, en conjunto con la nariz electrónica mencionada en el apartado anterior, se ha utilzado una aplicación móvil que permite controlar la nariz electrónica a través de Bluetooth, enviando comandos a través de la aplicación, y recoger los datos obtenidos por los sensores. Esta aplicación facilita la configuración de los parámetros de medición, el inicio y la detención de las pruebas, así como el almacenamiento y exportación de los datos recopilados para su posterior análisis. En la Figura~\autoref{fig:app_toma_muestras} se muestra una captura de pantalla de la interfaz de la aplicación móvil mencionada.
+Para la fase de toma de muestras, en conjunto con la nariz electrónica mencionada en el apartado anterior, se ha utilzado una aplicación móvil que permite controlar la nariz electrónica a través de Bluetooth, enviando comandos a través de la aplicación, y recoger los datos obtenidos por los sensores. Esta aplicación facilita la configuración de los parámetros de medición, el inicio y la detención de las pruebas, así como el almacenamiento y exportación de los datos recopilados para su posterior análisis. En la~\autoref{fig:app_toma_muestras} se muestra una captura de pantalla de la interfaz de la aplicación móvil mencionada.
 
 \begin{figure}[H]
     \centering
@@ -201,8 +204,8 @@ Para la fase de toma de muestras, en conjunto con la nariz electrónica menciona
     \caption{Interfaz de la aplicación móvil para el control de la toma de muestras.}\label{fig:app_toma_muestras}
 \end{figure}
 
-\subsubsection{Limpieza del dataset}
-Para la limpieza y preprocesamiento de los datos obtenidos durante la fase de toma de muestras, se busca crear un script que automatice este proceso y facilite la preparación del dataset para su posterior análisis y entrenamiento de la ANN\@. Existen varias posibilidades para llevar a cabo esta tarea, entre las que se incluyen:
+\subsubsection{Limpieza y ampliación del dataset}
+Para la limpieza y preprocesamiento de los datos obtenidos durante la fase de toma de muestras, se busca crear un script que automatice este proceso y facilite la preparación del dataset para su posterior análisis y entrenamiento de la ANN\@. Además también se buscar crear otro script para la ampliación del dataset. Existen varias posibilidades para llevar a cabo estas tareas, entre las que se incluyen:
 
 \begin{itemize}
     \item \textbf{Python:}
@@ -238,7 +241,7 @@ Para la limpieza y preprocesamiento de los datos obtenidos durante la fase de to
     \end{itemize}
 \end{itemize}
 
-Dado que se trata de un script sencillo, que no tienen que procesar una gran cantidad de datos, se ha optado por utilizar Python para la limpieza de dichos datos. Esta elección se basa en la familiaridad con el lenguaje, la disponibilidad de librerías especializadas y la facilidad para crear scripts reproducibles que faciliten el análisis posterior.
+Dado que se tratan de unos scripts sencillos, que no tienen que procesar una gran cantidad de datos, se ha optado por utilizar Python para la limpieza y ampliación de dichos datos. Esta elección se basa en la familiaridad con el lenguaje, la disponibilidad de librerías especializadas y la facilidad para crear scripts reproducibles que faciliten el análisis posterior.
 
 \subsubsection{Entrenamiento de la ANN}
 Existen diversas herramientas y frameworks para el desarrollo y entrenamiento de redes neuronales artificiales (ANN\@). Algunas de esas opciones son:
@@ -318,7 +321,7 @@ Existen diversas herramientas y frameworks para el desarrollo y entrenamiento de
     \end{itemize}
 \end{itemize}
 
-Para este proyecto se ha decidio usar Python (concretamente la versión 3.12) como lenguaje de programación debido a sus ventajas, especialmente por ser el mas usado para el entrenamiento de modelos de inteligencia artificial y el gran soporte de la comunidad. En cuanto al entorno de ejecución, se ha optado por Google Colab, ya que proporciona acceso gratuito a GPUs y TPUs, facilitando el entrenamiento de modelos complejos sin necesidad de contar con hardware potente localmente y pudiendo guardar los notebooks, modelos y datasets directamente en Google Drive\@. Finalmente se han elegido tanto PyTorch como Keras como frameworks para el desarrollo y entrenamiento de la ANN (Aunque se usarán tambíen librerias de Scikit-Learn, Pandas y NumPy). Se entrenarán modelos con ambos frameworks y los mismos datos para comparar resultados y determinar cuál se adapta mejor a las necesidades del proyecto.
+Para este proyecto se ha decidio usar Python (concretamente la versión 3.12) como lenguaje de programación debido a sus ventajas, especialmente por ser el mas usado para el entrenamiento de modelos de inteligencia artificial y el gran soporte de la comunidad. En cuanto al entorno de ejecución, se ha optado por Google Colab, ya que proporciona acceso gratuito a GPUs y TPUs, facilitando el entrenamiento de modelos complejos sin necesidad de contar con hardware potente localmente y pudiendo guardar los notebooks, modelos y datasets directamente en Google Drive\@. Finalmente se han elegido tanto PyTorch como Keras como frameworks para el desarrollo y entrenamiento de la ANN (aunque se usarán tambíen librerias de Scikit-Learn, Pandas y NumPy). Se entrenarán modelos con ambos frameworks y los mismos datos para comparar resultados y determinar cuál se adapta mejor a las necesidades del proyecto.
 
 \subsubsection{Aplicación Bluetooth}
 Para el desarrollo de la aplicación móvil que se comunicará con la nariz electrónica a través de Bluetooth, se han considerado varias opciones de herramientas:

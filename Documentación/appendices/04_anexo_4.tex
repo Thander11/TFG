@@ -45,7 +45,7 @@ El primer paso de todos es la importación de las librerías necesarias para el 
 
 Se ha diseñado una arquitectura de tipo Perceptrón Multicapa (MLP) adaptada a la alta dimensionalidad de los datos. La estructura definida en la clase OlfativaANN integra:
 \begin{enumerate}
-    \item \textbf{Capa de entrada:} Ajustada dinámicamente al número de características de las muestras (Por si se decide en un futuro modificar la duración de muestreo de los sensores).
+    \item \textbf{Capa de entrada:} Ajustada dinámicamente al número de características de las muestras (por si se decide en un futuro modificar la duración de muestreo de los sensores).
     \item \textbf{Primera capa oculta:} 32 neuronas con función de activación ReLU para capturar patrones no lineales.
     \item \textbf{Capa de Dropout:} Se configuró una probabilidad de 0.2 (20\%). Esta técnica de regularización previene el sobreajuste (overfitting) al desactivar neuronas aleatoriamente durante el entrenamiento.
     \item \textbf{Segunda capa oculta:} 16 neuronas con función de activación ReLU\@.
@@ -79,7 +79,7 @@ Para el entrenamiento del ``modelo plus'' con el dataset aumentado, se siguió u
 Tras el entrenamiento, se evalúa el modelo para comprobar si los resultados sufren de sobreajuste pese a haber apliacado ``Early Stopping''. El rendimiento se visualiza mediante curvas de aprendizaje Accuracy (Precisión) y Loss (Pérdida) y matrices de confusión.
 \par
 
-En las Figuras~\autoref{fig:curvas_entrenamiento_Keras} y~\autoref{fig:matriz_confusion_Keras} se muestran las curvas de aprendizaje y la matriz de confusión del modelo entrenado en Keras, mientras que en las Figuras~\autoref{fig:curvas_entrenamiento_Keras-plus} y~\autoref{fig:matriz_confusion_Keras-plus} se presentan los resultados correspondientes al ``modelo plus''.
+En la~\autoref{fig:curvas_entrenamiento_Keras} y la~\autoref{fig:matriz_confusion_Keras} se muestran las curvas de aprendizaje y la matriz de confusión del modelo entrenado en Keras, mientras que en la~\autoref{fig:curvas_entrenamiento_Keras-plus} y la~\autoref{fig:matriz_confusion_Keras-plus} se presentan los resultados correspondientes al ``modelo plus''.
 
 \begin{figure}[H]
     \centering
@@ -111,7 +111,7 @@ Observando las matrices de confusión, se puede apreciar que ambos modelos prese
 Esto sugiere que el uso de datos ampliados ha contribuido a mejorar la robustez del modelo, permitiéndole aprender patrones más generales y reducir la dependencia de características específicas del conjunto de entrenamiento.
 \par
 
-De manera similar, en las Figuras~\autoref{fig:curvas_entrenamiento_PyTorch} y~\autoref{fig:matriz_confusion_PyTorch} se muestran las curvas de aprendizaje y la matriz de confusión del modelo entrenado en PyTorch, mientras que en las Figuras~\autoref{fig:curvas_entrenamiento_PyTorch-plus} y~\autoref{fig:matriz_confusion_PyTorch-plus} se presentan los resultados correspondientes al ``modelo plus''.
+De manera similar, en la~\autoref{fig:curvas_entrenamiento_PyTorch} y la~\autoref{fig:matriz_confusion_PyTorch} se muestran las curvas de aprendizaje y la matriz de confusión del modelo entrenado en PyTorch, mientras que en la~\autoref{fig:curvas_entrenamiento_PyTorch-plus} y la~\autoref{fig:matriz_confusion_PyTorch-plus} se presentan los resultados correspondientes al ``modelo plus''.
 
 \begin{figure}[H]
     \centering
@@ -137,7 +137,7 @@ De manera similar, en las Figuras~\autoref{fig:curvas_entrenamiento_PyTorch} y~\
     \caption{Matriz de confusión del modelo entrenado en PyTorch con datos ampliados.}\label{fig:matriz_confusion_PyTorch-plus}
 \end{figure}
 
-En este caso es posible observar que, a diferencia de Keras, los resultados del entrenamiento del modelo normal son algo mejores, pese a que la precisión sea la misma (93.75\%) y sigue habiendo una ligera diferencia entre las curvas de entrenamiento y validación, siendo esta ultima inferior a la otra, dicha diferencia es algo menor que con Keras. Lo mismo pasa en el caso de la gráfica de la perdida. El resultado es parecido al de Keras, con una pérdida de validación mayor que la de entrenamiento (Aunque menor que en el caso de Keras), lo que indica que el modelo ha memorizado patrones específicos del conjunto de entrenamiento que no se generalizan bien a datos nuevos. En el modelo aumentado, la cuerva de precisión de validación es algo inestable, además de que no supone una gran mejora respecto al modelo normal (Con una precisión del 98.03\%), ya que la precisión de validación sigue siendo inferior a la de entrenamiento. En cuanto a la pérdida, esta sigue siendo mayor en el conjunto de validación que en el de entrenamiento, lo que indica que el modelo sigue memorizando patrones específicos del conjunto de entrenamiento.
+En este caso es posible observar que, a diferencia de Keras, los resultados del entrenamiento del modelo normal son algo mejores, pese a que la precisión sea la misma (93.75\%) y sigue habiendo una ligera diferencia entre las curvas de entrenamiento y validación, siendo esta ultima inferior a la otra, dicha diferencia es algo menor que con Keras. Lo mismo pasa en el caso de la gráfica de la perdida. El resultado es parecido al de Keras, con una pérdida de validación mayor que la de entrenamiento (aunque menor que en el caso de Keras), lo que indica que el modelo ha memorizado patrones específicos del conjunto de entrenamiento que no se generalizan bien a datos nuevos. En el modelo aumentado, la cuerva de precisión de validación es algo inestable, además de que no supone una gran mejora respecto al modelo normal (con una precisión del 98.03\%), ya que la precisión de validación sigue siendo inferior a la de entrenamiento. En cuanto a la pérdida, esta sigue siendo mayor en el conjunto de validación que en el de entrenamiento, lo que indica que el modelo sigue memorizando patrones específicos del conjunto de entrenamiento.
 \par
 
 Por otra parte, comparando ambos frameworks directamente, se puede observar que Keras presenta una mayor brecha entre las curvas de entrenamiento y validación en el modelo normal, lo que sugiere un mayor sobreajuste en comparación con los modelos de PyTorch. En el caso del modelo aumentado, Keras muestra una mejor alineación entre las curvas, indicando una mejor generalización en comparación con PyTorch, donde hay indicios de sobreajuste en ambos modelos.

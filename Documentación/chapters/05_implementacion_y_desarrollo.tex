@@ -57,7 +57,7 @@ Para que el aire entre en la carcasa y entre en contacto con los sensores, se co
     \caption{Disposición del equipo para la muestra EXP\_M\_5--1.}\label{fig:setup_muestreo}
 \end{figure}
 
-Por otra parte, también es posible tomar muestras sin necesidad de usar el bote de muestreo, conectando directamente un tubo de adsorción que enctre en contacto con el aire, por ejemplo para tomar muestra de la calidad de aire de una habitación entera, o colocandolo cerca de una sustancia, como ocurre en la Figura~\autoref{fig:setup_muestreo_sin_bote}.
+Por otra parte, también es posible tomar muestras sin necesidad de usar el bote de muestreo, conectando directamente un tubo de adsorción que enctre en contacto con el aire, por ejemplo para tomar muestra de la calidad de aire de una habitación entera, o colocandolo cerca de una sustancia, como ocurre en la~\autoref{fig:setup_muestreo_sin_bote}.
 
 \begin{figure}[H]
     \centering
@@ -74,7 +74,7 @@ Una vez los sensores se han calentado y la sustancia está preparada, solo queda
 Una vez haya finalizado la toma de la muestra, los datos se habrán al macenado en un fichero de texto llamado ``DATOS.txt'' en la tarjeta SD de la nariz electrónica. El siguiente paso es copiar este fichero al ordenador y cambiarle el nombre por el correspondiente a la nomenclatura mencionada anteriormente. Es importante borrar el contenido de la tarjeta SD antes de iniciar una nueva toma de muestras. De no hacerse, los datos de la siguiente muestra se añadirán al final del fichero ``DATOS.txt''.
 
 \subsubsection{Muestras negativas}
-Para las muestras negativas, se han utilizado diversas sustancias que pueden encontrarse en un entorno cotidiano y que no deben ser confundidas con la sustancia objetivo. Estas sustancias incluyen alimentos como cacao en polvo, limón exprimido, salsas, cajas vacias, aire limpio, etc. Un seguimiento detallado de la obtención de las características de estas sustancias se encuentra en la Tabla~\autoref{tab:registro_sustancias_malo} del Anexo A.
+Para las muestras negativas, se han utilizado diversas sustancias que pueden encontrarse en un entorno cotidiano y que no deben ser confundidas con la sustancia objetivo. Estas sustancias incluyen alimentos como cacao en polvo, limón exprimido, salsas, cajas vacias, aire limpio, etc. Un seguimiento detallado de la obtención de las características de estas sustancias se encuentra en la~\autoref{tab:registro_sustancias_malo} del Anexo A.
 \par
 
 Para cada sustancia (excepto la primera, que se hizo como una prueba), se han realizado múltiples experimentos bajo diferentes condiciones, como el estado del bote de muestreo (abierto o cerrado) y la presencia o ausencia de corriente de aire. Esto permite evaluar cómo estas variables afectan las lecturas de los sensores y la capacidad de la ANN para distinguir entre la sustancia objetivo y otras sustancias.
@@ -83,7 +83,7 @@ Para cada sustancia (excepto la primera, que se hizo como una prueba), se han re
 Por otra parte, no todas las muestras negativas se han tomado de sutancias usando el bote de muestreo. Algunas muestras se han tomado directamente del aire de una habitación, una caja o de un coche, sitios donde puede encontrase el hachís.
 
 \subsubsection{Muestras positivas}
-Las muestras positivas se han tomado usando hasta cinco tipos diferentes de hachís, es decir, que provienene de cinco fuentes distintas, y cinta de envalar con restos de dicha sustancia. Esto se ha hecho para que la ANN pueda generalizar mejor y no se sobreentrene con las características específicas de un solo tipo de hachís. Pueden verse algunas de estas muestras en las Figuras~\autoref{fig:hachis_1},~\autoref{fig:cinta_envalar} y~\autoref{fig:hachis_2}.
+Las muestras positivas se han tomado usando hasta cinco tipos diferentes de hachís, es decir, que provienene de cinco fuentes distintas, y cinta de envalar con restos de dicha sustancia. Esto se ha hecho para que la ANN pueda generalizar mejor y no se sobreentrene con las características específicas de un solo tipo de hachís. Pueden verse algunas de estas muestras en la~\autoref{fig:hachis_1}, la~\autoref{fig:cinta_envalar} y la~\autoref{fig:hachis_2}.
 
 \begin{figure}[H]
     \centering
@@ -115,13 +115,13 @@ Por otro lado, la cinta de envalar se ha usado para tomar muestras, tanto usando
 Además, dado que para las muestras positivas se dispone de un menor numero de muestras en comparación con las negativas, se ha optado por repetir algunos experimentos para aumentar la cantidad de datos disponibles para el entrenamiento de la ANN, ya que, pese a tratarse de la misma muestra, los resiltados pueden ser ligeramente diferentes entre una toma y otra.
 \par
 
-Un seguimiento detallado de estas tomas de muestras se encuentra en la Tabla~\autoref{tab:registro_sustancias_bueno} del Anexo B.
+Un seguimiento detallado de estas tomas de muestras se encuentra en la~\autoref{tab:registro_sustancias_bueno} del Anexo B.
 
 \subsubsection{Limpieza del dataset}
 Todos los archivos de texto de las muestras se han ido guardando en una carpeta llamada \texttt{Por\_procesar}, en la que tambien se encuentran divididas en las subcarpetas ``BUENO'' y ``MALO''. Estos archivos cuentan con datos, como la presión o la humedad, que no son útiles para el entrenamiento de la ANN, por lo que se ha llevado a cabo un proceso de limpieza y preprocesamiento de los datos para eliminar información irrelevante y preparar los datos para su uso en el entrenamiento de la red neuronal.
 \par
 
-Este proceso de limpieza se realiza con un script en Python llamado \texttt{Limpiador.py}, que inspecciona cada archivo de texto en las carpetas \texttt{Entrenamiento/Por\_procesar/BUENO} y \texttt{Entrenamiento/Por\_procesar/MALO}, y procede a su procesamiento para poder ser usado para llevar a cabo el entrenamiento de la ANN\: elimina la cabecera y un espacio que hay en la priemra fila de datos, cambia las comas separadoras por espacios y los puntos de los decimales por comas. Además adapta del fichero para solo tener los datos necesarios: extrae únicamente las columnas correspondientes a las lecturas de los sensores relevantes para el análisis (Omitiendo la priemra columna se lelva a cabo la eliminacion de la cavecera y del espacio de la primera fila de datos) y elimina las filas de la fase de desorción para solo tener datos de la fase de adsorción, además de eliminar las primeras 15 lineas de la fase de adsorción para omitir los datos en los que los sensores aún no han empezado a captar del todo bien las particulas. Los archivos limpios se guardan en nuevas carpetas llamadas \texttt{Entrenamiento/BUENO} y \texttt{Entrenamiento/MALO} respectivamente, manteniendo la misma estructura de nombres de archivo para facilitar su identificación.
+Este proceso de limpieza se realiza con un script en Python llamado \texttt{Limpiador.py}, que inspecciona cada archivo de texto en las carpetas \texttt{Entrenamiento/Por\_procesar/BUENO} y \texttt{Entrenamiento/Por\_procesar/MALO}, y procede a su procesamiento para poder ser usado para llevar a cabo el entrenamiento de la ANN\: elimina la cabecera y un espacio que hay en la priemra fila de datos, cambia las comas separadoras por espacios y los puntos de los decimales por comas. Además adapta del fichero para solo tener los datos necesarios: extrae únicamente las columnas correspondientes a las lecturas de los sensores relevantes para el análisis (omitiendo la priemra columna se lelva a cabo la eliminacion de la cavecera y del espacio de la primera fila de datos) y elimina las filas de la fase de desorción para solo tener datos de la fase de adsorción, además de eliminar las primeras 15 lineas de la fase de adsorción para omitir los datos en los que los sensores aún no han empezado a captar del todo bien las particulas. Los archivos limpios se guardan en nuevas carpetas llamadas \texttt{Entrenamiento/BUENO} y \texttt{Entrenamiento/MALO} respectivamente, manteniendo la misma estructura de nombres de archivo para facilitar su identificación.
 \par
 
 Para finalizar, el programa pregunta si se desea llevar a cabo un aumento de datos (Data Augmentation). Si se responde afirmativamente, se ejecuta un segundo script llamado \texttt{Aumentador.py}, del que se habla en el siguiente apartado.
@@ -553,14 +553,14 @@ Una vez instalado todo el software necesario y creado el proyecto Flutter usando
 \begin{itemize}
     \item \textbf{flutter\_blue\_plus:} Para el escaneo y comunicación de baja energía (BLE) con el microcontrolador PIC32 de la nariz electrónica.
     \item \textbf{tflite\_flutter:} Motor de ejecución para el modelo de Inteligencia Artificial en el dispositivo móvil.
-    \item \textbf{vibration:} Para el feedback háptico en alertas de seguridad (Vibración cuando se detecta la sustancia objetivo).
+    \item \textbf{vibration:} Para el feedback háptico en alertas de seguridad (vibración cuando se detecta la sustancia objetivo).
 \end{itemize}
 
 \subsubsection{Arquitectura de la aplicación}
 La aplicación sigue una arquitectura modular para separar la lógica de comunicación de la interfaz de usuario.
 \par
 
-La estructura de ficheros de la aplicación móvil se muestra en la Figura~\autoref{fig:estructura_app}. En el proyecto hay dos carpetas importantes: la carpeta \texttt{assets}, donde estan el icono de la aplicación y los modelos y su configuración, y la carpeta \texttt{lib}, donde hay otras subcarpetas. La carpeta \texttt{screens} contiene las distintas pantallas de la aplicación, como la pantalla principal (Donde se encuentra la lista de dispositivos disponibles), la pantalla de análisis (Donde se controla el análisis de datos) y la pantalla de configuración (Donde se puede modificar los ajustes del análisis). La carpeta \texttt{utils} alberga funciones auxiliares, en este caso, la navegación entre pantallas. La carpeta \texttt{widgets} contiene componentes reutilizables, actualmente solo la barra de navegación superior. El archivo \texttt{main.dart} es el punto de entrada de la aplicación, donde se inicializan las dependencias y se configura la navegación entre pantallas.
+La estructura de ficheros de la aplicación móvil se muestra en la~\autoref{fig:estructura_app}. En el proyecto hay dos carpetas importantes: la carpeta \texttt{assets}, donde estan el icono de la aplicación y los modelos y su configuración, y la carpeta \texttt{lib}, donde hay otras subcarpetas. La carpeta \texttt{screens} contiene las distintas pantallas de la aplicación, como la pantalla principal (donde se encuentra la lista de dispositivos disponibles), la pantalla de análisis (donde se controla el análisis de datos) y la pantalla de configuración (donde se puede modificar los ajustes del análisis). La carpeta \texttt{utils} alberga funciones auxiliares, en este caso, la navegación entre pantallas. La carpeta \texttt{widgets} contiene componentes reutilizables, actualmente solo la barra de navegación superior. El archivo \texttt{main.dart} es el punto de entrada de la aplicación, donde se inicializan las dependencias y se configura la navegación entre pantallas.
 
 \begin{figure}[H]
     \centering
@@ -604,7 +604,7 @@ Es necesario que los datos de los sensores se preprocesen de la misma manera que
     \item Elimina la primera fila que contiene la cabecera.
     \item Ignora la fila con los nombres de las columnas. Es necesario para que el programa no intente convertir texto en números.
     \item Dart usa el punto como decimal por defecto, así que no es necesario cambiar puntos por comas, así que además, en vez de cambiar las comas por espacios, las usa como separadores directamente.
-    \item Si el valor de la ultima columna es 0 (Aire limpio de la desorción) lo omite.
+    \item Si el valor de la ultima columna es 0 (aire limpio de la desorción) lo omite.
     \item Elimina las columnas que no son necesarias para la inferencia (presión, humedad, temperatura, etc.).
 \end{enumerate}
 
@@ -630,7 +630,7 @@ Se utiliza un sistema de semáforo en el que si la impureza calculada es $\ge 0.
 Para terminar esta sección, se describe cual es el funcionamiento de la aplicación internamente cuando el usuario interactúa con ella. El flujo de ejecución de la aplicación es el siguiente.
 
 \subsubsection{Conexión con la nariz electrónica}
-Cuando se habre la aplicación por primera vez, hay que aceptar los permisos necesarios para el funcionamiento de la aplicación, como el acceso a Bluetooth y la ubicación. Una vez aceptados los permisos, se muestra la pantalla principal con la lista de dispositivos Bluetooth disponibles, que se ve en la Figura~\autoref{fig:pantalla_principal}, omitiendo los dispositivos que aparecen como ``Desconocido'' y resaltando los que contengan ``NOSE'' en su nombre. El usuario selecciona la nariz electrónica de la lista y se establece la conexión BLE\@.
+Cuando se habre la aplicación por primera vez, hay que aceptar los permisos necesarios para el funcionamiento de la aplicación, como el acceso a Bluetooth y la ubicación. Una vez aceptados los permisos, se muestra la pantalla principal con la lista de dispositivos Bluetooth disponibles, que se ve en la~\autoref{fig:pantalla_principal}, omitiendo los dispositivos que aparecen como ``Desconocido'' y resaltando los que contengan ``NOSE'' en su nombre. El usuario selecciona la nariz electrónica de la lista y se establece la conexión BLE\@.
 
 \begin{figure}[H]
     \centering
@@ -638,7 +638,7 @@ Cuando se habre la aplicación por primera vez, hay que aceptar los permisos nec
     \caption{Pantalla principal de la aplicación móvil con la lista de dispositivos Bluetooth disponibles}\label{fig:pantalla_principal}
 \end{figure}
 
-En caso de querer volver a buscar dispositivos, se puede pulsar el botón de búsqueda en la esquina superior derecha de la pantalla. Dicho botón puede verse en la Figura~\autoref{fig:boton_busqueda}.
+En caso de querer volver a buscar dispositivos, se puede pulsar el botón de búsqueda en la esquina superior derecha de la pantalla. Dicho botón puede verse en la~\autoref{fig:boton_busqueda}.
 
 \begin{figure}[H]
     \centering
@@ -649,7 +649,7 @@ En caso de querer volver a buscar dispositivos, se puede pulsar el botón de bú
 Una vez se ha realizado la conexión con la nariz electrónica, se accederá a la pantalla de analisis de sustancias.
 
 \subsubsection{Detección de sustancias}
-La pantalla de analisis cuenta con la opción de elegir que modelo de red neuronal se desea usar para analizar las muestras recibidas por la nariz electrónica. Esta opción puede verse en la Figura~\autoref{fig:seleccion_modelo}. Para ello, la aplicación lee la información de los mdoelos guardada en \texttt{assets/models\_config.json} donde están los ficheros de los modelos, sus medias y desviaciones estándar para la normalización, y los nombres que se mostrarán en el desplegable. 
+La pantalla de analisis cuenta con la opción de elegir que modelo de red neuronal se desea usar para analizar las muestras recibidas por la nariz electrónica. Esta opción puede verse en la~\autoref{fig:seleccion_modelo}. Para ello, la aplicación lee la información de los mdoelos guardada en \texttt{assets/models\_config.json} donde están los ficheros de los modelos, sus medias y desviaciones estándar para la normalización, y los nombres que se mostrarán en el desplegable. 
 
 \begin{figure}[H]
     \centering
@@ -657,7 +657,7 @@ La pantalla de analisis cuenta con la opción de elegir que modelo de red neuron
     \caption{Selección del modelo de red neuronal en la aplicación Sniffer.}\label{fig:seleccion_modelo}
 \end{figure}
 
-Además cuenta con una terminal donde se muestran los mensajes enviados y recibidos. El usuario puede iniciar el análisis pulsando el botón de iniciar. Esto envía el comando de inicio ``Exper'' a la nariz electrónica y comienza a recibir datos en tiempo real. La aplicación procesa cada trama de datos recibida, aplicando el preprocesamiento necesario (normalización y padding) antes de pasar los datos al modelo de IA seleccionado para obtener una predicción de impureza. La impureza se muestra en la pantalla y se actualiza cada vez que llega una nueva lectura. Si la impureza es mayor o igual al 70\%, la aplicación cambia el indicador a rojo y muestra una alerta de sustancia detectada, además de activar la vibración del dispositivo si está habilitada. La ejecución continúa hasta que acaban los ciclos y se ejecuta el AutoStop, o hasta que el usuario decide cancelar el análisis pulsando el botón de cancelar, lo que envía el comando ``Stop'' a la nariz electrónica y detiene la recepción de datos. En la Figura~\autoref{fig:pantalla_analisis_datos} se puede ver la pantalla de análisis en funcionamiento.
+Además cuenta con una terminal donde se muestran los mensajes enviados y recibidos. El usuario puede iniciar el análisis pulsando el botón de iniciar. Esto envía el comando de inicio ``Exper'' a la nariz electrónica y comienza a recibir datos en tiempo real. La aplicación procesa cada trama de datos recibida, aplicando el preprocesamiento necesario (normalización y padding) antes de pasar los datos al modelo de IA seleccionado para obtener una predicción de impureza. La impureza se muestra en la pantalla y se actualiza cada vez que llega una nueva lectura. Si la impureza es mayor o igual al 70\%, la aplicación cambia el indicador a rojo y muestra una alerta de sustancia detectada, además de activar la vibración del dispositivo si está habilitada. La ejecución continúa hasta que acaban los ciclos y se ejecuta el AutoStop, o hasta que el usuario decide cancelar el análisis pulsando el botón de cancelar, lo que envía el comando ``Stop'' a la nariz electrónica y detiene la recepción de datos. En la~\autoref{fig:pantalla_analisis_datos} se puede ver la pantalla de análisis en funcionamiento.
 
 \begin{figure}[H]
     \centering
@@ -665,7 +665,7 @@ Además cuenta con una terminal donde se muestran los mensajes enviados y recibi
     \caption{Pantalla de análisis de sustancias en la aplicación Sniffer.}\label{fig:pantalla_analisis_datos}
 \end{figure}
 
-Desde esta pantalla también es posible acceder a la pantalla de ajustes de la aplicación o volver a la pantalla principal para desconectar la nariz electrónica y conectar otro dispositivo si se desea. En la Figura~\autoref{fig:barra_analisis} se pueden ver los botones correspondientes en la barra superior de la pantalla de análisis. La lupa para volver a la pantalla principal y el icono de engranaje para acceder a la pantalla de ajustes.
+Desde esta pantalla también es posible acceder a la pantalla de ajustes de la aplicación o volver a la pantalla principal para desconectar la nariz electrónica y conectar otro dispositivo si se desea. En la~\autoref{fig:barra_analisis} se pueden ver los botones correspondientes en la barra superior de la pantalla de análisis. La lupa para volver a la pantalla principal y el icono de engranaje para acceder a la pantalla de ajustes.
 
 \begin{figure}[H]
     \centering
@@ -674,7 +674,7 @@ Desde esta pantalla también es posible acceder a la pantalla de ajustes de la a
 \end{figure}
 
 \subsubsection{Configuración del análisis}
-Al ir a la pantalla de ajustes (Vease en la Figura~\autoref{fig:pantalla_ajustes}), la aplicación enviará el comando ``SETTINGS'' a la nariz electrónica para que esta le devuelva un mensaje con la configuración que incluye el número de ciclos, los tiempos de adsorción y desorción, y el estado del modo AutoStop. Estos datos recibidos se reflejan en los campos correspondientes de la pantalla de ajustes (Además del estado de la vibración). El usuario puede modificar estos parámetros y guardar los cambios pulsando el botón de guardar. Esto envía un comando ``\#NSNC,X'', donde X es el número de ciclos, seguido de los tiempos de adsorción (``\#NSTA,X'') y desorción (``\#NSTD,X''), donde X es el tiempo en segundos, y el estado del modo AutoStop (1 para activado, 0 para desactivado). La nariz electrónica responde con un ``OK'' confirmando que ha recibido y aplicado la nueva configuración. 
+Al ir a la pantalla de ajustes (vease en la~\autoref{fig:pantalla_ajustes}), la aplicación enviará el comando ``SETTINGS'' a la nariz electrónica para que esta le devuelva un mensaje con la configuración que incluye el número de ciclos, los tiempos de adsorción y desorción, y el estado del modo AutoStop. Estos datos recibidos se reflejan en los campos correspondientes de la pantalla de ajustes (además del estado de la vibración). El usuario puede modificar estos parámetros y guardar los cambios pulsando el botón de guardar. Esto envía un comando ``\#NSNC,X'', donde X es el número de ciclos, seguido de los tiempos de adsorción (``\#NSTA,X'') y desorción (``\#NSTD,X''), donde X es el tiempo en segundos, y el estado del modo AutoStop (1 para activado, 0 para desactivado). La nariz electrónica responde con un ``OK'' confirmando que ha recibido y aplicado la nueva configuración. 
 
 \begin{figure}[H]
     \centering
@@ -682,7 +682,7 @@ Al ir a la pantalla de ajustes (Vease en la Figura~\autoref{fig:pantalla_ajustes
     \caption{Pantalla de ajustes de la aplicación móvil}\label{fig:pantalla_ajustes}
 \end{figure}
 
-También está la opción de volver a la pantalla de análisis sin guardar los cambios. Para ello simplemente hay que pulsar el icono de la flecha hacia atrás en la barra superior, el cual puede observarse en la Figura~\autoref{fig:barra_ajustes}.
+También está la opción de volver a la pantalla de análisis sin guardar los cambios. Para ello simplemente hay que pulsar el icono de la flecha hacia atrás en la barra superior, el cual puede observarse en la~\autoref{fig:barra_ajustes}.
 
 \begin{figure}[H]
     \centering
@@ -690,7 +690,7 @@ También está la opción de volver a la pantalla de análisis sin guardar los c
     \caption{Botón de volver en la barra superior de la pantalla de ajustes}\label{fig:barra_ajustes}
 \end{figure}
 
-A continuación se muestra, en la Figura~\autoref{fig:diagrama_flujo_tecnico_app}, un diagrama de flujo que resume este funcionamiento de manera gráfica. 
+A continuación se muestra, en la~\autoref{fig:diagrama_flujo_tecnico_app}, un diagrama de flujo que resume este funcionamiento de manera gráfica. 
 
 \begin{figure}[H]
     \centering
@@ -704,7 +704,7 @@ Además, este documento cuenta con los pseudocódigos de los archvios de la apli
 En esta sección se describen las distintas pruebas que se han llevado a cabo para evaluar el rendimiento de la nariz electrónica en comparación con el olfato canino bajo las mismas circunstancias. El modelo utilizado en las pruebas fue ``Modelo Hachís Plus'', el cual ha demostrado ser el más preciso.
 \par
 
-Para estas pruebas se ha contado con la colaboración de un guía canino del cuerpo cinológico de la Guardia Civil, quien ha aportado su experiencia y la de su perro adiestrado para la detección de drogas. En la Figura~\autoref{fig:zape} es posible ver Zape, el agente canino que ha participado en las pruebas.
+Para estas pruebas se ha contado con la colaboración de un guía canino del cuerpo cinológico de la Guardia Civil, quien ha aportado su experiencia y la de su perro adiestrado para la detección de drogas. En la~\autoref{fig:zape} es posible ver Zape, el agente canino que ha participado en las pruebas.
 
 \begin{figure}[H]
     \centering
@@ -715,9 +715,9 @@ Para estas pruebas se ha contado con la colaboración de un guía canino del cue
 Para poder cuantificar y comparar los resultados obtenidos por la nariz electrónica y el perro, se han establecido una serie de métricas de evaluación para cada una de las pruebas. Estas métricas incluyen:
 
 \begin{itemize}
-    \item \textbf{Acierto:} Si se ha podido detectar la sustancia objetivo correctamente (1 o 0).
+    \item \textbf{Acierto:} Si se ha podido detectar la sustancia objetivo correctamente, o si ha habido un falso positivo (-1, 0 o 1).
     \item \textbf{Velocidad:} Tiempo que se ha tardado en dar una respuesta final cuando se detecta la sustancia objetivo.
-    \item \textbf{Precisión:} Como de concreta es la zona o área marcada donde se detecta la sustancia objetivo (Del 1 al 10).
+    \item \textbf{Precisión:} Como de concreta es la zona o área marcada donde se detecta la sustancia objetivo (del 1 al 10).
 \end{itemize}
 
 Tras una conversación con el guía canino, se han decidio que pruebas llevar a cabo basandose en las practicas habituales de entrenamiento y detección que suelen llevar a cabo en la comandancia. En total se han realizado 6 pruebas, las cuales se explican a continuación:
