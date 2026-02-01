@@ -13,6 +13,8 @@ Desde el principio se definieron cinco fases principales:
 
 Sin embargo, el contenido específico, la secuencia detallada y la carga de trabajo dentro de cada fase no podían fijarse de antemano, ya que dependen de la disponibilidad de recursos, de las personas implicadas y de la información que se vaya obteniendo durante el avance del proyecto. Por este motivo se adoptó un enfoque ligero, apoyado en metodologías ágiles (Scrum y Kanban), que facilita mantener un ritmo constante y una alta capacidad de adaptación ante cambios y necesidades emergentes.
 
+Si bien se puede considerar a la Guardia Civil como el cliente final del proyecto, existen otros roles en este tipo de metodologías ágiles que también son relevantes, como el Product Owner (Responsable de definir las prioridades y objetivos del proyecto), el Scrum Master (Responsable de facilitar la implementación de la metodología ágil y eliminar obstáculos) y los desarrolladores. En este caso, dada la naturaleza del proyecto (Un trabajo de fin de grado), el propio autor de este trabajo asume todos estos roles, gestionando tanto la planificación y ejecución del proyecto como la comunicación con los guías caninos de la Guardia Civil.
+
 \subsubsection{Control de versiones con Git}
 Para garantizar la trazabilidad y poder revertir cambios si fuera necesario, se utiliza Git como sistema de control de versiones. Esto permite mantener un historial detallado de todas las modificaciones realizadas en el código y la documentación, facilitando la colaboración y la gestión del proyecto.
 \par
@@ -28,6 +30,14 @@ Antes de que inicie cada sprint (En los ultimos días del sprint anterior), se h
 \subsubsection{Github Projects y Tablero Kanban}
 
 Para la gestión de tareas, sprints y el seguimiento del progreso del proyecto, se utiliza GitHub Projects (En el repositorio anteriormente mencionado), que cuenta con un tablero Kanban integrado, como el que se muestra en la Figura~\autoref{fig:tablero_kanban}. Este tablero permite visualizar las tareas en diferentes estados (Backlog, Ready, In progress, Done) y facilita la organización y priorización de las actividades. Cada tarea se representa como una tarjeta que puede moverse entre las columnas según su estado actual, proporcionando una visión clara del avance del proyecto.
+
+Cada estado del tablero Kanban tiene un significado específico:
+\begin{itemize}
+    \item \textbf{Backlog:} Aquí se encuentran todas las tareas que se han identificado pero que aún no están listas para ser trabajadas. Estas tareas pueden ser ideas, requisitos o cualquier actividad pendiente que necesite ser planificada.
+    \item \textbf{Ready:} En esta columna se colocan las tareas que están listas para ser abordadas. Esto significa que se han definido claramente, tienen los recursos necesarios y están priorizadas para su ejecución en el sprint actual.
+    \item \textbf{In progress:} Esta columna contiene las tareas que están actualmente en desarrollo. Los desarrolladores trabajan activamente en estas tareas, y su progreso se monitorea para asegurar que se completen a tiempo.
+    \item \textbf{Done:} Aquí se mueven las tareas que han sido completadas con éxito. Esto permite tener una visión clara de lo que se ha logrado hasta el momento y facilita la evaluación del progreso del proyecto.
+\end{itemize}
 
 \begin{figure}[H]
     \centering
@@ -81,6 +91,10 @@ La planificación inicial es una planificación ideal en la que se cumplen todas
 \par
 
 En primer lugar se llevó a cabo una reunión con los guías caninos de la Guadia Civil para discutir posibles temas para el TFG\@. Tras evaluar varias opciones, se decidió centrar el proyecto en la comparación entre una nariz electrónica y agentes caninos para la detección de hachís. Esta decisión se tomó teniendo en cuenta los recursos disponibles, la relevancia del tema y el interés personal del autor. Al principio se preguntó a Jesus Lozano Rogado (Cotutor del TFG y experto en narices electrónicas) si este tema era viable y factible dentro del tiempo y recursos disponibles, a lo que respondió afirmativamente, confirmandose así el tema de este trabjo.
+\par
+
+Al comenzo de este capítulo se menciona que las fases se definieron desde el principio, lo cual no es del todo cierto. En realidad, estas fases se definieron durante este sprint, una vez que se decidió el tema del proyecto y se comprendió mejor su alcance y los recursos disponibles.
+\par
 
 \subsubsection{Sprint 2: Revisión bibliográfica y estado del arte}
 \textbf{Duración:} 20 de noviembre--4 de diciembre de 2025 (Completado según lo planificado).
@@ -90,17 +104,40 @@ Este sprint se dedicó a la recopilación de información relevante sobre narice
 \par
 
 \subsubsection{Sprint 3: Formación y entrenamiento de la nariz electrónica}
-\textbf{Duración:} 5 de diciembre--24 de enero de 2026 (Retraso).
+\textbf{Duración:} 5 de diciembre--25 de enero de 2026 (Retraso).
 
 \textbf{Motivo del retraso:} Problemas de funcionamiento de la nariz electrónica para la toma de muestras y cambio de enfoque en el entrenamiento de la ANN\@.
+\par
+
+Este es el sprint más largo y complejo del proyecto, ya que implica el desarrollo del producto principal.
+\par
+
+Pese a haber recopilado información acerca de las narices electrónicas y su funciionamiento, era necesario una explicación más detallada sobre el uso. Por ello, este sprint comienza con el Dr.\ Jesús Lozano Rogado, cotutor del TFG y experto en narices electrónicas, para acordar un día en el que poder visitar el laboratorio de sensores de la Escuela de Ingenierías Industriales de Badajoz y recibir una formación práctica por parte de Cristina Brugera Salas sobre el uso de la nariz electrónica diseñada y construida en por ella. Esta formación fue fundamental para entender cómo utilizar la nariz electrónica de manera efectiva y terminar de enfocar el rumbo que debía tomar el proyecto.
+\par
+
+Tras la formación se decidió que el ``entrenamiento de la nariz electrónica'' consisitiria en el entrenamiento de una red neuronal artificial (ANN) para que, a partir de los datos obtenidos por la nariz electrónica al analizar diferentes muestras, pudiera detectar la presencia de hachís. Este ``entrenamiento de la nariz electrónica'' se dividió en cinco subtareas principales:
+\begin{enumerate}
+    \item Toma de muestras con la nariz electrónica para crear el dataset.
+    \item Creación de un script para la limpieza y preprocesamiento de los datos obtenidos.
+    \item Creación de un script para ampliar el dataset mediante técnicas de aumento de datos.
+    \item Desarrollo y entrenamiento de la ANN\@.
+    \item Desarrollo de una aplicación móvil para controlar la nariz electrónica y utilizar la ANN entrenada.
+\end{enumerate}
+
+Por otra parte se vio la posivilidad de acoplar la nariz electrónica a un perro robot en caso de que sobrase tiempo (prioridad baja). Sin embargo, debido a los retrasos acumulados en este sprint, esta tarea se ha descartado para centrarse en completar las tareas principales del sprint.
+\par
 
 \subsubsection{Sprint 4: Diseño del enfoque experimental, comparación y analisis de datos}
-\textbf{Duración:} 24 de enero--2 de febrero (Retraso)
+\textbf{Duración:} 25 de enero--2 de febrero (Retraso)
 
 \textbf{Motivo del retraso:} Retraso acumulado y no disponivilidad del guía hasta el 2 de febrero.
+\par
+
+El mismo día que se finalizó el sprint 3, se contactó con el guía canino para planificar las pruebas comparativas entre la nariz electrónica y los agentes caninos. Sin embargo, debido a la agenda del guía, no fue posible realizar estas pruebas hasta el 2 de febrero de 2026. Por lo tanto, este sprint se ha dedicado principalmente a preparar el diseño experimental y analizar los datos obtenidos durante las pruebas, que se llevarán a cabo en la fecha mencionada.
+\par
 
 \subsubsection{Sprint 5: Redacción final del TFG}
-\textbf{Duración:} 3 de febrero--6 de febrero (Retraso)
+\textbf{Duración:} 2 de febrero--6 de febrero (Retraso)
 
 \textbf{Motivo del retraso:} Retraso acumulado.
 \par
@@ -113,6 +150,14 @@ El diagrama de Gantt de la Figura~\autoref{fig:gantt_planificacion_final} muestr
     \centering
     \shadowbox{\includegraphics[width=0.9\textwidth]{pictures/Planificacion_final.png}}
     \caption{Diagrama de Gantt de la planificación final.}\label{fig:gantt_planificacion_final}
+\end{figure}
+
+En la Figura~\autoref{fig:seguimiento} se muestra una hoja de calculo en la que se ha llevado un control de las fechas teóricas y reales de cada tarea, así como el estado de cada una de ellas y el desfase (positivo si se ha acabado antes de lo previsto, negativo si se ha acabado después de lo previsto).
+
+\begin{figure}[H]
+    \centering
+    \shadowbox{\includegraphics[width=0.9\textwidth]{pictures/Seguimiento.png}}
+    \caption{Seguimiento de las tareas del proyecto.}\label{fig:seguimiento}
 \end{figure}
 
 \section{Herramientas utilizadas}
