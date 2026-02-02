@@ -60,10 +60,10 @@
 \pagenumbering{Roman}
 \setcounter{page}{1}
 \chapter*{Agradecimientos} % Apartado opcional, descomentar si se quiere añadir
-Me gustaría expresar mi más sincero agradecimiento a aquellas personas que han influido en el desarrollo de este trabajo de una manera u otra. En primer lugar, a mi tutor, Pablo García Rodríguez, por ayudarme a orientar mi trabajo de fin de grado hacia la idea final de la que trata este proyecto y haberme faciitado los contactos necesarios para poder llevarlo a cabo, a mi cotutor, Jesús Lozano Rogado, por haberme permitido ir al laboratorio de senosres de la Escuela de Ingenierías Industriales y haberme proporcionado una nariz electrónica para poder llevar a cabo el trabajo, y a Cristina Brugera Salas por su orientación acerca del funcionamiento de la nariz electrónica y su atención cuando tenia algún problema con la misma.
+Me gustaría expresar mi más sincero agradecimiento a aquellas personas que han influido en el desarrollo de este trabajo de una manera u otra. En primer lugar, a mis tutores, Pablo García Rodríguez y Jesús Lozano Rogado, por su orientación, apoyo y asesoramiento indispensable para logar este trabajo, y a Cristina Brugera Salas por su orientación acerca del funcionamiento de la nariz electrónica y su atención cuando tenia algún problema con la misma.
 \par
 
-Tambien me gustaría agradecer a mi familia por su apoyo incondicional durante toda mi etapa universitaria, y a mis amigos por haberme acompañado en este viaje y haberme ayudado cuando lo necesitaba. En concreto, en relación con este proyecto, quiero agradecer a mis compañeros y amigos Alejandro Barrena, Pablo Natera y Pablo Fernandez por su aportación de ideas, haberme resuelto dudas, haber revisado esta memoria para buscar errores y posibles mejoras y haber aguantado el ruido de la nariz electrónica durante tantos días.
+Tambien me gustaría agradecer a mi familia por su apoyo incondicional durante toda mi etapa universitaria, y a mis amigos por haberme acompañado en este viaje y haberme ayudado cuando lo necesitaba. En concreto, en relación con este proyecto, quiero agradecer a mis compañeros y amigos Alejandro Barrena, Pablo Natera y Pablo Fernandez por su aportación de ideas, haberme resuelto dudas, haber revisado esta memoria para buscar errores y posibles mejoras, y haber aguantado el ruido de la nariz electrónica durante tantos días.
 \par
 
 Por último pero no por ello menos importante, quiero dar las gracias a los miembros del Servicio Cinológico de la Guardia Civil por su disposición para ayudarme en todo lo que he necesitado, haberme proporcionado las muestras necearias, por haberme permitido conocer de primera mano el trabajo que realizan los agentes caninos en su día a día y por lo bien que me han tratado cuando he tenido que ir a la comandancia.
@@ -74,23 +74,22 @@ Quiero dedicar este trabajo a esas personas que, pese a que pueda llegar a parec
 \cleardoublepage%
 
 \chapter*{Resumen}
+Se aborda el estudio de viabilidad de una nariz electrónica como herramienta de apoyo a agentes caninos en tareas de detección de sustancias, investigando sus fundamentos tecnológicos basados en sensores MOS y aplicaciones actuales. Se construye un dataset de muestras de hachís y sustancias negativas, entrenándose  redes neuronales en Keras y PyTorch con regularización Dropout, evaluadas con y sin aumento de datos.
 
-Este trabajo aborda el estudio de viabilidad de una nariz electrónica (e-nose) basada en sensores de óxido metálico como herramienta de apoyo para agentes caninos en tareas de detección de sustancias. El proyecto surge de la idea de complementar las excepcionales capacidades olfativas de los perros con tecnología avanzada, mejorando la eficiencia operativa de las unidades caninas de seguridad sin pretender reemplazar su labor invaluable.
+Se desarrollan una aplicación móvil con comunicación Bluetooth y modelos exportados a TensorFlow Lite. Ambos modelos alcanzan precisiones elevadas (96\% y 94.67\%), sin sobreajuste. En pruebas comparativas con un agente canino especializado (Zape) de la Guardia Civil se evalúan aciertos, velocidad y precisión. Zape logra 100\% de aciertos en 25 segundos máximo, mientras que la e-nose obtiene 50\% de aciertos en más de 155 segundos, demostrando limitaciones ante corrientes de aire y detección en presencia de personas.
 
-Se realiza una investigación exhaustiva del estado del arte sobre narices electrónicas, desde sus fundamentos tecnológicos basados en sensores MOS hasta sus aplicaciones actuales. Se describen los requisitos fundamentales para que un dispositivo sea considerado e-nose, incluyendo la capacidad de detectar múltiples compuestos volátiles de forma simultánea, la generación de patrones característicos, la repetibilidad en distintas condiciones ambientales y la entrega de salidas procesadas que clasifiquen olores.
-
-El proyecto incluye la construcción de un dataset equilibrado mediante experimentos espectrales divididos entre muestras positivas (hachís) y negativas (otras sustancias). Se entrenan dos arquitecturas de redes neuronales idénticas implementadas en Keras y PyTorch, ambas con estructura de capas decreciente (32 y 16 neuronas) y regularización mediante Dropout. Los modelos se evalúan con y sin aumento de datos, analizando precisión, matrices de confusión y curvas de aprendizaje para detectar sobreajuste.
-
-Se desarrolla una aplicación móvil que facilita la comunicación Bluetooth con el dispositivo de e-nose y visualiza resultados de clasificación. Los modelos entrenados se exportan a TensorFlow Lite para despliegue en dispositivos móviles y sistemas embebidos. 
-
-Aquí queda hablar de los resultados, conclusiones y trabajos futuros.
+Se concluye que la e-nose constituye una herramienta complementaria viable en situaciones específicas donde agentes caninos no estén disponibles. Se proponen mejoras futuras: especializar modelos por contexto de uso, desarrollar detectores multisustancia aprovechando la arquitectura modular, mejorar la tolerancia ambiental del dispositivo e implementar interfaces más intuitivas.
 
 \noindent\textbf{Palabras clave}: \printkeywords.
 
 \chapter*{Abstract}
-EL RESUMEN EN INGLÉS
+This work addresses the feasibility study of an electronic nose as a support tool for canine agents in substance detection tasks, investigating its technological foundations based on MOS sensors and current applications. A dataset of hashish samples and negative substances is constructed, training neural networks in Keras and PyTorch with Dropout regularization, evaluated with and without data augmentation.
 
-\noindent\textbf{Keywords}: Most important or descriptive words, separated by commas.
+A mobile application with Bluetooth communication is developed and models are exported to TensorFlow Lite. Both models achieve high accuracy rates (96\% and 94.67\%), without overfitting. In comparative tests with a specialized canine agent (Zape) from the Civil Guard, successes, speed, and accuracy are evaluated. Zape achieves 100\% success rate in a maximum of 25 seconds, while the e-nose obtains 50\% success rate in more than 155 seconds, demonstrating limitations when facing air currents and detection in the presence of people.
+
+It is concluded that the e-nose constitutes a viable complementary tool in specific situations where canine agents are not available. Future improvements are proposed: specialize models by use context, develop multi-substance detectors leveraging the modular architecture, improve environmental tolerance of the device, and implement more intuitive interfaces.
+
+\noindent\textbf{Keywords}: Electronic Nose, e-Nose, Canine Agents, Substance Detection, Sensors, Canine Unit, Artificial Neural Network, ANN, Bluetooth, Mobile Application, Hashish, Substances, Target Substance
 
 % Índices con enlaces de las secciones, tablas y figuras
 \newpage
@@ -214,7 +213,7 @@ EL RESUMEN EN INGLÉS
     
     \item[Análisis de Clusters (CA):] Técnica exploratoria de análisis de datos que agrupa objetos o muestras de tal manera que la similitud entre los miembros de un mismo grupo sea máxima y la similitud con miembros de otros grupos sea mínima.
     
-    \item[Redes Neuronales Artificiales (ANN):] Modelos computacionales inspirados en el funcionamiento del sistema nervioso central biológico. Están compuestos por capas de nodos interconectados que aprenden a reconocer patrones complejos y relaciones no lineales en los datos.
+    \item[Artificial Neuronal Network (ANN):] Redes neuronales artificiales en españo, son modelos computacionales inspirados en el funcionamiento del sistema nervioso central biológico. Están compuestos por capas de nodos interconectados que aprenden a reconocer patrones complejos y relaciones no lineales en los datos.
     
     \item[Máquinas Vectoriales de Soporte (SVM):] Algoritmos de aprendizaje automático supervisado capaces de resolver problemas de clasificación y regresión mediante la búsqueda de un hiperplano óptimo que maximice la separación entre diferentes clases en un espacio multidimensional.
     

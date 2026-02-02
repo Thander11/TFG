@@ -1,6 +1,6 @@
 \chapter{Implementacion, desarrollo y pruebas comparativas}
 \section{Implementación y desarrollo}
-Con el objetivo de contar con una nariz electrónica operativa que complemente el trabajo de los agentes caninos, se decidió entrenar una red neuronal artificial (ANN). Esta se integrará en una aplicación Bluetooth para dispositivos móviles que controlará la nariz electrónica. Dicha red neuronal será la encargada de determinar si la muestra analizada corresponde o no a la sustancia objetivo.
+Con el objetivo de contar con una nariz electrónica operativa que complemente el trabajo de los agentes caninos, se decidió entrenar una red neuronal artificial. Esta se integrará en una aplicación Bluetooth para dispositivos móviles que controlará la nariz electrónica. Dicha red neuronal será la encargada de determinar si la muestra analizada corresponde o no a la sustancia objetivo.
 \par
 
 La implementación y el desarrollo de la nariz electrónica se estructuran en tres fases:
@@ -31,7 +31,7 @@ Para asignarle un nombre identificativo a cada experimento, se ha usado la nomen
     \item \textbf{Z:} Es un número secuencial que identifica el experimento dentro de cada sustancia. Es usado en las muestras negativas para diferenciar entre experimentos realizados con la misma sustancia bajo distintas condiciones. En las muestras positivas se omite ya que siempre se trabaja con hachís.
 \end{itemize}
 
-En cada archivo hay hasta 210 filas de datos, y en un entrenamiento a tiempo real cada una de las filas será una entrada independiente para la ANN\. Al procesar los archivos se eliminan varias de estas filas de datos. Tras el procesamiento de archivos, se eliminan las 59 primeras filas que corresponden a la fase de desorción, la última fila, que también corresponde a esta fase y las 15 primeras filas de la fase de adsorción.
+En cada archivo hay hasta 210 filas de datos, y en un entrenamiento a tiempo real cada una de las filas será una entrada independiente para la ANN\@. Al procesar los archivos se eliminan varias de estas filas de datos. Tras el procesamiento de archivos, se eliminan las 59 primeras filas que corresponden a la fase de desorción, la última fila, que también corresponde a esta fase y las 15 primeras filas de la fase de adsorción.
 \par
 
 El cálculo del número total de entradas después del procesamiento se puede expresar matemáticamente como:
@@ -469,7 +469,7 @@ A continuación se muestra un pseudocódigo que resume el proceso de entrenamien
 
 \begin{algorithmic}[1]
 \State~\textbf{Entrada:} Archivos espectrales (.txt) en directorios \textit{BUENO} y \textit{MALO}
-\State~\textbf{Salida:} Modelo clasificador optimizado en formato \.keras y \.tflite
+\State~\textbf{Salida:} Modelo clasificador optimizado en formato \@.keras y \@.tflite
 
 \State~\textit{Fase 1: Carga de datos e importación de librerías}{}
 \State~Importar librerías necesarias (tensorflow, keras, numpy, pandas, sklearn, matplotlib, seaborn)
@@ -477,7 +477,7 @@ A continuación se muestra un pseudocódigo que resume el proceso de entrenamien
 \State~\textit{Fase 2: Preprocesamiento de datos}{}
 \State~Inicializar listas $X$ (características) e $y$ (etiquetas)
 \For{cada archivo espectrales en directorios BUENO-PLUS y MALO-PLUS}%
-    \State~Leer datos numéricos del archivo \.txt con separador espacios y coma decimal
+    \State~Leer datos numéricos del archivo \@.txt con separador espacios y coma decimal
     \State~Convertir a numérico y eliminar valores NaN
     \State~Filtro de fase: seleccionar solo filas donde la columna 14 es 1 (fase de muestra)
     \State~Extraer únicamente las 13 columnas de sensores de gas
@@ -712,32 +712,20 @@ Para estas pruebas se ha contado con la colaboración de un guía canino del cue
     \caption{Imagen de Zape}\label{fig:zape}
 \end{figure}
 
-Para poder cuantificar y comparar los resultados obtenidos por la nariz electrónica y el perro, se han establecido una serie de métricas de evaluación para cada una de las pruebas. Estas métricas incluyen:
+Tras una conversación con el guía canino, se han decidio que pruebas llevar a cabo basandose en las practicas habituales de entrenamiento y detección que suelen llevar a cabo en la comandancia. En total se han realizado 4 pruebas, además de otra prueba realizada sin comparar con Zape para coprobar el funcionamiento del sistema desarrollado, a esa prueba se la denominará prueba 0. A continuación se explican cada una de las pruebas realizadas:
 
-\begin{itemize}
-    \item \textbf{Acierto:} Si se ha podido detectar la sustancia objetivo correctamente, o si ha habido un falso positivo (-1, 0 o 1).
-    \item \textbf{Velocidad:} Tiempo que se ha tardado en dar una respuesta final cuando se detecta la sustancia objetivo.
-    \item \textbf{Precisión:} Como de concreta es la zona o área marcada donde se detecta la sustancia objetivo (del 1 al 10).
-\end{itemize}
-
-Tras una conversación con el guía canino, se han decidio que pruebas llevar a cabo basandose en las practicas habituales de entrenamiento y detección que suelen llevar a cabo en la comandancia. En total se han realizado 6 pruebas, las cuales se explican a continuación:
-
+\subsection{Prueba 0: Cajas vacías}
+Una vez finalizado el entrenamiento de la red neuronal y el desarrollo de la aplicación móvil, se realizó una prueba inicial para verificar el correcto funcionamiento del sistema. En esta prueba se metió un recipiente con hachís dentro de una caja de cartón y se pasó la nariz por encima de la caja para comprobar si el sistema era capaz de detectar la sustancia oculta, seguido de otra pasada por una caja vacía para comprobar que no se detectaba nada cuando no había sustancia oculta. Esta prueba sirvió para validar que tanto la nariz electrónica como la aplicación móvil funcionaban correctamente antes de proceder con las pruebas comparativas con el perro adiestrado.
 
 \subsection{Prueba 1: Paquetería}
-% Varias cajas de cartón dentro de una furgoneta. Solo una tiene hachís.
+Para esta prueba se simula la insepcción de una furgoneta de reparto que contiene varios paquetes. Esos paquetes se simulan con caas de cartón, unas vacías y otras con papel de relleno en su interior. En una de las cajas se oculta hachís que debe ser detectado por la nariz electrónica y Zape, pero no se usa la misma caja para cada uno, sino que se realiza la prueba con Zape y se quita la caja usada, se añade una nueva, poniendo nuevamente el hachís en cualquiera de las cajas.
 
-\subsection{Prueba 2: Exterior de vehículos}
-% Habrá varios vehículos estacionados en un aparcamiento. Solo uno de ellos tiene hachís oculto en una zona de su exterior.
+\subsection{Prueba 2: Interior de vehículos}
+En esta prueba se simula la inspección del interior de un vehículo, en este caso un coche. Se ha hecho uso de coches fuera de uso y parcialmente desmantelados para evitar daños en vehículos en buen estado. Para la prueba de Zape se ha ocultado el recipiente con hachís en una cabidad situada detrás del plastico que bordea la radio. Luego, para la prueba de la nariz electrónica, se ha pegado el recipiente a la parte superior del coche, concretamente en la parte interior del parasol.
 
-\subsection{Prueba 3: Interior de vehículos}
-% Dentro del interior de un coche estacionado, se oculta hachís en alguna zona del habitáculo.
+\subsection{Prueba 3: Personas}
+Otra práctica que hacen los guías caninos es la inspección de personas, por lo que se ha decidido incluir esta prueba en el conjunto de pruebas comparativas. En esta prueba también colabora una integrante de la Guardia Civil, la cual se oculta el recipiente con hachís en un bolsillo del pantalón para la prueba con Zape, y en la prueba con la nariz electrónica oculta el hachís en el interior de su camiseta.
 
-\subsection{Prueba 4: Personas}
-% Se oculta hachís en alguna prenda de ropa de una persona.
-
-\subsection{Prueba 5: Habitación}
-% En una habitación cerrada, se oculta hachís en algún objeto o mueble.
-
-\subsection{Prueba 6: Equipajes}
-% Varios maletas y mochilas en una sala. Solo una tiene hachís en su interior.
+\subsection{Prueba 4: Equipajes}
+La última prueba consiste en la inspección de equipajes, simulando la revisión de maletas en un control de seguridad. En esta prueba se han utilizado una maleta, una nevera y dos mochilas (una normal y otra de deporte). En este caso se ha ocultado el recipiente con hachís en el interior del bolsillo inferior de una de la mochila de deporte para ambas pruebas, tanto la de Zape como la de la nariz electrónica.
 

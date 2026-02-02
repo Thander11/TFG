@@ -70,7 +70,7 @@ A continuación, se procedió a la configuración del proceso de entrenamiento. 
 Para optimizar el tiempo de cómputo y evitar que el modelo memorice el ruido de los datos, se implementó un control de ``paciencia'' de 10 épocas. A esto se le conoce como Estrategia de Parada Temprana (``Early Stopping''). Si la pérdida en el conjunto de validación no mejora tras este periodo, el entrenamiento se detiene automáticamente. Esta técnica actúa como un regulador temporal. En lugar de fijar un número arbitrario de épocas (como 100), el modelo se detiene cuando detecta que la pérdida en el conjunto de validación comienza a estancarse o subir, asegurando que guardamos los pesos que mejor funcionan con datos que la red no ha ``visto'' para entrenar.
 \par
 
-Una vez finalizado el desarrollo, se procedió a la persistencia del modelo mediante el guardado en un archivo con extensión \.pth. Este archivo almacena los pesos y sesgos óptimos encontrados, permitiendo su despliegue posterior sin necesidad de repetir el proceso de entrenamiento.
+Una vez finalizado el desarrollo, se procedió a la persistencia del modelo mediante el guardado en un archivo con extensión \@.pth. Este archivo almacena los pesos y sesgos óptimos encontrados, permitiendo su despliegue posterior sin necesidad de repetir el proceso de entrenamiento.
 \par
 
 Para el entrenamiento del ``modelo plus'' con el dataset aumentado, se siguió un procedimiento casi idéntico al descrito anteriormente, asegurando la consistencia en la comparación de resultados entre ambos modelos. Los únicos cambios radicaron en el número de épocas, que se incrementó a 50 para permitir un aprendizaje más profundo, y la adaptación del tamaño del lote (batch size) a 10 muestras por iteración, optimizando así el proceso de entrenamiento con el nuevo conjunto de datos.
@@ -154,7 +154,7 @@ A continuación se presentan los pseudocódigos de los procedimientos de entrena
 
 \begin{algorithmic}[1]
 \State~\textbf{Entrada:} Archivos espectrales (.txt) en directorios \textit{BUENO} y \textit{MALO}
-\State~\textbf{Salida:} Modelo clasificador optimizado en formato \.keras y \.tflite
+\State~\textbf{Salida:} Modelo clasificador optimizado en formato \@.keras y \@.tflite
 
 \State~\textit{Fase 1: Preprocesamiento de Datos}{}
 \State~Inicializar listas $X$ (características) e $y$ (etiquetas)
@@ -173,7 +173,7 @@ A continuación se presentan los pseudocódigos de los procedimientos de entrena
 \State~Calcular $\mu, \sigma$ de media y desviación estándar del conjunto de entrenamiento
 \State~$X_{scaled} \leftarrow \frac{X - \mu}{\sigma}$ (Escalado estándar para convergencia de ANN)
 
-\State~\textit{Fase 3: Construcción de la Red Neuronal (ANN)}{}
+\State~\textit{Fase 3: Construcción de la Red Neuronal Artificial}{}
 \State~Definir arquitectura secuencial:
 \State~\quad 1. Capa Densa (32 neuronas, activación ReLU, entrada de tamaño 242676)
 \State~\quad 2. Capa Dropout (0.2) para evitar sobreajuste
@@ -197,7 +197,7 @@ A continuación se presentan los pseudocódigos de los procedimientos de entrena
 
 \begin{algorithmic}[1]
 \State~\textbf{Entrada:} Archivos espectrales (.txt) en directorios \textit{BUENO} y \textit{MALO}
-\State~\textbf{Salida:} Modelo clasificador optimizado en formato \.pth y \.tflite
+\State~\textbf{Salida:} Modelo clasificador optimizado en formato \@.pth y \@.tflite
 
 \State~\textit{Fase 1: Preprocesamiento de Datos}{}
 \State~Inicializar listas $X$ (características) e $y$ (etiquetas)
@@ -221,7 +221,7 @@ A continuación se presentan los pseudocódigos de los procedimientos de entrena
 \State~Normalizar datos con \textit{StandardScaler} (media 0, varianza 1)
 \State~Convertir datasets a tensores de PyTorch
 
-\State~\textit{Fase 3: Construcción de la Red Neuronal (ANN)}{}
+\State~\textit{Fase 3: Construcción de la Red Neuronal Artificial}{}
 \State~Definir clase \textit{OlfativaANN} heredando de \textit{nn.Module}:
 \State~\quad 1. Capa Lineal (entrada$\rightarrow$32 neuronas)
 \State~\quad 2. Activación ReLU

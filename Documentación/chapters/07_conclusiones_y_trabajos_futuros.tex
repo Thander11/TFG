@@ -1,7 +1,22 @@
 \chapter{Conclusiones y futuras mejoras}
 \section{Conclusiones}
+Cumpliendo con los objetivos especificos planteados en el capítulo 2, se ha desarrollado una red neuronal capaz de detectar hachís a partir de los datos obtenidos por una nariz electrónica con los que se ha creado un dataset adecuado para el entrenamiento del modelo. Además, de desarrollar una aplicación que permita la comunicación entre la nariz electrónica y el modelo de detección, así como una interfaz gráfica para facilitar su uso por parte del usuario final.
+\par
+
+Gracias a estos objetivos específicos, se ha podido llevar a cabo una comparación entre la nariz electrónica y un perro de detección de drogas, obteniendo resultados que demuestran la superioridad del perro en cuanto a rapidez, precisión y capacidad de detección. Estos resultados resaltan las limitaciones actuales de las narices electrónicas y la necesidad de seguir investigando y mejorando estas tecnologías para acercarse al rendimiento de los perros entrenados.
+\par
+
+Aun así también se ha podido demostrar que este sistema basado en una nariz electrónica y una red neuronal es capaz de detectar hachís en diferentes escenarios, por lo que puede ser viable usarse como apoyo para prestar este tipo de servicios en algunas situaciones cocnretas en las que los agentes caninos no estén disponibles o como complemento a estos siempre que se disponga del tiempo necesario y no haya una gran corriente de aire que dificulte la detección. El resto de inconvenientes actuales, como en la detección de personas pueden llegar a solucionarse con futuras mejoras en el sistema.
+\par
 
 \section{Futuras mejoras}
-% Aumentar el dataset
+Existen varioa aspectos que se podrían implementar mejoras para optimizar el rendimiento y la funcionalidad del sistema desarrollado. Algunas de estas mejoras incluyen:
+\begin{itemize}
+    \item \textbf{Mejora del dataset:} Cambiar el punto de vista del dataset en el que predomine la variedad frente la cantidad de manera que la red neuronal aprenda a discriminar mejor en todos los casos posibles.
+    \item \textbf{Desarrollo de nuevos modelos:} Investigar y desarrollar modelos de detección para otras sustancias ilegales, ampliando así la utilidad del sistema. Gracias a la estructura modular del software, se podrían integrar fácilmente nuevos modelos para detectar diferentes drogas simplemente con entrenar el modelo con un dataset adecuado.
+    \item \textbf{Especialización:} Enfocar los modelos en un tipo de trabajo en concreto, como coches, paquetería, etc. De esta manera se podría optimizar el rendimiento del sistema para situaciones específicas además de no necesitar un datset tan grande para cada modelo.
+    \item \textbf{Cambiar la terminal en la interfaz de usuario:} Para simplificar el sistema y hacelo más intuitivo, se podria añadir una opción para ocultar la terminal donde llegan todos los datos y cambiarlo por algo mas visual como un perro que realice diferentes acciones dependiendo de si detecta o no la sustancia, o icluso que cambie dependiendo de si se ha empezado el analisis o no.
+\end{itemize}
+% Mejorar el dataset
 % Crear nuevos modelos para detectar otras sustancias
 % Buscar la manera de que la nariz se mantenga a la temperatura adecuada sin necesidad de un control externo y aislarla más del entorno para evitar problemas con la temperatura y humedad
