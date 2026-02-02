@@ -362,7 +362,6 @@ class _AnalysisScreenState extends State<AnalysisScreen> {
     
       // Se extrae la probabilidad de resultado.
       double probabilidad = output[0][0];
-      probabilidad = 1 - probabilidad;
 
       // Se actualiza el estado con el nuevo resultado.
       setState(() {
