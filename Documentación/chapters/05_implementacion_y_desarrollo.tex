@@ -1,4 +1,4 @@
-\chapter{Implementacion, desarrollo y pruebas comparativas}
+﻿\chapter{Implementacion, desarrollo y pruebas comparativas}
 \section{Implementación y desarrollo}
 Con el objetivo de contar con una nariz electrónica operativa que complemente el trabajo de los agentes caninos, se decidió entrenar una red neuronal artificial. Esta se integrará en una aplicación Bluetooth para dispositivos móviles que controlará la nariz electrónica. Dicha red neuronal será la encargada de determinar si la muestra analizada corresponde o no a la sustancia objetivo.
 \par
@@ -118,72 +118,28 @@ Además, dado que para las muestras positivas se dispone de un menor numero de m
 Un seguimiento detallado de estas tomas de muestras se encuentra en la~\autoref{tab:registro_sustancias_bueno} del Anexo B.
 
 \subsubsection{Limpieza del dataset}
-Todos los archivos de texto de las muestras se han ido guardando en una carpeta llamada \texttt{Por\_procesar}, en la que tambien se encuentran divididas en las subcarpetas ``BUENO'' y ``MALO''. Estos archivos cuentan con datos, como la presión o la humedad, que no son útiles para el entrenamiento de la ANN, por lo que se ha llevado a cabo un proceso de limpieza y preprocesamiento de los datos para eliminar información irrelevante y preparar los datos para su uso en el entrenamiento de la red neuronal.
+Todos los archivos de texto de las muestras se han ido guardando en una carpeta llamada \texttt{Por\_procesar}, en la que también se encuentran divididas en las subcarpetas ``BUENO'' y ``MALO''. Estos archivos cuentan con datos, como la presión o la humedad, que no son útiles para el entrenamiento de la ANN, por lo que se ha llevado a cabo un proceso de limpieza y preprocesamiento de los datos para eliminar información irrelevante y preparar los datos para su uso en el entrenamiento de la red neuronal.
 \par
 
-Este proceso de limpieza se realiza con un script en Python llamado \texttt{Limpiador.py}, que inspecciona cada archivo de texto en las carpetas \texttt{Entrenamiento/Por\_procesar/BUENO} y \texttt{Entrenamiento/Por\_procesar/MALO}, y procede a su procesamiento para poder ser usado para llevar a cabo el entrenamiento de la ANN\: elimina la cabecera y un espacio que hay en la priemra fila de datos, cambia las comas separadoras por espacios y los puntos de los decimales por comas. Además adapta del fichero para solo tener los datos necesarios: extrae únicamente las columnas correspondientes a las lecturas de los sensores relevantes para el análisis (omitiendo la priemra columna se lelva a cabo la eliminacion de la cavecera y del espacio de la primera fila de datos) y elimina las filas de la fase de desorción para solo tener datos de la fase de adsorción, además de eliminar las primeras 15 lineas de la fase de adsorción para omitir los datos en los que los sensores aún no han empezado a captar del todo bien las particulas. Los archivos limpios se guardan en nuevas carpetas llamadas \texttt{Entrenamiento/BUENO} y \texttt{Entrenamiento/MALO} respectivamente, manteniendo la misma estructura de nombres de archivo para facilitar su identificación.
-\par
+Este proceso de limpieza se realiza con un script en Python llamado \texttt{Limpiador.py}, el cual se describe a continuación detallando cada una de sus partes.
 
-Para finalizar, el programa pregunta si se desea llevar a cabo un aumento de datos (Data Augmentation). Si se responde afirmativamente, se ejecuta un segundo script llamado \texttt{Aumentador.py}, del que se habla en el siguiente apartado.
-\par
+\textbf{Importación de dependencias:} El script comienza importando las librerías necesarias para el procesamiento de datos y la gestión de archivos:
 
-Este es el funcionamiento por defecto al ejecutar el script sin argumentos. Sin embargo, también es posible ejecutar el script para procesar un solo archivo o para procesar carpetas por lotes indicando los argumentos correspondientes. Para más detalles sobre su uso, se puede consultar la documentación incluida en el propio script.
-\par
-
-El código del script de limpieza de datos es el siguiente:
-
-\begin{verbatim}
-"""
-Uso típico (ejecutar desde la carpeta riz del proyecto):
-
-- Lote por defecto (procesa Por_procesar/BUENO y MALO → BUENO y MALO):
-    python Entrenamiento\Limpiador.py
-
-- Lote explícito:
-    python Entrenamiento\Limpiador.py --batch
-
-- Un solo archivo:
-    python Entrenamiento\Limpiador.py -i "Entrenamiento\Por_procesar\BUENO\{nombre del archivo}" -o "Entrenamiento\BUENO\{nombre del archivo}"
-
-Notas:
-- Los archivos de salida se sobrescriben si ya existen.
-- Las rutas son relativas al directorio del TFG (este repo).
-"""
-
+\begin{lstlisting}[language=Python, caption={Importación de dependencias del script Limpiador.py.}, label={lst:limpiador_imports}]
 import pandas as pd
 import argparse
 from pathlib import Path
 import sys
 import subprocess
+\end{lstlisting}
 
-def procesar_archivo(file_path: str, save_path: str) -> None:
-    """Lee, limpia y guarda un archivo de datos.
-    
-    Elimina columnas innecesarias y filtra por muestras de aire validas.
-    """
-    df = _leer_csv_robusto(file_path)
+Como se muestra en el \autoref{lst:limpiador_imports}, se utiliza \texttt{pandas} para la manipulación de datos tabulares, \texttt{argparse} para gestionar los argumentos de línea de comandos, \texttt{pathlib} para el manejo multiplataforma de rutas de archivos, y \texttt{subprocess} para la ejecución opcional del script de aumento de datos.
 
-    # Columnas que se descartan del dataset
-    columnas_a_borrar = [
-        'nº', 'temp(scd40)', 'hum(scd40)', 'temp(ens160)',
-        'etoh(zmod4410)', 'temperatura(bme688)', 'humedad(bme688)', 'presion(bme688)'
-    ]
+\textbf{Lectura robusta de archivos:} Dado que los archivos de datos pueden estar codificados en diferentes formatos (UTF-8, Windows-1252, Latin-1, etc.), se ha implementado una función que intenta múltiples codificaciones hasta encontrar una que funcione correctamente:
 
-    # Elimina columnas innecesarias y filtra donde Aire/muestra sea diferente de 0
-    df = df.drop(columns=[c for c in columnas_a_borrar if c in df.columns])
-    df = df[df['Aire/muestra'] != 0]
-
-    # Elimina las 15 primeras líneas donde Aire/muestra == 1
-    indices_ones = df[df['Aire/muestra'] == 1].index[:15]
-    df = df.drop(indices_ones)
-
-    df.to_csv(save_path, sep=' ', decimal=',', index=False)
-
+\begin{lstlisting}[language=Python, caption={Función para lectura robusta de archivos CSV con múltiples codificaciones.}, label={lst:leer_csv}]
 def _leer_csv_robusto(file_path: str) -> pd.DataFrame:
-    """Lee el TXT/CSV con varios encodings comunes en Windows.
-    
-    Intenta multiples codificaciones en orden de probabilidad.
-    """
+    """Lee el TXT/CSV con varios encodings comunes en Windows."""
     # Encodings ordenados por frecuencia en sistemas Windows
     encodings = [
         'utf-8',        # Estandar moderno
@@ -219,48 +175,48 @@ def _leer_csv_robusto(file_path: str) -> pd.DataFrame:
         if last_error:
             raise last_error
         raise
+\end{lstlisting}
 
-def seleccionar_y_limpiar_cli():
-    """Interfaz de linea de comandos para procesar archivos.
+En el \autoref{lst:leer_csv}, la función \texttt{\_leer\_csv\_robusto} (líneas 1--36) itera sobre una lista de codificaciones comunes en sistemas Windows (líneas 4--8). Para cada codificación, intenta leer el archivo CSV saltando la primera fila (\texttt{skiprows=1}) que contiene metadatos. Si falla con un \texttt{UnicodeDecodeError}, continúa con la siguiente codificación. Como último recurso, utiliza el motor Python de pandas que es más tolerante con caracteres problemáticos.
+
+\textbf{Procesamiento y limpieza de datos} La función principal de procesamiento elimina las columnas innecesarias y filtra las filas correspondientes a la fase de desorción:
+
+\begin{lstlisting}[language=Python, caption={Función principal para procesar y limpiar un archivo de datos.}, label={lst:procesar_archivo}]
+def procesar_archivo(file_path: str, save_path: str) -> None:
+    """Lee, limpia y guarda un archivo de datos."""
+    df = _leer_csv_robusto(file_path)
+
+    # Columnas que se descartan del dataset
+    columnas_a_borrar = [
+        'n', 'temp(scd40)', 'hum(scd40)', 'temp(ens160)',
+        'etoh(zmod4410)', 'temperatura(bme688)', 
+        'humedad(bme688)', 'presion(bme688)'
+    ]
+
+    # Elimina columnas innecesarias y filtra donde Aire/muestra != 0
+    df = df.drop(columns=[c for c in columnas_a_borrar if c in df.columns])
+    df = df[df['Aire/muestra'] != 0]
     
-    Soporta dos modos:
-    - Lote: procesa carpetas automaticamente
-    - Archivo individual: con --input y --output
-    """
-    parser = argparse.ArgumentParser(description="Limpia un dataset de sensores y guarda el resultado.")
-    parser.add_argument("--input", "-i", help="Ruta del archivo de entrada (.txt)")
-    parser.add_argument("--output", "-o", help="Ruta del archivo de salida (.txt)")
-    parser.add_argument("--batch", action="store_true", help="Procesa por lotes Por_procesar/BUENO y MALO hacia BUENO y MALO (por defecto si no hay argumentos).")
-    args = parser.parse_args()
+    # Elimina las 15 primeras lineas donde Aire/muestra == 1
+    indices_ones = df[df['Aire/muestra'] == 1].index[:15]
+    df = df.drop(indices_ones)
+    
+    df.to_csv(save_path, sep=' ', decimal=',', index=False)
+\end{lstlisting}
 
-    # Modo lote: procesa automaticamente si no hay argumentos de entrada/salida
-    if args.batch or (not args.input and not args.output):
-        procesar_lote()
-        return
+En el \autoref{lst:procesar_archivo}, la función \texttt{procesar\_archivo} (líneas 1--20) lee primero el archivo usando la función robusta descrita anteriormente (línea 3). A continuación, se define una lista con las columnas a eliminar (líneas 6--10), que incluyen datos de temperatura, humedad y presión que no aportan información relevante para la detección de sustancias. La línea 13 elimina estas columnas del DataFrame, mientras que la línea 14 filtra las filas donde la columna \texttt{Aire/muestra} es diferente de 0, descartando así los datos de la fase de desorción. Las líneas 17--18 eliminan las primeras 15 filas de la fase de adsorción, ya que durante este período inicial los sensores aún no han alcanzado una respuesta estable. Finalmente, el archivo procesado se guarda con separador de espacios y coma como separador decimal (línea 20).
 
-    # Valida que se proporcionen ambos argumentos para modo de archivo individual
-    if not args.input or not args.output:
-        parser.error("Debe indicar --batch o bien --input y --output.")
+\textbf{Procesamiento por lotes:} Para procesar todos los archivos de forma automática, se ha implementado una función que recorre las carpetas de entrada y aplica el procesamiento a cada archivo:
 
-    procesar_archivo(args.input, args.output)
-    print(f"Archivo procesado correctamente: {args.output}")
-
+\begin{lstlisting}[language=Python, caption={Función para el procesamiento por lotes de archivos.}, label={lst:procesar_lote}]
 def procesar_lote() -> None:
-    """Procesa todos los archivos en modo lote.
-    
-    Lee archivos de Por_procesar/BUENO y Por_procesar/MALO,
-    luego guarda los resultados en BUENO y MALO respectivamente.
-    """
-    from pathlib import Path
+    """Procesa todos los archivos en modo lote."""
     base = Path(__file__).parent
     in_root = base / "Por_procesar"
     # Pares (carpeta_entrada, carpeta_salida)
     parejas = [("BUENO", "BUENO"), ("MALO", "MALO")]
 
-    # Contadores para estadisticas finales
-    total = 0
-    ok = 0
-    err = 0
+    total, ok, err = 0, 0, 0  # Contadores para estadisticas
 
     # Procesa cada categoria (BUENO, MALO)
     for sub_in, sub_out in parejas:
@@ -285,52 +241,89 @@ def procesar_lote() -> None:
                 print(f"[ERROR] {txt.name}: {error}")
 
     print(f"Resumen lote: {ok}/{total} OK, {err} errores")
+\end{lstlisting}
 
+El \autoref{lst:procesar_lote} muestra la función \texttt{procesar\_lote} (líneas 1--32), que determina automáticamente las rutas de trabajo a partir de la ubicación del script (líneas 3--4). Define los pares de carpetas de entrada/salida (línea 6) y crea las carpetas de destino si no existen (línea 14). El bucle principal (líneas 11--30) recorre cada categoría, busca todos los archivos \texttt{.txt} en orden alfabético y aplica el procesamiento, mostrando el progreso y manejando posibles errores de forma individual.
+
+\textbf{Interfaz de línea de comandos:} El script ofrece flexibilidad mediante una interfaz de línea de comandos que permite tanto el procesamiento por lotes como el de archivos individuales:
+
+\begin{lstlisting}[language=Python, caption={Interfaz de línea de comandos del script.}, label={lst:cli}]
+def seleccionar_y_limpiar_cli():
+    """Interfaz de linea de comandos para procesar archivos."""
+    parser = argparse.ArgumentParser(
+        description="Limpia un dataset de sensores.")
+    parser.add_argument("--input", "-i", 
+        help="Ruta del archivo de entrada (.txt)")
+    parser.add_argument("--output", "-o", 
+        help="Ruta del archivo de salida (.txt)")
+    parser.add_argument("--batch", action="store_true", 
+        help="Procesa por lotes (por defecto si no hay argumentos)")
+    args = parser.parse_args()
+
+    # Modo lote: si no hay argumentos de entrada/salida
+    if args.batch or (not args.input and not args.output):
+        procesar_lote()
+        return
+
+    # Valida argumentos para modo de archivo individual
+    if not args.input or not args.output:
+        parser.error("Debe indicar --batch o bien --input y --output.")
+
+    procesar_archivo(args.input, args.output)
+    print(f"Archivo procesado correctamente: {args.output}")
+\end{lstlisting}
+
+En el \autoref{lst:cli}, la función \texttt{seleccionar\_y\_limpiar\_cli} configura tres argumentos opcionales: \texttt{-{}-input} y \texttt{-{}-output} para procesar un archivo específico, y \texttt{-{}-batch} para el modo por lotes. Si no se proporcionan argumentos, el script ejecuta automáticamente el modo por lotes (líneas 14--16).
+
+\textbf{Punto de entrada y encadenamiento con aumento de datos:} Finalmente, el punto de entrada del script ejecuta el procesamiento y ofrece la opción de continuar con el aumento de datos:
+
+\begin{lstlisting}[language=Python, caption={Punto de entrada principal del script.}, label={lst:main}]
 if __name__ == "__main__":
     # Ejecuta el limpiador de datos
     seleccionar_y_limpiar_cli()
 
     # Opcion para ejecutar el script de aumento de datos
     print("\n" + "-"*40)
-    ans = input("¿Desea llevar a cabo el aumento de datos? (s/n): ").strip().lower()
-    if ans == 's':
+    ans = input("Desea llevar a cabo el aumento de datos? (s/n): ")
+    if ans.strip().lower() == 's':
         script_path = Path(__file__).parent / "Augmentation.py"
         if script_path.exists():
             print(f"Se lanza {script_path.name}...")
             subprocess.run([sys.executable, str(script_path)])
         else:
-            print(f"[ERROR] No se encuentra el archivo: {script_path}")
-\end{verbatim}
+            print(f"[ERROR] No se encuentra: {script_path}")
+\end{lstlisting}
+
+El \autoref{lst:main} (líneas 1--14) permite encadenar el proceso de limpieza con el de aumento de datos de forma interactiva. Tras completar la limpieza, pregunta al usuario si desea continuar con el script \texttt{Augmentation.py}, facilitando así un flujo de trabajo completo en una sola ejecución.
+\par
+
+Los archivos limpios se guardan en las carpetas \texttt{Entrenamiento/BUENO} y \texttt{Entrenamiento/MALO} respectivamente, manteniendo la misma estructura de nombres de archivo para facilitar su identificación.
 
 \subsubsection{Aumento de datos}
 Dado que la obtención de muestras físicas es un proceso costoso en tiempo y recursos, el conjunto de datos original puede resultar limitado para entrenar modelos de aprendizaje profundo robustos. Para mitigar el riesgo de sobreajuste (\textit{overfitting}) y mejorar la capacidad de generalización de la red, se ha implementado una técnica de aumento de datos (\textit{Data Augmentation}) mediante un script desarrollado en Python (\texttt{Augmentation.py}).
 \par
 
-Este script procesa los archivos originales de las carpetas \texttt{Entrenamiento/BUENO} y \texttt{Entrenamiento/MALO}, donde se encuentran los datos ``limpios'', para generar un nuevo conjunto de datos aumentado (``BUENO-PLUS'' y ``MALO-PLUS''). El algoritmo se ha configurado para generar 10 nuevas muestras sintéticas por cada muestra original, multiplicando significativamente el volumen del dataset disponible.
-\par
+Este script procesa los archivos originales de las carpetas \texttt{Entrenamiento/BUENO} y \texttt{Entrenamiento/MALO}, donde se encuentran los datos ``limpios'', para generar un nuevo conjunto de datos aumentado (``BUENO-PLUS'' y ``MALO-PLUS''). El algoritmo se ha configurado para generar 10 nuevas muestras sintéticas por cada muestra original, multiplicando significativamente el volumen del dataset disponible. A continuación se describe el funcionamiento del script detallando cada una de sus partes.
 
-La metodología de generación de datos sintéticos combina dos técnicas principales:
-\begin{enumerate}
-    \item \textbf{Ventaneo Adaptativo (Sliding Window):} En lugar de utilizar la señal completa, se extraen ventanas o fragmentos de tamaño fijo (configurado en 100 lecturas temporales). El algoritmo calcula dinámicamente el desplazamiento (\textit{step size}) necesario para repartir estas ventanas a lo largo de toda la duración del experimento original, asegurando que se capturan características de diferentes momentos de la toma de muestra.
-    \item \textbf{Inyección de Ruido Proporcional (Jittering):} Para introducir variabilidad, se aplica ruido gaussiano multiplicativo a las lecturas de los sensores. Se utiliza una distribución normal con media 1 y una desviación estándar de 0.005 (0.5\% de ruido). La fórmula empleada es $X_{aug} = X_{orig} \cdot \mathcal{N}(1, 0.005)$, donde $X_{aug}$ es la muestra aumentada, $X_{orig}$ es la muestra original y $\mathcal{N}(1, 0.005)$ es una variable aleatoria con distribución normal. Este enfoque altera ligeramente la amplitud de las señales simulando fluctuaciones en los sensores, pero preservando la morfología y tendencia de la señal original.
-\end{enumerate}
+\textbf{Importación de dependencias y configuración inicial:} El script comienza importando las librerías necesarias y estableciendo la ruta de trabajo:
 
-A continuación se muestra el código del script de aumento de datos:
-
-\begin{verbatim}
+\begin{lstlisting}[language=Python, caption={Importación de dependencias del script Augmentation.py.}, label={lst:aug_imports}]
 import pandas as pd
 import numpy as np
 import os
 
-# Ruta automática al directorio del script
+# Ruta automatica al directorio del script
 script_dir = os.path.dirname(os.path.abspath(__file__))
+\end{lstlisting}
 
-def augment_pipeline_fixed(df, window_size=100, target_files=10, iterations=2, noise_level=0.005):
-    """Aumenta datos extrayendo ventanas y aplicando ruido.
-    
-    Divide el dataframe en ventanas y genera variaciones con ruido proporcional.
-    Garantiza la generacion del numero de archivos especificado.
-    """
+Como se muestra en el \autoref{lst:aug_imports}, se utiliza \texttt{pandas} para la manipulación de datos tabulares, \texttt{numpy} para las operaciones numéricas y generación de ruido aleatorio, y \texttt{os} para la gestión de archivos y directorios. La variable \texttt{script\_dir} (línea 6) almacena la ruta absoluta del directorio donde se encuentra el script, permitiendo que funcione correctamente independientemente de desde dónde se ejecute.
+
+\textbf{Función de aumento de datos:} La función principal implementa la metodología de generación de datos sintéticos combinando dos técnicas: ventaneo adaptativo (\textit{Sliding Window}) e inyección de ruido proporcional (\textit{Jittering}):
+
+\begin{lstlisting}[language=Python, caption={Función principal de aumento de datos con ventaneo y ruido.}, label={lst:augment_pipeline}]
+def augment_pipeline_fixed(df, window_size=100, target_files=10, 
+                           iterations=2, noise_level=0.005):
+    """Aumenta datos extrayendo ventanas y aplicando ruido."""
     augmented_samples = []
     
     # Calcula cuantas ventanas se necesitan extraer
@@ -351,7 +344,11 @@ def augment_pipeline_fixed(df, window_size=100, target_files=10, iterations=2, n
             step_size = (len(df) - actual_window_size) // (actual_windows - 1)
         else:
             step_size = 0
+\end{lstlisting}
 
+En el \autoref{lst:augment_pipeline}, la función \texttt{augment\_pipeline\_fixed} (líneas 1--23) recibe como parámetros el DataFrame a aumentar, el tamaño de ventana (por defecto 100 filas), el número de archivos objetivo a generar (10), las iteraciones por ventana (2) y el nivel de ruido (0.5\%). Las líneas 7--23 implementan una lógica adaptativa: si el archivo original es más corto que el tamaño de ventana, se ajustan los parámetros para generar igualmente el número objetivo de muestras. En caso contrario, se calcula el \texttt{step\_size} (línea 21) para distribuir las ventanas uniformemente a lo largo del archivo.
+
+\begin{lstlisting}[language=Python, caption={Extracción de ventanas y aplicación de ruido gaussiano.}, label={lst:augment_noise}]
     # Extrae ventanas y genera variaciones con ruido
     for w in range(actual_windows):
         start = w * step_size
@@ -376,12 +373,17 @@ def augment_pipeline_fixed(df, window_size=100, target_files=10, iterations=2, n
             augmented_samples.append(df_aug)
             
     return augmented_samples[:target_files]
+\end{lstlisting}
 
-def process_balanced_data(input_folder_name, output_folder_name, target_per_file=10):
-    """Procesa todos los archivos de una carpeta y genera datos aumentados.
-    
-    Lee archivos de entrada, aplica aumento de datos y guarda en carpeta de salida.
-    """
+En el \autoref{lst:augment_noise}, el bucle principal (líneas 2--22) extrae ventanas del DataFrame original. Para cada ventana, se generan múltiples variaciones (líneas 11--22). El proceso de \textit{Jittering} (líneas 17--18) aplica ruido gaussiano multiplicativo: se genera una matriz de valores aleatorios con distribución normal $\mathcal{N}(1, 0.005)$ y se multiplica elemento a elemento con las características. Esto altera ligeramente la amplitud de las señales preservando su morfología. La etiqueta original (columna \texttt{Aire/muestra}) se mantiene intacta (línea 14) para no corromper la información de clase.
+
+\textbf{Procesamiento de carpetas:} La siguiente función se encarga de procesar todos los archivos de una carpeta y guardar los resultados:
+
+\begin{lstlisting}[language=Python, caption={Función para procesar carpetas completas.}, label={lst:process_balanced}]
+def process_balanced_data(input_folder_name, output_folder_name, 
+                          target_per_file=10):
+    """Procesa todos los archivos de una carpeta y 
+    genera datos aumentados."""
     input_path = os.path.join(script_dir, input_folder_name)
     output_path = os.path.join(script_dir, output_folder_name)
 
@@ -399,7 +401,8 @@ def process_balanced_data(input_folder_name, output_folder_name, target_per_file
         if filename.endswith(".txt"):
             try:
                 # Lee el archivo CSV con separador espacio y coma decimal
-                df = pd.read_csv(os.path.join(input_path, filename), sep='\s+', decimal=',')
+                df = pd.read_csv(os.path.join(input_path, filename), 
+                                 sep='\s+', decimal=',')
                 
                 # Aplica aumento de datos
                 new_samples = augment_pipeline_fixed(
@@ -414,12 +417,20 @@ def process_balanced_data(input_folder_name, output_folder_name, target_per_file
                 name_base = os.path.splitext(filename)[0]
                 for idx, aug_df in enumerate(new_samples, 1):
                     new_name = f"{name_base}-P{idx}.txt"
-                    aug_df.to_csv(os.path.join(output_path, new_name), sep=' ', decimal=',', index=False)
+                    aug_df.to_csv(os.path.join(output_path, new_name), 
+                                  sep=' ', decimal=',', index=False)
                 
-                print(f"Se generaron {len(new_samples)} archivos exactos de {filename}.")
+                print(f"Se generaron {len(new_samples)} archivos 
+                    de {filename}.")
             except Exception as error:
                 print(f"Error en {filename}: {error}")
+\end{lstlisting}
 
+El \autoref{lst:process_balanced} muestra la función \texttt{process\_balanced\_data} (líneas 1--42), que construye las rutas de entrada y salida (líneas 4--5) y valida su existencia (líneas 8--14). El bucle principal (líneas 17--42) itera sobre cada archivo \texttt{.txt}, lo lee con el formato correcto (separador de espacios y coma decimal, líneas 21--22), aplica el aumento de datos (líneas 25--31) y guarda cada muestra generada con un sufijo \texttt{-P\{número\}} (líneas 34--38). El manejo de excepciones (líneas 19, 41--42) asegura que un error en un archivo no detenga el procesamiento completo.
+
+\textbf{Punto de entrada y ejecución:} El script finaliza con la configuración de parámetros y la ejecución del procesamiento:
+
+\begin{lstlisting}[language=Python, caption={Configuración y ejecución del aumento de datos.}, label={lst:aug_main}]
 # Numero de archivos aumentados a generar por cada archivo original
 OBJETIVO_POR_ARCHIVO = 10 
 
@@ -430,17 +441,19 @@ folders = {"BUENO": "BUENO-PLUS", "MALO": "MALO-PLUS"}
 for ori, dest in folders.items():
     process_balanced_data(ori, dest, target_per_file=OBJETIVO_POR_ARCHIVO)
 
-print(f"\nSe finaliza el proceso. Cada archivo original genera {OBJETIVO_POR_ARCHIVO} versiones.")
-\end{verbatim}
+print(f"\nSe finaliza el proceso. Cada archivo 
+    genera {OBJETIVO_POR_ARCHIVO} versiones.")
+\end{lstlisting}
 
-El dataset original constaba de 144 muestras (62 positivas y 82 negativas). Tras aplicar el proceso de aumento de datos, se han generado un total de 1440 muestras sintéticas adicionales (620 positivas y 820 negativas). El nombre de los archivos aumentados sigue la nomenclatura original, añadiendo un sufijo ``\_PX'' donde ``X'' es un número secuencial que identifica cada muestra sintética generada a partir de la misma muestra original.
+En el \autoref{lst:aug_main}, la constante \texttt{OBJETIVO\_POR\_ARCHIVO} (línea 2) define cuántas muestras sintéticas se generarán por cada archivo original. El diccionario \texttt{folders} (línea 5) establece el mapeo entre carpetas de entrada y salida. El bucle final (líneas 8--9) procesa ambas categorías (BUENO y MALO) de forma secuencial.
+
+\textbf{Resultados del aumento de datos:} El dataset original constaba de 144 muestras (62 positivas y 82 negativas). Tras aplicar el proceso de aumento de datos, se han generado un total de 1440 muestras sintéticas adicionales (620 positivas y 820 negativas). El nombre de los archivos aumentados sigue la nomenclatura original, añadiendo un sufijo ``-PX'' donde ``X'' es un número secuencial que identifica cada muestra sintética generada a partir de la misma muestra original.
 \par
 
-En estos nuevos arcvhivos el numero total de filas por archivo es de 100, correspondientes a las 100 lecturas temporales extraídas en cada ventana. Multiplicando estas 100 filas por las 1440 muestras aumentadas, se obtiene un total de 144.000 nuevas entradas para el entrenamiento de la red neuronal.
+En estos nuevos archivos el número total de filas por archivo es de 100, correspondientes a las 100 lecturas temporales extraídas en cada ventana. Multiplicando estas 100 filas por las 1440 muestras aumentadas, se obtiene un total de 144.000 nuevas entradas para el entrenamiento de la red neuronal.
 \par
 
 De esta forma, se consigue un dataset más rico y variado, permitiendo que la red neuronal aprenda a reconocer patrones incluso en presencia de ruido o variaciones temporales.
-\par
 
 \subsection{Entrenamiento de la red neuronal}
 Como se ha mencionado en apartados enteriores de este documento, no se entrenará una sola ANN, sino que se entrenarán varios modelos con distintos frameworks (Keras y PyTorch) y conjuntos de datos (concretamente con un conjunto de datos normal y otro conjunto de datos aumentado) para comparar resultados y determinar cuál se adapta mejor a las necesidades del proyecto.
@@ -449,89 +462,220 @@ Como se ha mencionado en apartados enteriores de este documento, no se entrenar�
 Entre esos modelos se entrenaron modelos estándar y modelos optimizados para su uso en tiempo real en la aplicación móvil que controla la nariz electrónica. Para ver como se han entrenado los modelos estándar y los resultados obtenidos, se puede consultar el Anexo D.
 
 \subsubsection{Keras a tiempo real}
-Esta verisión del modelo entrenado en Keras está diseñada para su uso en la aplicación móvil que controla la nariz electrónica en tiempo real. A diferencia del modelo estándar, que procesa datos completos después de la toma de muestras, este modelo está optimizado para realizar inferencias de manera continua a medida que llegan los datos de los sensores.
+Esta versión del modelo entrenado en Keras está diseñada para su uso en la aplicación móvil que controla la nariz electrónica en tiempo real. A diferencia del modelo estándar, que procesa datos completos después de la toma de muestras, este modelo está optimizado para realizar inferencias de manera continua a medida que llegan los datos de los sensores.
 \par
 
-A diferencia de las versiones estándar, este desarrollo pone especial énfasis en los parámetros de normalización necesarios para el entorno de producción. Para ello, se realiza una extracción de características reales procesando las señales de los sensores manteniendo la estructura de datos que la nariz electrónica enviará en tiempo real. Además se lleva a cabo una exportación de parámetros del ``Scaler'' siendo un paso crítico en esta sección es la extracción de las medias (\texttt{scaler.mean\_}) y desviaciones típicas (\texttt{scaler.var\_}) del StandardScaler. Estos valores son fundamentales para que la aplicación móvil pueda normalizar las nuevas lecturas de los sensores de la misma forma en que se normalizaron los datos de entrenamiento, garantizando la fidelidad de la predicción.
-\par
+A diferencia de las versiones estándar, este desarrollo pone especial énfasis en los parámetros de normalización necesarios para el entorno de producción. El entrenamiento se ha realizado en un notebook de Jupyter ejecutado en Google Colab, cuyo código se describe a continuación.
 
-Se mantiene una arquitectura de red neuronal densa (MLP) mediante la API Keras Sequential, optimizada para un equilibrio entre bajo consumo de recursos y precisión con una capa de entrada adaptada a la dimensionalidad de las señales capturadas, capas ocultas de 32 y 16 neuronas configuradas con funciones de activación ReLU y una capa intermedia de Dropout (0.2) para asegurar que el modelo sea robusto frente al ruido eléctrico que pueden presentar los sensores en uso real, y una capa de salida con activación Sigmoide para clasificación binaria.
-\par
+\textbf{Importación de librerías:} El notebook comienza importando todas las dependencias necesarias para el procesamiento de datos, entrenamiento y evaluación del modelo:
 
-El modelo se somete a un proceso de conversión para ser ejecutado por el intérprete de TensorFlow Lite (formato \texttt{.tflite}) en el dispositivo móvil transformando el modelo entrenado en un archivo binario ligero, optimizando las operaciones matemáticas para procesadores de arquitectura ARM (comunes en smartphones).
-\par
+\begin{lstlisting}[language=Python, caption={Importación de librerías para el entrenamiento del modelo.}, label={lst:keras_imports}]
+import os
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.metrics import confusion_matrix, classification_report
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout
+from tensorflow.keras.callbacks import EarlyStopping
+from google.colab import drive
 
-Para finalizar, el proceso termina con la muestra de las medias y desviaciones necesarioas para la normalización en tiempo real, y la exportación del modelo en formato TensorFlow Lite, listo para su integración en la aplicación móvil.
+print("Librerias cargadas correctamente.")
+\end{lstlisting}
 
-A continuación se muestra un pseudocódigo que resume el proceso de entrenamiento del modelo Keras a tiempo real:
+Como se muestra en el \autoref{lst:keras_imports}, se utilizan \texttt{numpy} y \texttt{pandas} para la manipulación de datos, \texttt{matplotlib} y \texttt{seaborn} para visualización, \texttt{sklearn} para el preprocesamiento y división del dataset, y \texttt{tensorflow.keras} para la construcción y entrenamiento de la red neuronal. La línea 13 importa el módulo de Google Drive para acceder a los archivos almacenados en la nube.
 
-\noindent\textbf{Algoritmo: Flujo de entrenamiento de la Red Neuronal para detección de sustancias en tiempo real (Keras).}
+\textbf{Carga y etiquetado de datos:} La función de carga de datos está diseñada específicamente para procesar los archivos generados por el script de limpieza, extrayendo únicamente las lecturas de la fase de adsorción:
 
-\begin{algorithmic}[1]
-\State~\textbf{Entrada:} Archivos espectrales (.txt) en directorios \textit{BUENO} y \textit{MALO}
-\State~\textbf{Salida:} Modelo clasificador optimizado en formato \@.keras y \@.tflite
+\begin{lstlisting}[language=Python, caption={Función para cargar y etiquetar los datos de entrenamiento.}, label={lst:keras_carga}]
+drive.mount('/content/drive')
 
-\State~\textit{Fase 1: Carga de datos e importación de librerías}{}
-\State~Importar librerías necesarias (tensorflow, keras, numpy, pandas, sklearn, matplotlib, seaborn)
+# Configura las rutas.
+bueno_dir = '/content/drive/MyDrive/Colab Notebooks/BUENO'
+malo_dir = '/content/drive/MyDrive/Colab Notebooks/MALO'
 
-\State~\textit{Fase 2: Preprocesamiento de datos}{}
-\State~Inicializar listas $X$ (características) e $y$ (etiquetas)
-\For{cada archivo espectrales en directorios BUENO-PLUS y MALO-PLUS}%
-    \State~Leer datos numéricos del archivo \@.txt con separador espacios y coma decimal
-    \State~Convertir a numérico y eliminar valores NaN
-    \State~Filtro de fase: seleccionar solo filas donde la columna 14 es 1 (fase de muestra)
-    \State~Extraer únicamente las 13 columnas de sensores de gas
-    \For{cada fila de muestra}%
-        \State~Añadir fila a $X$ (características)
-        \State~Asignar etiqueta correspondiente a $y$ (1 para BUENO, 0 para MALO)
-    \EndFor%
-\EndFor%
+X_features = []
+y_labels = []
 
-\State~\textit{Fase 3: División estratificada del dataset}{}
-\State~Primera división: separar 15\% para prueba final, 85\% para entrenamiento/validación
-\State~$X_{temp}, X_{test}, y_{temp}, y_{test} \leftarrow split(X, y, 0.15, estratificado)$
-\State~Segunda división: del 85\% restante, separar 18\% para validación (resultando en 15\% del total)
-\State~$X_{train}, X_{val}, y_{train}, y_{val} \leftarrow split(X_{temp}, y_{temp}, 0.176, estratificado)$
-\State~Distribución final: 70\% entrenamiento, 15\% validación, 15\% prueba
+def cargar_datos_tiempo_real(ruta_carpeta, etiqueta):
+    conteo_archivos = 0
+    conteo_filas = 0
+    for archivo in os.listdir(ruta_carpeta):
+        if archivo.endswith(".txt"):
+            ruta_completa = os.path.join(ruta_carpeta, archivo)
+            try:
+                # Carga archivos de 14 columnas (limpiados previamente).
+                df = pd.read_csv(ruta_completa, sep=' ', 
+                    decimal=',', header=0)
+                df = df.apply(pd.to_numeric, errors='coerce').dropna()
 
-\State~\textit{Fase 4: Normalización de datos}{}
-\State~Calcular media $\mu$ y desviación estándar $\sigma$ del conjunto de entrenamiento
-\State~$X_{train} \leftarrow \frac{X_{train} - \mu}{\sigma}$ (escalado estándar Z-score)
-\State~$X_{val} \leftarrow \frac{X_{val} - \mu}{\sigma}$
-\State~$X_{test} \leftarrow \frac{X_{test} - \mu}{\sigma}$
+                # Filtra por fase: Solo filas donde Aire/Muestra es 1.
+                df_muestra = df[df.iloc[:, 13] == 1]
 
-\State~\textit{Fase 5: Construcción de la Red Neuronal Artificial}{}
-\State~Definir arquitectura secuencial con 4 capas:
-\State~\quad Primera capa: 16 neuronas, activación ReLU, entrada de tamaño 13
-\State~\quad Segunda capa: Dropout con tasa 0.2 para regularización
-\State~\quad Tercera capa: 8 neuronas, activación ReLU
-\State~\quad Capa de salida: 1 neurona, activación Sigmoide para clasificación binaria
-\State~Compilar con optimizador \textit{Adam} (tasa 0.001) y pérdida \textit{Binary Crossentropy}
+                # Extrae solo las 13 columnas de sensores de gas.
+                for row in df_muestra.values:
+                    X_features.append(row[:13])
+                    y_labels.append(etiqueta)
+                    conteo_filas += 1
+                conteo_archivos += 1
+            except Exception as e:
+                print(f"Error en {archivo}: {e}")
 
-\State~\textit{Fase 6: Configuración del entrenamiento}{}
-\State~Configurar \textit{Early Stopping} monitoreando la pérdida de validación
-\State~Paciencia: 10 épocas sin mejora antes de detener
-\State~Restauración automática de los mejores pesos encontrados
+    print(f"Carpeta {os.path.basename(ruta_carpeta)}: "
+          f"{conteo_archivos} archivos, {conteo_filas} filas.")
+\end{lstlisting}
 
-\State~\textit{Fase 7: Entrenamiento del modelo}{}
-\State~Entrenar el modelo por hasta 100 épocas:
-\State~\quad Datos de entrada: $X_{train}, y_{train}$
-\State~\quad Tamaño de lote (\textit{batch}): 32 muestras
-\State~\quad Datos de validación: $X_{val}, y_{val}$
-\State~\quad Detención automática al cumplirse criterio de \textit{Early Stopping}
+En el \autoref{lst:keras_carga}, la función \texttt{cargar\_datos\_tiempo\_real} (líneas 10--34) procesa cada archivo \texttt{.txt} de la carpeta especificada. La línea 18 lee el archivo con separador de espacios y coma decimal. El filtro de la línea 22 selecciona únicamente las filas donde la columna 14 (índice 13) tiene valor 1, correspondiente a la fase de muestra. Las líneas 25--28 extraen las 13 columnas de sensores de gas y asignan la etiqueta correspondiente (1 para BUENO, 0 para MALO).
 
-\State~\textit{Fase 8: Evaluación en conjunto de prueba}{}
-\State~Calcular pérdida y precisión sobre datos de prueba: $loss, accuracy \leftarrow model.evaluate(X_{test}, y_{test})$
-\State~Generar predicciones: $y_{pred} \leftarrow (model.predict(X_{test}) > 0.5)$
-\State~Calcular matriz de confusión entre $y_{test}$ e $y_{pred}$
-\State~Visualizar curvas de aprendizaje (precisión y pérdida)
+\begin{lstlisting}[language=Python, caption={Ejecución de la carga de datos.}, label={lst:keras_carga_exec}]
+# Carga los datos.
+n_buenos = cargar_datos_tiempo_real(bueno_dir, 1)  # Clase Positiva
+n_malos = cargar_datos_tiempo_real(malo_dir, 0)   # Clase Negativa
 
-\State~\textit{Fase 9: Exportación del modelo}{}
-\State~Guardar modelo en formato nativo Keras (.keras)
-\State~Convertir modelo a TensorFlow Lite (.tflite) usando \textit{TFLiteConverter}
-\State~Extraer parámetros de normalización (media y desviación estándar) para despliegue móvil
-\State~Guardar artefactos para integración en aplicación móvil
-\end{algorithmic}
+X = np.array(X_features)
+y = np.array(y_labels)
+
+print(f"Forma de la matriz X: {X.shape}")
+\end{lstlisting}
+
+\textbf{División del dataset y escalado:} Para una evaluación rigurosa del modelo, se realiza una división estratificada del dataset en tres conjuntos: entrenamiento (70\%), validación (15\%) y test (15\%):
+
+\begin{lstlisting}[language=Python, caption={División estratificada y escalado de los datos.}, label={lst:keras_split}]
+# Primera division: Separa el 15% para el TEST FINAL.
+X_temp, X_test, y_temp, y_test = train_test_split(
+    X, y, test_size=0.15, random_state=42, stratify=y
+)
+
+# Segunda division: Del resto (85%), separa ~18% para VALIDACION.
+# (0.85 * 0.176 = 0.15 del total)
+X_train, X_val, y_train, y_val = train_test_split(
+    X_temp, y_temp, test_size=0.176, random_state=42, stratify=y_temp
+)
+
+# Escalado estandar (Z-score).
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_val_scaled = scaler.transform(X_val)
+X_test_scaled = scaler.transform(X_test)
+
+print(f"Muestras totales: {len(X)}")
+print(f"Entrenamiento: {len(X_train_scaled)} (70%)")
+print(f"Validacion:    {len(X_val_scaled)} (15%)")
+print(f"Test Final:    {len(X_test_scaled)} (15%)")
+\end{lstlisting}
+
+En el \autoref{lst:keras_split}, la primera división (líneas 2--4) reserva el 15\% de los datos para el test final. La segunda división (líneas 8--10) extrae aproximadamente el 18\% del 85\% restante, resultando en un 15\% del total para validación. El parámetro \texttt{stratify} asegura que la proporción de clases se mantenga en cada subconjunto. El \texttt{StandardScaler} (líneas 13--16) normaliza los datos aplicando la transformación $z = (x - \mu) / \sigma$, donde $\mu$ y $\sigma$ se calculan únicamente con los datos de entrenamiento para evitar \textit{data leakage}.
+
+\textbf{Definición y entrenamiento de la red neuronal:} La arquitectura de la red neuronal se define utilizando la API Sequential de Keras, optimizada para un equilibrio entre eficiencia computacional y precisión:
+
+\begin{lstlisting}[language=Python, caption={Definición de la arquitectura de la red neuronal.}, label={lst:keras_model}]
+# Define el modelo.
+model = Sequential([
+    Dense(16, activation='relu', input_shape=(13,)),
+    Dropout(0.2),  # Regularizacion para evitar sobreajuste.
+    Dense(8, activation='relu'),
+    Dense(1, activation='sigmoid')
+])
+
+model.compile(optimizer='adam', loss='binary_crossentropy', 
+    metrics=['accuracy'])
+
+# Configura la parada temprana monitorizando la perdida de VALIDACION.
+early_stop = EarlyStopping(
+    monitor='val_loss',
+    patience=10,
+    restore_best_weights=True
+)
+\end{lstlisting}
+
+En el \autoref{lst:keras_model}, la arquitectura consta de una capa de entrada de 16 neuronas con activación ReLU (línea 3), una capa de \texttt{Dropout} del 20\% para regularización (línea 4), una capa oculta de 8 neuronas (línea 5), y una capa de salida con activación sigmoide para clasificación binaria (línea 6). El modelo se compila con el optimizador Adam y la función de pérdida \textit{binary crossentropy} (línea 9). El \texttt{EarlyStopping} (líneas 12--16) detiene el entrenamiento si la pérdida de validación no mejora durante 10 épocas consecutivas, restaurando los mejores pesos encontrados.
+
+\begin{lstlisting}[language=Python, caption={Entrenamiento del modelo con validación.}, label={lst:keras_train}]
+# Entrena el modelo.
+history = model.fit(
+    X_train_scaled, y_train,
+    epochs=100,
+    batch_size=32,
+    validation_data=(X_val_scaled, y_val),
+    callbacks=[early_stop],
+    verbose=1
+)
+\end{lstlisting}
+
+En el \autoref{lst:keras_train}, el entrenamiento se ejecuta durante un máximo de 100 épocas con un tamaño de lote de 32 muestras. El conjunto de validación se utiliza para monitorizar el rendimiento durante el entrenamiento y activar la parada temprana cuando sea necesario.
+
+\textbf{Evaluación y visualización de resultados:} Una vez completado el entrenamiento, se evalúa el modelo con el conjunto de test y se visualizan las curvas de aprendizaje:
+
+\begin{lstlisting}[language=Python, caption={Evaluación del modelo y visualización de curvas de aprendizaje.}, label={lst:keras_eval}]
+# Evalua con el conjunto de Test.
+loss, acc = model.evaluate(X_test_scaled, y_test)
+print(f"\n>> PRECISION FINAL EN EL TEST: {acc*100:.2f}%")
+
+# Grafica de Precision (Accuracy).
+plt.subplot(1, 2, 1)
+plt.plot(history.history['accuracy'], label='Entrenamiento')
+plt.plot(history.history['val_accuracy'], label='Validacion')
+plt.title('Precision (Accuracy)', fontsize=14)
+plt.xlabel('Epocas')
+plt.ylabel('Precision')
+plt.legend()
+
+# Grafica de Perdida (Loss).
+plt.subplot(1, 2, 2)
+plt.plot(history.history['loss'], label='Entrenamiento')
+plt.plot(history.history['val_loss'], label='Validacion')
+plt.title('Perdida (Loss)', fontsize=14)
+plt.xlabel('Epocas')
+plt.ylabel('Perdida')
+plt.legend()
+
+plt.tight_layout()
+plt.show()
+\end{lstlisting}
+
+En el \autoref{lst:keras_eval}, la evaluación en el conjunto de test (línea 2) proporciona una estimación imparcial del rendimiento del modelo en datos no vistos. Las gráficas de precisión y pérdida permiten visualizar si el modelo sufre de sobreajuste (cuando las curvas de entrenamiento y validación divergen significativamente).
+
+\begin{lstlisting}[language=Python, caption={Generación de la matriz de confusión.}, label={lst:keras_confusion}]
+# Realiza predicciones en el conjunto de prueba.
+y_pred = (model.predict(X_test_scaled) > 0.5).astype(int)
+cm = confusion_matrix(y_test, y_pred)
+
+plt.figure(figsize=(6, 5))
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', 
+            xticklabels=['Malo', 'Bueno'], yticklabels=['Malo', 'Bueno'])
+plt.title('Matriz de Confusion - Modelo Real-Time')
+plt.ylabel('Real')
+plt.xlabel('Prediccion')
+plt.show()
+\end{lstlisting}
+
+En el \autoref{lst:keras_confusion}, la matriz de confusión (líneas 2--3) muestra el número de verdaderos positivos, verdaderos negativos, falsos positivos y falsos negativos, permitiendo evaluar el comportamiento del modelo en cada clase.
+
+\textbf{Exportación del modelo y parámetros de normalización:} El paso final consiste en convertir el modelo a formato TensorFlow Lite y extraer los parámetros necesarios para la normalización en la aplicación móvil:
+
+\begin{lstlisting}[language=Python, caption={Conversión del modelo a TensorFlow Lite.}, label={lst:keras_export}]
+converter = tf.lite.TFLiteConverter.from_keras_model(model)
+tflite_model = converter.convert()
+
+tflite_path = '/content/modelo_hachis.tflite'
+with open(tflite_path, 'wb') as f:
+    f.write(tflite_model)
+
+print(f"\nProceso finalizado. Descarga el archivo: {tflite_path}")
+\end{lstlisting}
+
+En el \autoref{lst:keras_export}, el \texttt{TFLiteConverter} (líneas 1--2) transforma el modelo Keras en un formato binario optimizado para dispositivos móviles con procesadores ARM\@. El archivo resultante tiene un tamaño significativamente menor que el modelo original y está optimizado para inferencia eficiente.
+
+\begin{lstlisting}[language=Python, caption={Extracción de parámetros de normalización para Flutter.}, label={lst:keras_scaler}]
+print("Medias para Flutter:", list(scaler.mean_))
+print("Desviaciones para Flutter:", list(np.sqrt(scaler.var_)))
+\end{lstlisting}
+
+El \autoref{lst:keras_scaler} muestra el último paso, que es crítico para el despliegue: se extraen las medias (\texttt{scaler.mean\_}) y desviaciones estándar ($\sqrt{\texttt{scaler.var\_}}$) calculadas durante el entrenamiento. Estos 13 valores (uno por cada sensor) deben configurarse en la aplicación móvil para normalizar las lecturas en tiempo real de la misma forma que se normalizaron los datos de entrenamiento, garantizando así la fidelidad de las predicciones.
 
 \subsection{Desarrollo de la aplicación móvil}
 Anteriormente se ha mencionado que la aplicación se ha desarrollado usando Flutter y es importante destacar que, para que los modelos puedan ser ejecutados en dispositivos móviles, es necesario convertirlos a un formato compatible con TensorFlow Lite (.tflite). Los modelos entrenados en Keras se han convertido a este formato directamente, mientras que los modelos desarrollados en PyTorch requieren una conversión adicional. Esta conversión se realiza primero exportando el modelo a ONNX (Open Neural Network Exchange) y luego utilizando el convertidor de ONNX a TensorFlow Lite. Sin embargo, la conversion de PyTorch a ONNX presenta ciertos problemas de compatibilidad, por lo que no se ha podido completar este proceso para los modelos desarrollados en PyTorch. Por otro lado, los modelos deben de ser entrenados y optimizados específicamente para su uso a tiempo real, ya que la aplicación móvil debe ser capaz de procesar los datos de los sensores y realizar inferencias en tiempo real sin que haya retrasos perceptibles para el usuario.
@@ -701,7 +845,7 @@ A continuación se muestra, en la~\autoref{fig:diagrama_flujo_tecnico_app}, un d
 Además, este documento cuenta con los pseudocódigos de los archvios de la aplicación móvil en el Anexo E.
 
 \section{Pruebas comparativas}
-En esta sección se describen las distintas pruebas que se han llevado a cabo para evaluar el rendimiento de la nariz electrónica en comparación con el olfato canino bajo las mismas circunstancias. El modelo utilizado en las pruebas fue ``Modelo Hachís Plus'', el cual ha demostrado ser el más preciso.
+En esta sección se describen las distintas pruebas que se han llevado a cabo para evaluar el rendimiento de la nariz electrónica en comparación con el olfato canino bajo las mismas circunstancias. El modelo utilizado en las pruebas fue ``Modelo Hachís Plus'', ya que ambos modelos presentan una gran precisión y este es el que aparece por defecto en la aplicación móvil.
 \par
 
 Para estas pruebas se ha contado con la colaboración de un guía canino del cuerpo cinológico de la Guardia Civil, quien ha aportado su experiencia y la de su perro adiestrado para la detección de drogas. En la~\autoref{fig:zape} es posible ver Zape, el agente canino que ha participado en las pruebas.
@@ -709,23 +853,29 @@ Para estas pruebas se ha contado con la colaboración de un guía canino del cue
 \begin{figure}[H]
     \centering
     \shadowbox{\includegraphics[width=0.6\textwidth]{pictures/Zape.jpg}}
-    \caption{Imagen de Zape}\label{fig:zape}
+    \caption{Imagen de Zape, agente canino de la Guardia Civil}\label{fig:zape}
 \end{figure}
 
-Tras una conversación con el guía canino, se han decidio que pruebas llevar a cabo basandose en las practicas habituales de entrenamiento y detección que suelen llevar a cabo en la comandancia. En total se han realizado 4 pruebas, además de otra prueba realizada sin comparar con Zape para coprobar el funcionamiento del sistema desarrollado, a esa prueba se la denominará prueba 0. A continuación se explican cada una de las pruebas realizadas:
+Tras una conversación con el guía canino, se han decidio que pruebas llevar a cabo basandose en las practicas habituales de entrenamiento y detección que suelen llevar a cabo en la comandancia. En total se han realizado 4 pruebas, además de otra prueba realizada sin comparar con Zape para coprobar el funcionamiento del sistema desarrollado, a esa prueba se la denominará prueba 0. 
+\par
+
+Para cada una de las pruebas realizadas, la persona que ha usado la nariz electrónica ha sido el propio autor de este trabajo, mientras que el guía canino ha sido el encargado de trabajar con Zape. En todas las pruebas se ha utilizado la misma cantidad de hachís proveniente de la misma fuente. Para realizar las pruebas de la nariz electrónica, el guía canino ocultaba la muestra para que el autor no supiera su ubicación, y viceversa, para evitar sesgos en los resultados.
+\par
+
+A continuación se explican cada una de las pruebas realizadas:
 
 \subsection{Prueba 0: Cajas vacías}
 Una vez finalizado el entrenamiento de la red neuronal y el desarrollo de la aplicación móvil, se realizó una prueba inicial para verificar el correcto funcionamiento del sistema. En esta prueba se metió un recipiente con hachís dentro de una caja de cartón y se pasó la nariz por encima de la caja para comprobar si el sistema era capaz de detectar la sustancia oculta, seguido de otra pasada por una caja vacía para comprobar que no se detectaba nada cuando no había sustancia oculta. Esta prueba sirvió para validar que tanto la nariz electrónica como la aplicación móvil funcionaban correctamente antes de proceder con las pruebas comparativas con el perro adiestrado.
 
 \subsection{Prueba 1: Paquetería}
-Para esta prueba se simula la insepcción de una furgoneta de reparto que contiene varios paquetes. Esos paquetes se simulan con caas de cartón, unas vacías y otras con papel de relleno en su interior. En una de las cajas se oculta hachís que debe ser detectado por la nariz electrónica y Zape, pero no se usa la misma caja para cada uno, sino que se realiza la prueba con Zape y se quita la caja usada, se añade una nueva, poniendo nuevamente el hachís en cualquiera de las cajas.
+Para esta prueba se simula la insepcción de una furgoneta de reparto que contiene varios paquetes. Esos paquetes se simulan con cajas de cartón, unas vacías y otras con papel de relleno en su interior, colcadas al azar dentro del compartimento de una furgoneta de transporte de mercancías. En una de las cajas se oculta hachís que debe ser detectado por la nariz electrónica y Zape, pero no se usa la misma caja para cada uno, sino que se realiza la prueba con Zape, se quita la caja usada, y se añade una nueva, poniendo nuevamente el hachís en cualquiera de las cajas.
 
 \subsection{Prueba 2: Interior de vehículos}
 En esta prueba se simula la inspección del interior de un vehículo, en este caso un coche. Se ha hecho uso de coches fuera de uso y parcialmente desmantelados para evitar daños en vehículos en buen estado. Para la prueba de Zape se ha ocultado el recipiente con hachís en una cabidad situada detrás del plastico que bordea la radio. Luego, para la prueba de la nariz electrónica, se ha pegado el recipiente a la parte superior del coche, concretamente en la parte interior del parasol.
 
 \subsection{Prueba 3: Personas}
-Otra práctica que hacen los guías caninos es la inspección de personas, por lo que se ha decidido incluir esta prueba en el conjunto de pruebas comparativas. En esta prueba también colabora una integrante de la Guardia Civil, la cual se oculta el recipiente con hachís en un bolsillo del pantalón para la prueba con Zape, y en la prueba con la nariz electrónica oculta el hachís en el interior de su camiseta.
+Otra práctica que hacen los guías caninos es la inspección de personas, por lo que se ha decidido incluir esta prueba en el conjunto de pruebas comparativas. Normalmente se trabaja en grandes grupos pero para esta prueba solo ha sido con una persona voluntaria. Dicha voluntaria es otra integrante de la Guardia Civil, la cual se oculta el recipiente con hachís en un bolsillo del pantalón para la prueba con Zape, y en la prueba con la nariz electrónica oculta el hachís en el interior de su camiseta.
 
 \subsection{Prueba 4: Equipajes}
-La última prueba consiste en la inspección de equipajes, simulando la revisión de maletas en un control de seguridad. En esta prueba se han utilizado una maleta, una nevera y dos mochilas (una normal y otra de deporte). En este caso se ha ocultado el recipiente con hachís en el interior del bolsillo inferior de una de la mochila de deporte para ambas pruebas, tanto la de Zape como la de la nariz electrónica.
+La última prueba consiste en la inspección de equipajes, simulando la revisión de maletas en un control de seguridad, los cuales pueden darse, por ejemplo, en aeropuertos o estaciones de tren. En esta prueba se han utilizado una maleta, una nevera y dos mochilas (una normal y otra de deporte). En este caso se ha ocultado el recipiente con hachís en el interior del bolsillo inferior de una de la mochila de deporte, donde había protecciones de entrenamiento, para ambas pruebas, tanto la de Zape como la de la nariz electrónica. 
 

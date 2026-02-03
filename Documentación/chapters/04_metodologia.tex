@@ -89,6 +89,14 @@ El diagrama de Gantt de la~\autoref{fig:gantt_planificacion_inicial} muestra una
 \subsection{Planificación final}
 La planificación inicial es una planificación ideal en la que se cumplen todas las fechas establecidas. Sin embargo, en la práctica, es posible que surjan imprevistos o retrasos que hagan que no se pueda terminar lo establecio en un sprint dentro de su tiempo estimado.
 
+Estos retrasos pueden verze reflejados en la~\autoref{fig:seguimiento}, donde se muestra una hoja de calculo en la que se ha llevado un control de las fechas teóricas y reales de cada tarea, así como el estado de cada una de ellas y el desfase (positivo si se ha acabado antes de lo previsto, negativo si se ha acabado después de lo previsto).
+
+\begin{figure}[H]
+    \centering
+    \shadowbox{\includegraphics[width=0.9\textwidth]{pictures/Seguimiento.png}}
+    \caption{Seguimiento de las tareas del proyecto.}\label{fig:seguimiento}
+\end{figure}
+
 \subsubsection{Sprint 1: Reuniones iniciales y elección del tema}
 \textbf{Duración:} 6 de noviembre--14 de noviembre de 2025 (Completado según lo planificado).
 \par
@@ -155,14 +163,6 @@ El diagrama de Gantt de la~\autoref{fig:gantt_planificacion_final} muestra la pl
     \caption{Diagrama de Gantt de la planificación final.}\label{fig:gantt_planificacion_final}
 \end{figure}
 
-En la~\autoref{fig:seguimiento} se muestra una hoja de calculo en la que se ha llevado un control de las fechas teóricas y reales de cada tarea, así como el estado de cada una de ellas y el desfase (positivo si se ha acabado antes de lo previsto, negativo si se ha acabado después de lo previsto).
-
-\begin{figure}[H]
-    \centering
-    \shadowbox{\includegraphics[width=0.9\textwidth]{pictures/Seguimiento.png}}
-    \caption{Seguimiento de las tareas del proyecto.}\label{fig:seguimiento}
-\end{figure}
-
 \section{Herramientas utilizadas}
 Dada la naturaleza del proyecto, es posible dsitinguir entre dos tipos de herramientas: herramientas hardware y herramientas software.
 
@@ -208,159 +208,294 @@ Para la fase de toma de muestras, en conjunto con la nariz electrónica menciona
 Para la limpieza y preprocesamiento de los datos obtenidos durante la fase de toma de muestras, se busca crear un script que automatice este proceso y facilite la preparación del dataset para su posterior análisis y entrenamiento de la ANN\@. Además también se buscar crear otro script para la ampliación del dataset. Existen varias posibilidades para llevar a cabo estas tareas, entre las que se incluyen:
 
 \begin{itemize}
-    \item \textbf{Python:}
-    \begin{itemize}
-        \item Cuenta con librerias como NumPy, Pandas, Matplotlib o Polaras para el procesamiento y visualización de datos.
-        \item Sencillo de aprender y utilizar.
-        \item Amplia comunidad y soporte.
-        \item Limpieza reproducible.
-        \item Familiaridad con el lenguaje.
-    \end{itemize}
-    \item \textbf{R:}
-    \begin{itemize}
-        \item Limpieza reproducible.
-        \item Muy usado en investigación.
-    \end{itemize}
-    \item \textbf{Bash + herramientas UNIX:}
-    \begin{itemize}
-        \item Potente para archivos de texto.
-        \item Muy rápido.
-        \item Limpieza reproducible.
-        \item Cero dependencias.
-    \end{itemize}
-    \item \textbf{SQL + scripts:}
-    \begin{itemize}
-        \item Exportación muy limpia.
-        \item Limpieza reproducible.
-    \end{itemize}
-    \item \textbf{Apache Spark:}
-    \begin{itemize}
-        \item Escalable.
-        \item Limpieza reproducible.
-        \item Muy usado en entornos de investigación grandes.
-    \end{itemize}
+    \item \textbf{Python:} Python es un lenguaje de propósito general altamente versátil que se ha convertido en el estándar de facto para la ciencia de datos y el análisis de datos. Su sintaxis legible y el abundante ecosistema de librerías especializadas (como NumPy, Pandas, Scikit-learn) lo hacen ideal para tareas de preprocesamiento. NumPy permite realizar operaciones vectorizadas eficientes sobre arrays de datos, mientras que Pandas proporciona estructuras de datos poderosas como DataFrames para manipular y transformar datos tabulares. Para el aumento de datos (data augmentation), se dispone de librerías como Imgaug o Albumentations para imágenes, y otras herramientas de sobremuestreo y suavizado para datos numéricos. La curva de aprendizaje es suave, permitiendo escribir código legible y mantenible rápidamente.
+    \item \textbf{R:} R es un lenguaje estadístico especializado en análisis de datos e investigación científica. Dispone de paquetes muy maduros como dplyr (para manipulación de datos) y caret (para preprocesamiento y aumento de datos). Es particularmente potente para análisis estadísticos complejos y visualización de datos mediante ggplot2. Sin embargo, R puede resultar más lento que Python en operaciones intensivas, especialmente con grandes volúmenes de datos. Su curva de aprendizaje es más pronunciada para usuarios sin experiencia estadística, aunque es muy poderoso una vez se domina.
+    \item \textbf{Bash + herramientas UNIX:} Las herramientas de línea de comandos UNIX (grep, awk, sed, cut, join) permiten realizar transformaciones de datos directamente en archivos de texto mediante tuberías (pipes). Esto es extremadamente eficiente en términos de consumo de memoria, ya que procesa el archivo línea a línea sin cargar todo en memoria. Es especialmente útil para tareas simples como filtrado, extracción de columnas y transformaciones básicas. Sin embargo, para operaciones más complejas como normalización estadística o aumento de datos basado en algoritmos sofisticados, resulta tedioso y propenso a errores. Requiere conocimiento profundo de las herramientas UNIX y puede afectar la reproducibilidad si no se documentan bien los comandos.
+    \item \textbf{SQL + scripts:} Si los datos se encuentran en una base de datos relacional, SQL es una opción poderosa para filtrado, agregación y transformación de datos. Lenguajes como SQL con Python (ejecutando consultas SQL desde scripts de Python) combinan la potencia declarativa de SQL con la flexibilidad de un lenguaje de programación. Sin embargo, esto requiere que los datos estén en una base de datos, añadiendo complejidad infraestructural. Además, el aumento de datos generativo (como la síntesis de nuevas muestras) es más difícil de implementar usando solo SQL\@.
+    \item \textbf{Apache Spark:} Apache Spark es un framework de procesamiento distribuido diseñado para trabajar con Big Data\@. Proporciona APIs en Python (PySpark), R (SparkR) y SQL\@. Es tremendamente escalable y puede procesar datos que no caben en una sola máquina distribuyéndolos en un cluster. Sin embargo, Spark tiene un overhead significativo de inicialización y sincronización entre nodos, lo que lo hace ineficiente para datasets pequeños (típicamente menor a 1 GB). Es más apropiado para pipelines de datos en producción con millones de registros distribuidos.
 \end{itemize}
 
-Dado que se tratan de unos scripts sencillos, que no tienen que procesar una gran cantidad de datos, se ha optado por utilizar Python para la limpieza y ampliación de dichos datos. Esta elección se basa en la familiaridad con el lenguaje, la disponibilidad de librerías especializadas y la facilidad para crear scripts reproducibles que faciliten el análisis posterior.
+A continuación, en la~\autoref{tab:comparativa_herramientas_datos} se presenta una tabla comparativa de estas herramientas considerando criterios relevantes para este proyecto.
 
-\subsubsection{Entrenamiento de la ANN}
-Existen diversas herramientas y frameworks para el desarrollo y entrenamiento de redes neuronales artificiales (ANN\@). Algunas de esas opciones son:
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{xltabular}{\textwidth}{@{} >{\centering\arraybackslash}p{0.13\textwidth} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X @{}}
+		\toprule
+	\multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Criterio}} & \multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Ventajas}} & \multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Desventajas}} & \multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Idoneidad}} \\
+\midrule
+\endfirsthead%
 
-\begin{itemize}
-    \item \textbf{Lenguajes:}
-    \begin{itemize}
-        \item \textbf{Python:}
-        \begin{itemize}
-            \item Buen ecosistema y librerías.
-            \item Sencillo de aprender y utilizar.
-            \item Amplia comunidad y soporte.
-            \item Flexibilidad y prototipado.
-            \item Familiaridad con el lenguaje.
-        \end{itemize}
-        \item \textbf{C++:}
-        \begin{itemize}
-            \item Velocidad inigualable de ejecución.
-            \item Gestión manual de memoria.
-        \end{itemize}
-        \item \textbf{Julia:}
-        \begin{itemize}
-            \item Gran velocidad de ejecución.
-            \item Resuelve el ``problema de los dos lenguajes'' (puedes investigar y producir en el mismo lenguaje sin perder velocidad).
-        \end{itemize}
-        \item \textbf{Mojo:}
-        \begin{itemize}
-            \item Combina la sintaxis de Python con el rendimiento de C++.
-            \item Está diseñado específicamente para hardware de IA (TPUs y GPUs).
-        \end{itemize}
-    \end{itemize}
+		\toprule
+	\multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Criterio}} & \multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Ventajas}} & \multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Desventajas}} & \multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Idoneidad}} \\
+\midrule
+\endhead%
 
-    \item \textbf{Entornos de ejecución:}
-    \begin{itemize}
-        \item \textbf{Orange/KNIME:}
-        \begin{itemize}
-            \item Permiten crear tuberías de datos completas (limpiar, entrenar y evaluar) de forma visual.
-        \end{itemize}
-        \item \textbf{Kaggle Kernels:}
-        \begin{itemize}
-            \item Entorno en la nube listo para ejecutar notebooks.
-            \item Acceso a GPUs y TPUs.
-            \item Comunidad activa y competiciones.
-            \item Enfocado en ciencia de datos.
-            \item Set de datos ya listos para usar.
-        \end{itemize}
-        \item \textbf{Google Colab:}
-        \begin{itemize}
-            \item Entorno en la nube listo para ejecutar notebooks.
-            \item Acceso a GPUs y TPUs de Google.
-            \item Integración con Google Drive.
-            \item Fácil de compartir y colaborar.
-        \end{itemize}
-    \end{itemize}
+\midrule \multicolumn{4}{r}{Continúa en la siguiente página}\\
+\endfoot%
 
-    \item \textbf{Frameworks:}
-    \begin{itemize}
-        \item \textbf{PyTorch:}
-        \begin{itemize}
-            \item Usa ``gráficos dinámicos'', lo que permite cambiar el modelo en pleno entrenamiento.
-            \item Facilidad de depuración; puedes usar las herramientas estándar de Python para encontrar errores.
-            \item Ecosistema enorme.
-            \item Familiaridad con el framework.
-        \end{itemize}
-        \item \textbf{TensorFlow / Keras:}
-        \begin{itemize}
-            \item Producción y despliegue.
-            \item Ecosistema móvil.
-            \item Su interfaz simplificada permite crear redes neuronales complejas en pocas líneas de código.
-        \end{itemize}
-        \item \textbf{Scikit-Learn:}
-        \begin{itemize}
-            \item Simplicidad.
-            \item Herramientas estadísticas integradas.
-            \item No requiere GPU, corre en cualquier ordenador con muy pocos recursos.
-        \end{itemize}
-    \end{itemize}
-\end{itemize}
+\bottomrule
+\endlastfoot%
+	\textbf{Python} & 
+	\begin{itemize}[nosep] \item Ecosistema completo (NumPy, Pandas, Scikit-learn) \item Sintaxis clara y fácil de aprender \item Múltiples librerías de data augmentation \item Reproducibilidad y documentación excelente \item Comunidad muy activa \item Versatilidad para otros usos del proyecto \end{itemize} &
+	\begin{itemize}[nosep] \item Rendimiento más bajo con Big Data \item Requiere bibliotecas externas para casi todo \end{itemize} &
+	\cellcolor{green!20} Muy alta. Ideal para datasets pequeños-medianos con requerimientos complejos. \\
+	\midrule
+	\textbf{R} &
+	\begin{itemize}[nosep] \item Diseño especializado en estadística \item Paquetes estadísticos muy maduros (dplyr, caret) \item Gráficas y análisis exploratorio avanzados \item Comunidad científica sólida \end{itemize} &
+	\begin{itemize}[nosep] \item Más lento en operaciones intensivas \item Curva de aprendizaje pronunciada \item Comunidad menos grande que Python \end{itemize} &
+	Media. Bueno si los requerimientos son principalmente estadísticos. \\
+	\midrule
+	\textbf{Bash + UNIX} &
+	\begin{itemize}[nosep] \item Máxima eficiencia de memoria \item No requiere nuevos lenguajes si ya se domina \item Extremadamente rápido para transformaciones simples \end{itemize} &
+	\begin{itemize}[nosep] \item Difícil de mantener para operaciones complejas \item Baja reproducibilidad \item Operaciones avanzadas (ML, normalización) muy tediosas \end{itemize} &
+	Baja. Solo útil para transformaciones triviales. \\
+	\midrule
+	\textbf{SQL + scripts} &
+	\begin{itemize}[nosep] \item Excelente para filtrado y agregación en BDs \item Declarativo e intuitivo \item Escalabilidad mediante RDBMS optimizadas \end{itemize} &
+	\begin{itemize}[nosep] \item Requiere infraestructura de base de datos \item Data augmentation generativa compleja \item Mezcla de lenguajes dificulta mantenimiento \end{itemize} &
+	Baja-Media. Aplicable si los datos están en una BD, pero requiere lenguajes auxiliares. \\
+	\midrule
+	\textbf{Apache Spark} &
+	\begin{itemize}[nosep] \item Escalabilidad a Big Data \item Procesamiento distribuido eficiente \item Múltiples lenguajes (PySpark, SparkR, SQL) \item Optimizaciones automáticas \end{itemize} &
+	\begin{itemize}[nosep] \item Overhead significativo para datos pequeños \item Curva de aprendizaje pronunciada \item Requiere cluster/cloud (costo infraestructural) \item Complejidad operacional \end{itemize} &
+	Baja para este proyecto. Overkill para datasets pequeños-medianos. \\
+\end{xltabular}
+{\captionsetup{type=table,hypcap=false}\captionof{table}{Comparativa de herramientas para limpieza y ampliación del dataset.}\label{tab:comparativa_herramientas_datos}}
 
-Para este proyecto se ha decidio usar Python (concretamente la versión 3.12) como lenguaje de programación debido a sus ventajas, especialmente por ser el mas usado para el entrenamiento de modelos de inteligencia artificial y el gran soporte de la comunidad. En cuanto al entorno de ejecución, se ha optado por Google Colab, ya que proporciona acceso gratuito a GPUs y TPUs, facilitando el entrenamiento de modelos complejos sin necesidad de contar con hardware potente localmente y pudiendo guardar los notebooks, modelos y datasets directamente en Google Drive\@. Finalmente se han elegido tanto PyTorch como Keras como frameworks para el desarrollo y entrenamiento de la ANN (aunque se usarán tambíen librerias de Scikit-Learn, Pandas y NumPy). Se entrenarán modelos con ambos frameworks y los mismos datos para comparar resultados y determinar cuál se adapta mejor a las necesidades del proyecto.
+\normalsize
 
-\subsubsection{Aplicación Bluetooth}
-Para el desarrollo de la aplicación móvil que se comunicará con la nariz electrónica a través de Bluetooth, se han considerado varias opciones de herramientas:
-
-\begin{itemize}
-    \item \textbf{Flutter:}
-    \begin{itemize}
-        \item Es muy estable y permite escanear, conectar y escuchar notificaciones del módulo Bluetooth de forma sencilla.
-        \item Permite cargar el modelo desde la carpeta de activos (assets).
-        \item Es reactivo, la interfaz se actualiza sola en cuanto el modelo cambia su predicción de ``Negativo'' a ``Positivo''.
-        \item Permite crear una aplicación multiplataforma.
-        \item Ofrece una gran velocidad en la transferencia de datos.
-    \end{itemize}
-    \item \textbf{React Native:}
-    \begin{itemize}
-        \item Es potente pero la configuración inicial (permisos en Android/iOS) suele ser tediosa.
-        \item Es web, permitiendo que la aplicación se use en cualquier plataforma.
-        \item Permite la integración con IA\@.
-        \item Gran facilidad para crear un selector de modelos y gestionar la lógica de temporizadores (el tiempo límite de detección) usando hooks de React.
-    \end{itemize}
-    \item \textbf{Kotlin:}
-    \begin{itemize}
-        \item Usa APIs oficiales (BluetoothGatt en Android).
-        \item Tienes el control total sobre la latencia.
-        \item Permite la integración con IA usnado librerías nativas de TensorFlow Lite para Android y CoreML para iOS\@.
-        \item Permite un consumo de batería más eficiente si la app debe estar encendida durante horas procesando datos.
-    \end{itemize}
-    \item \textbf{Capacitor:}
-    \begin{itemize}
-        \item Acceso directo a las APIs nativas de iOS y Android mediante Plugins.
-        \item Permite gestionar el ciclo de vida completo: escanear el módulo Bluetooth, conectarse, descubrir servicios y suscribirse a notificaciones.
-        \item Puedes ejecutar tu modelo directamente en la capa web usando TensorFlow.js.
-        \item Permite crear aplicaciones multiplataforma.
-        \item Es un puente entre tecnologías web y móviles nativas.
-        \item Existe un plugin para usar el SDK de Google, lo que permite que el modelo corra de forma nativa (más rápido) mientras se controla desde JavaScript.
-    \end{itemize}
-\end{itemize}
-
-En este caso se toma como prioridad la velocidad de la transferencia de datos, asurando que la aplicación pueda procesar la información recibida de la nariz electrónica en tiempo real.
+Dado que se tratan de unos scripts sencillos, se ha optado por utilizar Python para la limpieza y ampliación de dichos datos. Esta elección se basa en la familiaridad del autor con el lenguaje, ya que posee experiencia en Python. Además, Python dispone de librerías especializadas como Pandas para manipulación de DataFrames o NumPy para operaciones vectorizadas. Asimismo, existe una integración natural con otras fases del proyecto, ya que Python se usa también en el entrenamiento de la ANN, facilitando un flujo de trabajo coherente. Finalmente, el preprocesamiento requiere complejidad moderada, siendo necesario realizar normalización, manejo de valores faltantes, detección de outliers y síntesis de datos sintéticos, tareas donde Python brilla por su versatilidad y potencia.
 \par
 
-Flutter se posiciona como la opción ganadora para este proyecto porque ofrece un equilibrio perfecto entre el alto rendimiento de las aplicaciones nativas y la agilidad de desarrollo multiplataforma, algo crítico cuando se trabaja con hardware y modelos de inteligencia artificial en tiempo real. No es tan difícil como programar en Nativo (Kotlin/Swift), pero es mucho más potente para hardware que Capacitor. A diferencia de Capacitor, que depende de una capa web y un puente de comunicación que puede generar latencia, Flutter maneja la entrada de datos del módulo Bluetooth de forma directa y eficiente mediante Streams de forma nativa en su lenguaje (Dart), permitiendo procesar el flujo constante de sensores sin interrupciones. Además, su capacidad para ejecutar la red neuronal en Isolates (hilos de ejecución independientes) garantiza que el análisis intensivo de los datos no congele la interfaz de usuario, manteniendo la aplicación fluida mientras la IA ``busca'' la sustancia objetivo. Esto, sumado a la robustez de librerías como ``flutter\_blue\_plus'' para la gestión estable del Bluetooth y la facilidad para cargar y descargar dinámicamente diferentes modelos de TensorFlow Lite aprovechando la aceleración por hardware del móvil, lo convierte en la herramienta más fiable para convertir un smartphone en el procesador inteligente de una nariz electrónica.
+\subsubsection{Entrenamiento de la ANN}
+
+\paragraph{Lenguajes de programación}
+
+Para el desarrollo y entrenamiento de redes neuronales existen múltiples lenguajes de programación, cada uno con características distintivas:
+
+\begin{itemize}
+    \item \textbf{Python:} Es un lenguaje de propósito general que se ha convertido en el estándar de facto para Machine Learning y Deep Learning. Ofrece un excelente ecosistema de librerías especializadas (TensorFlow, PyTorch, Keras), es sencillo de aprender y utilizar, cuenta con una amplia comunidad y soporte, proporciona gran flexibilidad para prototipado rápido, y el autor posee familiaridad significativa con el lenguaje. Sin embargo, presenta un rendimiento más lento comparado con lenguajes compilados.
+    
+    \item \textbf{C++:} Es un lenguaje compilado que destaca por su velocidad inigualable de ejecución y gestión manual de memoria, permitiendo mayor control sobre los recursos del sistema. Sin embargo, presenta una curva de aprendizaje muy pronunciada, es más complejo de desarrollar, y cuenta con menos librerías de alto nivel especializadas en Machine Learning.
+    
+    \item \textbf{Julia:} Es un lenguaje científico de reciente desarrollo que proporciona gran velocidad de ejecución comparable a C++, resolviendo el ``problema de los dos lenguajes'' permitiendo investigar y producir en el mismo entorno sin pérdida de velocidad. Está específicamente diseñado para computación científica. Sin embargo, su comunidad es más pequeña que la de Python, cuenta con menos librerías de ML maduras, y su ecosistema aún está en desarrollo.
+    
+    \item \textbf{Mojo:} Es un lenguaje experimental que combina la sintaxis de Python con el rendimiento de C++, estando específicamente diseñado para hardware de IA (TPUs y GPUs). A pesar de estas ventajas, es un lenguaje muy nuevo con pocos precedentes, comunidad incipiente, y librerías limitadas.
+\end{itemize}
+
+A continuación se presenta una tabla comparativa de estos lenguajes considerando criterios relevantes para este proyecto.
+
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{xltabular}{\textwidth}{@{} >{\centering\arraybackslash}p{0.12\textwidth} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X @{}}
+		\toprule
+	\multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Lenguaje}} & \multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Ventajas}} & \multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Desventajas}} & \multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Idoneidad}} \\
+\midrule
+\endfirsthead%
+
+		\toprule
+	\multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Lenguaje}} & \multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Ventajas}} & \multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Desventajas}} & \multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Idoneidad}} \\
+\midrule
+\endhead%
+
+\midrule \multicolumn{4}{r}{Continúa en la siguiente página}\\
+\endfoot%
+
+\bottomrule
+\endlastfoot%
+	\textbf{Python} &
+	\begin{itemize}[nosep] \item Buen ecosistema y librerías \item Sencillo de aprender y utilizar \item Amplia comunidad y soporte \item Flexibilidad y prototipado \item Familiaridad con el lenguaje \end{itemize} &
+	\begin{itemize}[nosep] \item Rendimiento más lento comparado con lenguajes compilados \end{itemize} &
+	\cellcolor{green!20} Muy alta. Estándar de facto para Machine Learning/Deep Learning. \\
+	\midrule
+	\textbf{C++} &
+	\begin{itemize}[nosep] \item Velocidad inigualable de ejecución \item Gestión manual de memoria \item Mayor control de recursos \end{itemize} &
+	\begin{itemize}[nosep] \item Curva de aprendizaje muy pronunciada \item Complejidad en desarrollo \item Menos librerías de alto nivel para ML \end{itemize} &
+	Baja. Solo si se necesita máximo rendimiento. \\
+	\midrule
+	\textbf{Julia} &
+	\begin{itemize}[nosep] \item Gran velocidad de ejecución \item Resuelve el problema de dos lenguajes \item Diseñado para computación científica \end{itemize} &
+	\begin{itemize}[nosep] \item Comunidad más pequeña que Python \item Menos librerías de ML maduras \item Ecosistema más joven \end{itemize} &
+	Media. Bueno para investigación, pero menos maduro. \\
+	\midrule
+	\textbf{Mojo} &
+	\begin{itemize}[nosep] \item Sintaxis Python con rendimiento C++ \item Diseñado para IA/ML \item Optimizado para TPUs y GPUs \end{itemize} &
+	\begin{itemize}[nosep] \item Muy nuevo, pocos precedentes \item Comunidad incipiente \item Librerías limitadas \end{itemize} &
+	Baja para este proyecto. Demasiado experimental. \\
+\end{xltabular}
+{\captionsetup{type=table,hypcap=false}\captionof{table}{Comparativa de lenguajes de programación para entrenamiento de ANN.}\label{tab:comparativa_lenguajes_ann}}
+
+\normalsize
+
+Se ha elegido Python (versión 3.12) como lenguaje principal debido a su amplio dominio en la comunidad de Machine Learning, el excelente ecosistema de librerías especializadas, la familiaridad del autor con el lenguaje, y la abundancia de recursos y documentación disponibles.
+
+\paragraph{Entornos de ejecución}
+
+Existen varias plataformas para ejecutar el entrenamiento de modelos, proporcionando diferentes características y capacidades:
+
+\begin{itemize}
+    \item \textbf{Orange/KNIME:} Son plataformas que permiten crear tuberías de datos completas (limpieza, entrenamiento y evaluación) de forma visual sin necesidad de código. Ofrecen una interfaz intuitiva y son ideales para exploración inicial de datos. Sin embargo, son menos flexibles que el código directo, tienen limitaciones para modelos muy complejos, y ofrecen control limitado sobre parámetros específicos.
+    
+    \item \textbf{Kaggle Kernels:} Proporciona un entorno en la nube listo para ejecutar notebooks con acceso gratuito a GPUs y TPUs. Cuenta con una comunidad muy activa con competiciones regulares, está enfocado en ciencia de datos, y ofrece datasets listos para usar. Sin embargo, tiene límites de tiempo de ejecución, ofrece menos control sobre hardware, y está más orientado a competiciones que a investigación general.
+    
+    \item \textbf{Google Colab:} Ofrece un entorno en la nube basado en notebooks Jupyter con acceso gratuito a GPUs y TPUs de Google. Permite integración directa con Google Drive para almacenar notebooks, modelos y datos, es fácil de compartir y colaborar en proyectos, y es suficiente para datasets pequeños-medianos. Las desventajas incluyen que las sesiones se desconectan si no se usan, hay cuotas limitadas de acceso a GPU, y existe latencia en la comunicación de red.
+\end{itemize}
+
+A continuación se presenta la tabla comparativa de estos entornos.
+
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{xltabular}{\textwidth}{@{} >{\centering\arraybackslash}p{0.13\textwidth} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X @{}}
+		\toprule
+	\multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Entorno}} & \multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Ventajas}} & \multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Desventajas}} & \multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Idoneidad}} \\
+\midrule
+\endfirsthead%
+
+		\toprule
+	\multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Entorno}} & \multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Ventajas}} & \multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Desventajas}} & \multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Idoneidad}} \\
+\midrule
+\endhead%
+
+\midrule \multicolumn{4}{r}{Continúa en la siguiente página}\\
+\endfoot%
+
+\bottomrule
+\endlastfoot%
+	\textbf{Orange/KNIME} &
+	\begin{itemize}[nosep] \item Interfaz visual intuitiva \item No requiere código \item Tuberías completas de datos \item Bueno para exploración \end{itemize} &
+	\begin{itemize}[nosep] \item Menos flexible que código directo \item Limitaciones para modelos complejos \item Control limitado sobre parámetros \end{itemize} &
+	Baja. Mejor para prototipado rápido. \\
+	\midrule
+	\textbf{Kaggle Kernels} &
+	\begin{itemize}[nosep] \item Acceso gratuito a GPUs/TPUs \item Comunidad activa con competiciones \item Datasets listos para usar \item Reproducibilidad facilitada \end{itemize} &
+	\begin{itemize}[nosep] \item Tiempo de ejecución limitado \item Menos control sobre hardware \item Más orientado a competiciones \end{itemize} &
+	Media. Bueno para competiciones. \\
+	\midrule
+	\textbf{Google Colab} &
+	\begin{itemize}[nosep] \item Acceso gratuito a GPUs/TPUs de Google \item Integración con Google Drive \item Notebooks Jupyter nativos \item Fácil de compartir y colaborar \item Suficiente para datasets pequeños-medianos \end{itemize} &
+	\begin{itemize}[nosep] \item Sesiones se desconectan si no se usan \item Cuotas limitadas de acceso a GPU \item Latencia en red \end{itemize} &
+	\cellcolor{green!20} Muy alta. Ideal para este proyecto. \\
+\end{xltabular}
+{\captionsetup{type=table,hypcap=false}\captionof{table}{Comparativa de entornos de ejecución para entrenamiento de ANN.}\label{tab:comparativa_entornos_ann}}
+
+\normalsize
+
+Se ha optado por Google Colab como entorno de ejecución, ya que proporciona acceso gratuito a GPUs y TPUs, facilitando el entrenamiento de modelos complejos sin necesidad de hardware potente en local. Además, permite guardar notebooks, modelos y datasets directamente en Google Drive, garantizando persistencia y facilitando el acceso desde diferentes dispositivos.
+
+\paragraph{Frameworks}
+
+Existen varios frameworks especializados para el desarrollo y entrenamiento de redes neuronales con características distintivas:
+
+\begin{itemize}
+    \item \textbf{PyTorch:} Es un framework basado en gráficos dinámicos que permite cambiar el modelo en pleno entrenamiento, facilitando la experimentación. Proporciona facilidad de depuración mediante herramientas estándar de Python, cuenta con un ecosistema enorme de librerías complementarias, posee una comunidad muy activa y especializada, y el autor tiene familiaridad con este framework. Sin embargo, está menos optimizado para producción comparado con TensorFlow, y presenta una curva de aprendizaje pronunciada para principiantes.
+    
+    \item \textbf{TensorFlow/Keras:} Está diseñado principalmente para producción y despliegue en aplicaciones reales. Ofrece una interfaz de alto nivel muy intuitiva que facilita la creación de modelos, cuenta con un ecosistema móvil robusto (TensorFlow Lite), permite crear redes complejas en pocas líneas de código, y tiene amplia documentación y tutoriales. Las desventajas incluyen que es menos flexible que PyTorch, la depuración es más complicada, y la comunidad está menos orientada hacia investigación experimental.
+    
+    \item \textbf{JAX:} Es un framework de bajo nivel para computación numérica con diferenciación automática, construido sobre NumPy. Proporciona flexibilidad extrema y es muy usado en investigación científica e IA\@. El enfoque funcional permite optimizaciones avanzadas y JIT compilation para mayor velocidad. Sin embargo, requiere más código para tareas simples, la comunidad es más pequeña que PyTorch/TensorFlow, y tiene menos librerías de alto nivel preimplementadas.
+    
+    \item \textbf{PyTorch Lightning:} Es una abstracción sobre PyTorch que simplifica el código de entrenamiento, mejorando la legibilidad y reproducibilidad. Separa la lógica del modelo de la lógica de entrenamiento, facilita el uso de GPUs/TPUs sin cambios de código, y proporciona un framework estándar para el desarrollo. Las desventajas son que añade una capa de abstracción que puede ser excesiva para prototipos rápidos, y reduce la flexibilidad en ciertos casos de uso muy específicos.
+\end{itemize}
+
+A continuación se presenta la tabla comparativa de estos frameworks.
+
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{xltabular}{\textwidth}{@{} >{\centering\arraybackslash}p{0.15\textwidth} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X @{}}
+		\toprule
+	\multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Framework}} & \multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Ventajas}} & \multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Desventajas}} & \multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Idoneidad}} \\
+\midrule
+\endfirsthead%
+
+		\toprule
+	\multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Framework}} & \multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Ventajas}} & \multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Desventajas}} & \multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Idoneidad}} \\
+\midrule
+\endhead%
+
+\midrule \multicolumn{4}{r}{Continúa en la siguiente página}\\
+\endfoot%
+
+\bottomrule
+\endlastfoot%
+	\textbf{PyTorch} &
+	\begin{itemize}[nosep] \item Gráficos dinámicos permiten cambios durante entrenamiento \item Facilidad de depuración con herramientas Python \item Ecosistema enorme \item Comunidad muy activa \item Familiaridad del autor \end{itemize} &
+	\begin{itemize}[nosep] \item Menos optimizado para producción que TensorFlow \item Curva de aprendizaje pronunciada \end{itemize} &
+	\cellcolor{green!20} Muy alta. Excelente para investigación. \\
+	\midrule
+	\textbf{TensorFlow/Keras} &
+	\begin{itemize}[nosep] \item Interfaz de alto nivel muy intuitiva \item Excelente para producción \item Ecosistema móvil robusto \item Redes complejas en pocas líneas \item Amplia documentación \end{itemize} &
+	\begin{itemize}[nosep] \item Menos flexible que PyTorch \item Depuración más complicada \item Comunidad menos orientada a investigación \end{itemize} &
+	\cellcolor{green!20} Muy alta. Bueno para producción y despliegue. \\
+	\midrule
+	\textbf{JAX} &
+	\begin{itemize}[nosep] \item Flexibilidad extrema \item JIT compilation para velocidad \item Diferenciación automática avanzada \item Ideal para investigación \item Enfoque funcional permite optimizaciones \end{itemize} &
+	\begin{itemize}[nosep] \item Requiere más código para tareas simples \item Comunidad más pequeña \item Menos librerías de alto nivel \item Curva de aprendizaje empinada \end{itemize} &
+	Media. Excelente para investigación avanzada. \\
+	\midrule
+	\textbf{PyTorch Lightning} &
+	\begin{itemize}[nosep] \item Simplifica código de entrenamiento \item Mejora reproducibilidad \item Separación clara de responsabilidades \item GPU/TPU sin cambios de código \item Estándares de desarrollo \end{itemize} &
+	\begin{itemize}[nosep] \item Abstracción excesiva para prototipos rápidos \item Reduce flexibilidad en casos específicos \item Overhead para proyectos sencillos \end{itemize} &
+	Alta. Bueno para proyectos estructurados. \\
+\end{xltabular}
+{\captionsetup{type=table,hypcap=false}\captionof{table}{Comparativa de frameworks para entrenamiento de ANN.}\label{tab:comparativa_frameworks_ann}}
+
+\normalsize
+
+Se han elegido PyTorch y Keras como frameworks principales para este proyecto. Se entrenarán modelos con ambos frameworks utilizando los mismos datos y parámetros para realizar una comparación rigurosa y determinar cuál se adapta mejor a las necesidades específicas del proyecto. Adicionalmente, se evaluará el potencial de JAX para implementaciones experimentales que requieran máxima flexibilidad, y PyTorch Lightning para optimizar reproducibilidad y estructuración del código. Se utilizarán librerías complementarias como Scikit-Learn para preprocesamiento, Pandas para manipulación de datos y NumPy para operaciones numéricas.
+
+\subsubsection{Aplicación Bluetooth}
+
+Para el desarrollo de la aplicación móvil que se comunicará con la nariz electrónica a través de Bluetooth, se han evaluado diferentes opciones de frameworks y plataformas. A continuación se presentan las herramientas consideradas:
+
+\begin{itemize}
+	\item \textbf{Flutter:} Framework multiplataforma que compila a código nativo, permitiendo crear aplicaciones para iOS y Android con una única base de código. Ofrece estabilidad en la comunicación Bluetooth mediante bibliotecas como \textit{flutter\_blue\_plus}, soporte para cargar modelos de TensorFlow Lite directamente desde assets, reactividad en la interfaz mediante Streams, y capacidad de ejecutar procesos intensivos en Isolates sin congelar la UI\@. Ideal para aplicaciones en tiempo real con restricciones de latencia.
+	
+	\item \textbf{React Native:} Plataforma web-first que permite código compartido entre iOS y Android. Facilita la gestión de lógica compleja mediante hooks, selector dinámico de modelos, y temporizadores. Sin embargo, la configuración de permisos iniciales (Bluetooth, storage) es tediosa y la latencia introducida por el puente JavaScript-nativo puede ser problemática para comunicaciones de tiempo real.
+	
+	\item \textbf{Kotlin:} Lenguaje nativo de Android que proporciona control total sobre APIs de Bluetooth (BluetoothGatt), latencia predictible, y máxima eficiencia energética mediante integración con TensorFlow Lite nativo. Requiere desarrollo separado para iOS y está limitado a ecosistema Android, aumentando complejidad de mantenimiento.
+	
+	\item \textbf{Capacitor:} Framework que actúa como puente entre tecnologías web (Angular, React, Vue) y APIs nativas mediante plugins. Permite ejecutar modelos con TensorFlow.js en capa web y acceder a APIs nativas de Bluetooth, pero introduce latencia adicional por su arquitectura basada en capas web, limitando viabilidad para procesamiento en tiempo real de flujos sensoriales continuos.
+\end{itemize}
+
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{xltabular}{\textwidth}{@{} >{\centering\arraybackslash}p{0.15\textwidth} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X @{}}
+	\toprule
+	\multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Herramienta}} & \multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Ventajas}} & \multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Desventajas}} & \multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Idoneidad}} \\
+	\midrule
+	\endfirsthead%
+	
+	\toprule
+	\multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Herramienta}} & \multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Ventajas}} & \multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Desventajas}} & \multicolumn{1}{c}{\cellcolor{lightblue}\textbf{Idoneidad}} \\
+	\midrule
+	\endhead%
+	
+	\midrule \multicolumn{4}{r}{Continúa en la siguiente página}\\
+	\endfoot%
+	
+	\bottomrule
+	\endlastfoot%
+	\textbf{Flutter} &
+	\begin{itemize}[nosep] \item Compilación a código nativo en iOS/Android \item Latencia baja mediante Streams nativos \item Carga eficiente de modelos TensorFlow Lite \item Reactividad de UI sin congelación \item Única base de código multiplataforma \end{itemize} &
+	\begin{itemize}[nosep] \item Ecosistema más joven que React Native \item Comunidad más pequeña para Bluetooth específicamente \item Requiere aprendizaje de Dart \end{itemize} &
+	\cellcolor{green!20} Muy alta. Óptimo para tiempo real. \\
+	\midrule
+	\textbf{React Native} &
+	\begin{itemize}[nosep] \item Lógica compleja fácil con hooks \item Código compartido web y móvil \item Comunidad muy grande \item Buena documentación \item Gestión de estado madura \end{itemize} &
+	\begin{itemize}[nosep] \item Latencia introducida por puente JS-nativo \item Configuración de permisos tedosa \item Overhead de performance para datos continuos \item Compilación lenta en proyectos grandes \end{itemize} &
+	Media. Viable solo con optimizaciones. \\
+	\midrule
+	\textbf{Kotlin} &
+	\begin{itemize}[nosep] \item Control total sobre APIs Bluetooth \item Latencia predecible y mínima \item Máxima eficiencia energética \item Integración nativa TensorFlow Lite \item Sintaxis moderna y seguridad de tipos \end{itemize} &
+	\begin{itemize}[nosep] \item Solo para Android (iOS requiere Swift separado) \item Duplicación de código para multiplataforma \item Mayor complejidad de desarrollo \item Menor agilidad de prototipado \end{itemize} &
+	Media-Alta. Solo para Android. \\
+	\midrule
+	\textbf{Capacitor} &
+	\begin{itemize}[nosep] \item Puente oficial entre web y nativo \item Acceso a APIs nativas mediante plugins \item Compatible con frameworks web populares \item Prototipado rápido \item Reutilización de código web \end{itemize} &
+	\begin{itemize}[nosep] \item Latencia excesiva para Bluetooth continuo \item Arquitectura en capas (overhead) \item Menos control sobre hardware \item Overhead de máquina virtual web \end{itemize} &
+	Baja. No recomendado para tiempo real. \\
+\end{xltabular}
+{\captionsetup{type=table,hypcap=false}\captionof{table}{Comparativa de herramientas para desarrollo de aplicación Bluetooth.}\label{tab:comparativa_herramientas_bluetooth}}
+
+\normalsize
+
+Se ha elegido Flutter como framework de desarrollo para la aplicación Bluetooth debido a su capacidad de compilación nativa, latencia mínima en comunicación Bluetooth, y equilibrio óptimo entre rendimiento hardware y agilidad de desarrollo multiplataforma. Flutter es especialmente adecuado para este proyecto porque permite ejecutar modelos de TensorFlow Lite directamente en dispositivos móviles con aceleración por hardware, gestiona el flujo continuo de datos sensoriales mediante Streams sin congelación de interfaz, y facilita iteración rápida en funcionalidades de prototipado. La biblioteca \textit{flutter\_blue\_plus} proporciona abstracción estable sobre las APIs de Bluetooth nativo, mientras que los Isolates de Dart permiten procesamiento intensivo de datos en hilos independientes, garantizando fluidez de la aplicación incluso durante análisis complejos de la red neuronal.

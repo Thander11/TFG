@@ -24,8 +24,60 @@
 \usepackage{fancybox} % Para agregar sombreado a las figuras
 \usepackage{algorithm} % Para pseudocódigos
 \usepackage{algpseudocode} % Para la sintaxis de algoritmos
-\usepackage{listings} % Para destacar codigo
+\usepackage{listings} % Para destacar codigo con colores
 \usepackage{xcolor} % Para colores en codigo
+
+% Renombrar "Listing" a "Código"
+\renewcommand{\lstlistingname}{Código}
+
+% Configuración de listings con colores
+\definecolor{codegreen}{rgb}{0.13,0.55,0.13}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{codeblue}{rgb}{0.0,0.0,0.7}
+\definecolor{codeorange}{rgb}{0.8,0.4,0.0}
+\definecolor{backcolour}{rgb}{0.97,0.97,0.97}
+
+\lstset{
+  language=Python,
+  columns=fullflexible,
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  inputencoding=utf8,
+  extendedchars=true,
+  % Colores para sintaxis
+  backgroundcolor=\color{backcolour},
+  commentstyle=\color{codegreen}\itshape,
+  keywordstyle=\color{codeblue}\bfseries,
+  stringstyle=\color{codeorange},
+  numberstyle=\tiny\color{codegray},
+  % Números de línea
+  numbers=left,
+  numbersep=8pt,
+  stepnumber=1,
+  % Espaciado y bordes
+  frame=single,
+  framesep=3pt,
+  rulecolor=\color{codegray},
+  xleftmargin=2em,
+  framexleftmargin=1.5em,
+  tabsize=4,
+  showspaces=false,
+  showstringspaces=false,
+  % Caption en la parte inferior
+  captionpos=b,
+  % Palabras clave adicionales de Python
+  morekeywords={True,False,None,self,as,with,yield,lambda,async,await},
+  emph={pd,DataFrame,Path,argparse,subprocess,sys},
+  emphstyle=\color{codepurple},
+  % Caracteres especiales UTF-8
+  literate=
+    {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+    {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+    {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {ü}{{\"u}}1 {Ü}{{\"U}}1
+    {º}{{\textordmasculine}}1 {ª}{{\textordfeminine}}1
+    {¿}{{?`}}1 {¡}{{!`}}1
+}
 
 % Rellenar con los datos del estudiante y el trabajo
 \estudiante{Raúl Martín-Romo Sánchez}{Grado}{Ingeniería Informática en Ingeniería del Software}
@@ -35,6 +87,7 @@
 \begin{document}
 % Definir color azul clarito para cabeceras de tablas
 \definecolor{lightblue}{RGB}{173,216,230}
+
 \sloppy%
 \pagebreak%
 

@@ -4,73 +4,588 @@ En este anexo se detallan los procedimientos y configuraciones utilizadas para e
 \section{Entrenamiento}
 
 \subsection{Keras}
-En primer lugar se importan las librerías necesarias para el desarrollo del modelo y la visualización de los resultados (tensorflow, numpy, pandas, skalern, matplotlib, etc.). Posteriormente sigue la carga de datos y su preprocesamiento. Los datos se extraen de archivos de texto, convirtiendo las lecturas de los sensores en vectores numéricos aplanados, para despueés llevar a cabo una Homogeneización (Padding), ya que, debido a que las capturas tienen duraciones distintas, se realiza un relleno con valores nulos (NaN) hasta alcanzar la longitud máxima de 242,676 características. A continuación, se procede a la imputación de los valores faltantes utilizando \textit{SimpleImputer} con una estrategia constante (valor 0) y se normalizan los datos mediante \textit{StandardScaler}, que transforma las características para que tengan media 0 y varianza 1, un paso fundamental para que las funciones de activación de Keras operen correctamente. Finalmente, los datos se dividen separando inicialmente un 20\% para el conjunto de Prueba. Del 80\% restante, se utiliza un 20\% para Validación durante el entrenamiento, resultando en una distribución final aproximada de 64\% para Entrenamiento, 16\% para Validación y 20\% para Prueba, empleando una semilla de aleatoriedad (random\_state=42) para permitir la reproducibilidad de los experimentos.
-\par
+El entrenamiento del modelo en Keras se realizó mediante un notebook de Jupyter ejecutado en Google Colab. A continuación se describe el proceso detallando cada una de sus partes.
 
-Se ha implementado un modelo de tipo Secuencial que permite un flujo de datos lineal a través de capas densas:
-\begin{enumerate}
-    \item \textbf{Capa de entrada:} Se define implícitamente al especificar la forma de entrada (input\_shape) basada en las características extraídas.
-    \item \textbf{Primera capa oculta:} 32 neuronas con función de activación ReLU\@. Su función es realizar la primera abstracción de los datos del sensor.
-    \item \textbf{Capa de Dropout:} Con una tasa de 0.2 (20\%) para prevenir el sobreajuste (overfitting) durante el entrenamiento.
-    \item \textbf{Segunda capa oculta:} 16 neuronas con función de activación ReLU, que profundiza en la jerarquía de patrones detectados.
-    \item \textbf{Capa de salida:} Una única neurona con función de activación Sigmoide, que proyecta el resultado final como una probabilidad entre 0 y 1.
-\end{enumerate}
+\textbf{Importación de librerías:} El notebook comienza importando las dependencias necesarias para el procesamiento de datos, entrenamiento y visualización:
 
-La arquitectura de la red fue determinada mediante un proceso experimental, adaptándose a las particularidades del conjunto de datos para prevenir posibles complicaciones.
-\par
+\begin{lstlisting}[language=Python, caption={Importación de librerías para el entrenamiento en Keras.}, label={lst:keras_std_imports}]
+import os
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.impute import SimpleImputer
+from sklearn.metrics import confusion_matrix
+import seaborn as sns
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense, Dropout
+from tensorflow.keras.callbacks import EarlyStopping
+from google.colab import drive
 
-Se eligió una estructura de capas decreciente. La capa inicial de 32 neuronas funciona extrayendo características complejas, mientras que la siguiente capa de 16 neuronas sintetiza esta información previo a la clasificación. Esta cantidad de neuronas busca un compromiso entre potencia y simplicidad, impidiendo una complejidad excesiva dado el volumen de muestras.
-\par
+print("Librerias cargadas correctamente.")
+\end{lstlisting}
 
-Debido al tamaño reducido del dataset frente a la alta dimensionalidad de las entradas, el riesgo de sobreajuste (\textit{overfitting}) es notable. La inclusión de \textit{Dropout} obliga a la red a no basarse en neuronas concretas, favoreciendo una representación más sólida y una mejor generalización con datos nuevos.
-\par
+Como se muestra en el \autoref{lst:keras_std_imports}, se utilizan \texttt{numpy} y \texttt{pandas} para la manipulación de datos, \texttt{matplotlib} y \texttt{seaborn} para visualización, \texttt{sklearn} para el preprocesamiento (imputación, escalado y división del dataset), y \texttt{tensorflow.keras} para la construcción y entrenamiento de la red neuronal.
 
-Para las capas ocultas se empleó la función de activación ReLU (Rectified Linear Unit), evitando así el desvanecimiento del gradiente y acelerando el entrenamiento. En la salida, la función Sigmoide es indispensable para generar una probabilidad entre 0 y 1, requisito para la clasificación binaria con la función de pérdida \textit{Binary Cross Entropy}.
-\par
+\textbf{Carga y etiquetado de datos:} Los datos se extraen de archivos de texto, convirtiendo las lecturas de los sensores en vectores numéricos aplanados:
 
-Para llevar a cabo la optimización del entrenamiento, se emplea Adam con una tasa de aprendizaje de 0.001, conocido por su manejo eficiente de momentos y su convergencia rápida. Además, la función de pérdida seleccionada es \textit{Binary Cross Entropy Loss} (BCE Loss), adecuada para problemas de clasificación binaria. Por otra parte la precisión (Accuracy) es la métrica elegida para evaluar el rendimiento del modelo durante el entrenamiento y la validación, y se monitorea durante todo el proceso.
-\par
+\begin{lstlisting}[language=Python, caption={Función para cargar y etiquetar los datos de entrenamiento.}, label={lst:keras_std_carga}]
+drive.mount('/content/drive')
 
-Se hará un entrenamiento por lotes, usando un tamaño de lote (batch size) de 5 muestras por iteración. Este tamaño pequeño permite una actualización más frecuente de los pesos, lo que puede ayudar a la convergencia del modelo, especialmente con conjuntos de datos limitados. Además, se implementa una estrategia de parada temprana (``Early Stopping'') con una paciencia de 10 épocas. Si la pérdida en el conjunto de validación no mejora durante este periodo, el entrenamiento se detiene automáticamente, previniendo el sobreajuste y asegurando que se guarden los pesos óptimos.
-\par
+# Configuracion de rutas
+bueno_dir = '/content/drive/MyDrive/Colab Notebooks/BUENO'
+malo_dir = '/content/drive/MyDrive/Colab Notebooks/MALO'
 
-Una vez finalizado el entrenamiento y validada la eficacia del modelo, se procedió a la exportación de los resultados para garantizar su portabilidad y despliegue en entornos reales. En primer lugar, se realizó el guardado del modelo completo en formato nativo de Keras (.keras), almacenando tanto la arquitectura como los pesos optimizados. Posteriormente, para facilitar su integración en dispositivos de hardware limitados, se llevó a cabo una conversión a TensorFlow Lite (.tflite) mediante la herramienta TFLiteConverter. Este proceso permitió generar un archivo binario optimizado, con menor huella de memoria y latencia reducida, quedando así el sistema preparado para realizar inferencias de forma local y eficiente sin necesidad de depender del framework completo de TensorFlow. Esta exportación a TensorFlow Lite es crucial para la implementación en la aplicación móvil que controlará la nariz electrónica.
+X_features = []
+y_labels = []
+
+def cargar_sustancias(ruta_carpeta, etiqueta):
+    conteo = 0
+    for archivo in os.listdir(ruta_carpeta):
+        if archivo.endswith(".txt"):
+            ruta_completa = os.path.join(ruta_carpeta, archivo)
+            try:
+                # Carga con pandas, mas robusto para decimales ','
+                datos_df = pd.read_csv(ruta_completa, sep=' ', 
+                                       decimal=',', skiprows=1, header=None)
+                # Convertir a numerico, forzando errores a NaN
+                datos_df = datos_df.apply(pd.to_numeric, errors='coerce')
+                # Convertir a numpy y aplanar
+                datos = datos_df.values.flatten()
+
+                if np.all(np.isnan(datos)):
+                    print(f"Advertencia: '{archivo}' contiene solo NaNs.")
+                else:
+                    X_features.append(datos)
+                    y_labels.append(etiqueta)
+                    conteo += 1
+            except Exception as e:
+                print(f"Error en {archivo}: {e}")
+    return conteo
+\end{lstlisting}
+
+En el \autoref{lst:keras_std_carga}, la función \texttt{cargar\_sustancias} (líneas 10--32) procesa cada archivo \texttt{.txt} de la carpeta especificada. La línea 17 lee el archivo con \texttt{pandas}, interpretando la coma como separador decimal y omitiendo la primera fila de metadatos. La línea 20 convierte todos los valores a numérico, forzando los errores a NaN. La línea 22 aplana la matriz a un vector unidimensional. Si el archivo contiene solo valores NaN, se ignora (líneas 24--25); en caso contrario, se añade a las listas de características y etiquetas.
+
+\begin{lstlisting}[language=Python, caption={Homogeneización (Padding) de los datos.}, label={lst:keras_std_padding}]
+# Cargar datos
+n_buenos = cargar_sustancias(bueno_dir, 1)  # Clase Positiva
+n_malos = cargar_sustancias(malo_dir, 0)    # Clase Negativa
+
+# Homogeneizacion: Padding con NaN hasta longitud maxima
+if X_features:
+    max_len = max(len(x) for x in X_features)
+    padded_X_features = []
+    for x in X_features:
+        if len(x) < max_len:
+            padding = np.full(max_len - len(x), np.nan)
+            padded_X_features.append(np.concatenate((x, padding)))
+        else:
+            padded_X_features.append(x)
+    X = np.array(padded_X_features)
+else:
+    X = np.array([])
+    print("Advertencia: No se cargaron datos.")
+
+y = np.array(y_labels)
+print(f"Forma de la matriz X: {X.shape}")
+\end{lstlisting}
+
+Debido a que las capturas tienen duraciones distintas, el \autoref{lst:keras_std_padding} muestra el proceso de homogeneización (líneas 6--15). Se encuentra la longitud máxima entre todos los arrays (línea 7), que resulta ser 242.676 características. Los arrays más cortos se rellenan con valores NaN hasta alcanzar esta longitud máxima (líneas 10--12), garantizando una matriz de características constante.
+
+\textbf{División del dataset, imputación y escalado: } Los datos se dividen y preparan para el entrenamiento:
+
+\begin{lstlisting}[language=Python, caption={División del dataset, imputación y escalado.}, label={lst:keras_std_split}]
+# Separar un 20% para el Test final
+X_train_val, X_test, y_train_val, y_test = train_test_split(
+    X, y, test_size=0.20, random_state=42, stratify=y
+)
+
+# Imputar los valores NaN con estrategia constante (valor 0)
+imputer = SimpleImputer(strategy='constant', fill_value=0)
+X_train_val_imputed = imputer.fit_transform(X_train_val)
+X_test_imputed = imputer.transform(X_test)
+
+# Escalar los datos (Fundamental para una ANN)
+scaler = StandardScaler()
+X_train_val_scaled = scaler.fit_transform(X_train_val_imputed)
+X_test_scaled = scaler.transform(X_test_imputed)
+
+print(f"Entrenamiento + Validacion: {X_train_val_scaled.shape[0]} muestras")
+print(f"Prueba final (Test): {X_test_scaled.shape[0]} muestras")
+\end{lstlisting}
+
+En el \autoref{lst:keras_std_split}, la primera división (líneas 2--4) reserva el 20\% de los datos para el test final, utilizando estratificación para mantener la proporción de clases. El \texttt{SimpleImputer} (líneas 7--9) reemplaza los valores NaN generados por el padding con ceros, ya que las redes neuronales no pueden procesar valores faltantes. El \texttt{StandardScaler} (líneas 12--14) normaliza los datos para que tengan media 0 y varianza 1, un paso fundamental para que las funciones de activación de Keras operen correctamente. Del 80\% restante, se utilizará un 20\% para validación durante el entrenamiento (configurado en el método \texttt{fit}), resultando en una distribución final aproximada de 64\% para entrenamiento, 16\% para validación y 20\% para prueba.
+
+\textbf{Definición de la arquitectura de la red neuronal:} Se ha implementado un modelo de tipo Secuencial que permite un flujo de datos lineal a través de capas densas:
+
+\begin{lstlisting}[language=Python, caption={Definición de la arquitectura de la red neuronal en Keras.}, label={lst:keras_std_model}]
+# Definir la estructura de la red
+model = Sequential([
+    Dense(32, activation='relu', input_shape=(X_train_val_scaled.shape[1],)),
+    Dropout(0.2),  # Ayuda a evitar el sobreajuste
+    Dense(16, activation='relu'),
+    Dense(1, activation='sigmoid')  # Salida binaria (0 a 1)
+])
+
+model.compile(optimizer='adam', loss='binary_crossentropy', 
+    metrics=['accuracy'])
+
+# Configurar parada temprana
+early_stop = EarlyStopping(monitor='val_loss', patience=10, 
+                           restore_best_weights=True)
+\end{lstlisting}
+
+La arquitectura consta de:
+\begin{itemize}
+    \item \textbf{Primera capa oculta} (línea 3): 32 neuronas con activación ReLU y entrada de tamaño 242.676 (determinado dinámicamente). Su función es realizar la primera abstracción de los datos del sensor.
+    \item \textbf{Capa de Dropout} (línea 4): Con una tasa de 0.2 (20\%) para prevenir el sobreajuste durante el entrenamiento.
+    \item \textbf{Segunda capa oculta} (línea 5): 16 neuronas con activación ReLU, que profundiza en la jerarquía de patrones detectados.
+    \item \textbf{Capa de salida} (línea 6): Una única neurona con activación Sigmoide, que proyecta el resultado como una probabilidad entre 0 y 1.
+\end{itemize}
+
+El modelo se compila (línea 9) con el optimizador Adam y la función de pérdida \textit{Binary Cross Entropy}, adecuada para clasificación binaria. El \texttt{EarlyStopping} (líneas 12--13) detiene el entrenamiento si la pérdida de validación no mejora durante 10 épocas consecutivas, restaurando los mejores pesos encontrados.
+
+\textbf{Entrenamiento del modelo:} El entrenamiento se realiza por lotes con validación interna:
+
+\begin{lstlisting}[language=Python, caption={Entrenamiento del modelo con validación.}, label={lst:keras_std_train}]
+print("Iniciando entrenamiento...")
+
+history = model.fit(
+    X_train_val_scaled, y_train_val,
+    epochs=50,
+    batch_size=5,
+    validation_split=0.2,  # Divide internamente para validacion
+    callbacks=[early_stop],
+    verbose=1
+)
+
+print("Entrenamiento finalizado")
+\end{lstlisting}
+
+Como se muestra en el \autoref{lst:keras_std_train}, el entrenamiento se ejecuta durante un máximo de 50 épocas con un tamaño de lote de 5 muestras (líneas 5--6). Este tamaño pequeño permite una actualización más frecuente de los pesos, lo que puede ayudar a la convergencia del modelo con conjuntos de datos limitados. El parámetro \texttt{validation\_split=0.2} (línea 7) divide internamente el conjunto de entrenamiento, reservando el 20\% para validación.
+
+\textbf{Evaluación y visualización de resultados:} Una vez completado el entrenamiento, se evalúa el modelo y se visualizan las curvas de aprendizaje:
+
+\begin{lstlisting}[language=Python, caption={Evaluación del modelo y visualización de curvas de aprendizaje.}, label={lst:keras_std_eval}]
+# Evaluar con el conjunto de Test
+loss, accuracy = model.evaluate(X_test_scaled, y_test, verbose=0)
+
+print(f"--- RESULTADOS FINALES ---")
+print(f"Precision en Test (Accuracy): {accuracy*100:.2f}%")
+
+# Grafico de la evolucion del entrenamiento
+plt.figure(figsize=(12, 4))
+plt.subplot(1, 2, 1)
+plt.plot(history.history['accuracy'], label='Entrenamiento')
+plt.plot(history.history['val_accuracy'], label='Validacion')
+plt.title('Precision del Modelo')
+plt.legend()
+
+plt.subplot(1, 2, 2)
+plt.plot(history.history['loss'], label='Entrenamiento')
+plt.plot(history.history['val_loss'], label='Validacion')
+plt.title('Perdida (Loss) del Modelo')
+plt.legend()
+plt.show()
+\end{lstlisting}
+
+En el \autoref{lst:keras_std_eval}, la evaluación en el conjunto de test (línea 2) proporciona una estimación imparcial del rendimiento del modelo. Las gráficas de precisión y pérdida (líneas 8--20) permiten visualizar si el modelo sufre de sobreajuste.
+
+\begin{lstlisting}[language=Python, caption={Generación de la matriz de confusión.}, label={lst:keras_std_confusion}]
+# Hacer predicciones en el conjunto de prueba
+y_pred_proba = model.predict(X_test_scaled)
+y_pred = (y_pred_proba > 0.5).astype(int)
+
+# Generar la matriz de confusion
+cm = confusion_matrix(y_test, y_pred)
+
+plt.figure(figsize=(6, 5))
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',
+            xticklabels=['Malo (0)', 'Bueno (1)'],
+            yticklabels=['Malo (0)', 'Bueno (1)'])
+plt.xlabel('Prediccion')
+plt.ylabel('Valor Real')
+plt.title('Matriz de Confusion')
+plt.show()
+\end{lstlisting}
+
+En el \autoref{lst:keras_std_confusion}, la matriz de confusión (líneas 2--6) muestra el número de verdaderos positivos, verdaderos negativos, falsos positivos y falsos negativos, permitiendo evaluar el comportamiento del modelo en cada clase.
+
+\textbf{Exportación del modelo:} El paso final consiste en guardar el modelo en formato nativo de Keras y convertirlo a TensorFlow Lite:
+
+\begin{lstlisting}[language=Python, caption={Guardado del modelo en formato Keras.}, label={lst:keras_std_save}]
+# Definir la ruta para guardar el modelo
+model_save_path = '/content/drive/MyDrive/Colab Notebooks/modelo_keras.keras'
+
+# Guardar el modelo
+model.save(model_save_path)
+
+print(f"Modelo guardado exitosamente en: {model_save_path}")
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python, caption={Conversión del modelo a TensorFlow Lite.}, label={lst:keras_std_tflite}]
+import tensorflow as tf
+
+# Cargar el modelo Keras guardado
+model = tf.keras.models.load_model(model_save_path)
+
+# Inicializar el convertidor de TFLite
+converter = tf.lite.TFLiteConverter.from_keras_model(model)
+
+# Convertir el modelo
+tflite_model = converter.convert()
+
+# Guardar el modelo TFLite
+tflite_model_save_path = 
+            '/content/drive/MyDrive/Colab Notebooks/modelo.tflite'
+with open(tflite_model_save_path, 'wb') as f:
+    f.write(tflite_model)
+
+print(f"Modelo TFLite guardado en: {tflite_model_save_path}")
+\end{lstlisting}
+
+El \autoref{lst:keras_std_save} muestra el guardado del modelo en formato nativo de Keras (\texttt{.keras}), almacenando tanto la arquitectura como los pesos optimizados. Posteriormente, como se observa en el \autoref{lst:keras_std_tflite}, se convierte a TensorFlow Lite (\texttt{.tflite}) mediante el \texttt{TFLiteConverter} (líneas 7--10), generando un archivo binario optimizado con menor huella de memoria y latencia reducida, preparado para realizar inferencias en dispositivos móviles.
 \par
 
 Para el entrenamiento del ``modelo plus'' con el dataset aumentado, se siguió un procedimiento idéntico al descrito anteriormente, asegurando la consistencia en la comparación de resultados entre ambos modelos.
 
 \subsection{PyTorch}
-El primer paso de todos es la importación de las librerías necesarias para el desarrollo del modelo y la visualización de los resultados (torch, numpy, pandas, skalern, matplotlib, etc.). A continuación, se procede a la carga y preprocesamiento de los datos. El éxito del entrenamiento depende de la calidad y homogeneidad de los datos de entrada. El flujo implementado consta de varias etapas, empezando por la carga y eiquetdo de los datos, donde se leen los archivos de texto limpios interpretando valores decimales y omitiendo encabezados. Las muestras se clasificaron en dos categorías: ``BUENO'' (clase 1) y ``MALO'' (clase 0). Debido a las variaciones en los tiempos de muestreo de los sensores, las señales presentaban distintas longitudes. Se aplicó una técnica de padding con valores NaN para igualar todas las muestras a la longitud máxima detectada (242,676 puntos), garantizando una matriz de características constante. Posteriormente se pasa a la imputación y normalización, donde se utilizó \textit{SimpleImputer} con una estrategia constante (valor 0) para tratar los datos faltantes generados en el paso anterior. Se aplicó un escalado estadístico mediante \textit{StandardScaler}, transformando los datos para que tengan media 0 y varianza 1, lo que facilita la convergencia del optimizador. Para finalizar la carga de los datos, Los datos se dividieron de forma estratificada para mantener la proporción de clases en tres conjuntos: Entrenamiento (60\%), Validación (20\%) y Prueba (20\%).
-\par
+El entrenamiento del modelo en PyTorch se realizó mediante un notebook de Jupyter ejecutado en Google Colab. A continuación se describe el proceso detallando cada una de sus partes.
 
-Se ha diseñado una arquitectura de tipo Perceptrón Multicapa (MLP) adaptada a la alta dimensionalidad de los datos. La estructura definida en la clase OlfativaANN integra:
-\begin{enumerate}
-    \item \textbf{Capa de entrada:} Ajustada dinámicamente al número de características de las muestras (por si se decide en un futuro modificar la duración de muestreo de los sensores).
-    \item \textbf{Primera capa oculta:} 32 neuronas con función de activación ReLU para capturar patrones no lineales.
-    \item \textbf{Capa de Dropout:} Se configuró una probabilidad de 0.2 (20\%). Esta técnica de regularización previene el sobreajuste (overfitting) al desactivar neuronas aleatoriamente durante el entrenamiento.
-    \item \textbf{Segunda capa oculta:} 16 neuronas con función de activación ReLU\@.
-    \item \textbf{Capa de salida:} Una única neurona con función de activación Sigmoide, ideal para problemas de clasificación binaria, ya que entrega una probabilidad en el rango [0,1].
-\end{enumerate}
+\textbf{Importación de librerías:} El notebook comienza importando las dependencias necesarias para el procesamiento de datos, entrenamiento y visualización:
 
-La configuración de la red se seleccionó bajo un enfoque empírico y preventivo, considerando las características específicas del dataset.
-\par
+\begin{lstlisting}[language=Python, caption={Importación de librerías para el entrenamiento en PyTorch.}, label={lst:pytorch_std_imports}]
+import os
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from torch.utils.data import DataLoader, TensorDataset
+import numpy as np
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.impute import SimpleImputer
+from google.colab import drive
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.metrics import confusion_matrix
 
-Se optó por una arquitectura decreciente. La primera capa (32 neuronas) actúa como un extractor de características de alto nivel, mientras que la segunda (16 neuronas) condensa esa información antes de la clasificación final. Este número moderado de neuronas busca un equilibrio entre la capacidad de aprendizaje y la simplicidad, evitando que el modelo sea demasiado complejo para el número total de muestras disponibles.
-\par
+print("Librerias cargadas correctamente.")
+\end{lstlisting}
 
-Dado que el dataset es relativamente pequeño comparado con la dimensionalidad de las señales de entrada, existe un riesgo elevado de overfitting (sobreajuste). El Dropout fuerza a la red a no depender de neuronas específicas, creando una representación más robusta y mejorando la capacidad de generalización con datos nuevos.
-\par
+Como se muestra en el \autoref{lst:pytorch_std_imports}, se utilizan \texttt{torch} y sus módulos (\texttt{nn}, \texttt{optim}, \texttt{DataLoader}) para la construcción y entrenamiento de la red neuronal, \texttt{numpy} y \texttt{pandas} para la manipulación de datos, \texttt{sklearn} para el preprocesamiento, y \texttt{matplotlib} y \texttt{seaborn} para visualización.
 
-Se utilizó ReLU (Rectified Linear Unit) en las capas ocultas para evitar el problema de desvanecimiento del gradiente y permitir un entrenamiento más rápido. La Sigmoide en la salida es necesaria para obtener un valor de probabilidad entre 0 y 1, lo cual es el estándar para la clasificación binaria mediante la función de pérdida \textit{Binary Cross Entropy}.
-\par
+\textbf{Carga y etiquetado de datos:} Los datos se extraen de archivos de texto de forma similar a Keras, convirtiendo las lecturas de los sensores en vectores numéricos aplanados:
 
-A continuación, se procedió a la configuración del proceso de entrenamiento. Para la configuración de la función de pérdida, se seleccionó \textit{Binary Cross Entropy Loss} (BCE Loss), adecuada para problemas de clasificación binaria, como se ha mencionado anteriormente. Para la optimización se utilizó el optimizador Adam, conocido por su eficiencia y capacidad para adaptarse a diferentes tipos de datos. Se estableció una tasa de aprendizaje inicial de 0.001, un valor comúnmente utilizado que equilibra la velocidad de convergencia y la estabilidad del entrenamiento.
-\par
+\begin{lstlisting}[language=Python, caption={Función para cargar y etiquetar los datos de entrenamiento.}, label={lst:pytorch_std_carga}]
+drive.mount('/content/drive')
 
-Para optimizar el tiempo de cómputo y evitar que el modelo memorice el ruido de los datos, se implementó un control de ``paciencia'' de 10 épocas. A esto se le conoce como Estrategia de Parada Temprana (``Early Stopping''). Si la pérdida en el conjunto de validación no mejora tras este periodo, el entrenamiento se detiene automáticamente. Esta técnica actúa como un regulador temporal. En lugar de fijar un número arbitrario de épocas (como 100), el modelo se detiene cuando detecta que la pérdida en el conjunto de validación comienza a estancarse o subir, asegurando que guardamos los pesos que mejor funcionan con datos que la red no ha ``visto'' para entrenar.
-\par
+# Configuracion de rutas
+bueno_dir = '/content/drive/MyDrive/Colab Notebooks/BUENO'
+malo_dir = '/content/drive/MyDrive/Colab Notebooks/MALO'
 
-Una vez finalizado el desarrollo, se procedió a la persistencia del modelo mediante el guardado en un archivo con extensión \@.pth. Este archivo almacena los pesos y sesgos óptimos encontrados, permitiendo su despliegue posterior sin necesidad de repetir el proceso de entrenamiento.
+X_features = []
+y_labels = []
+
+def cargar_sustancias(ruta_carpeta, etiqueta):
+    conteo = 0
+    for archivo in os.listdir(ruta_carpeta):
+        if archivo.endswith(".txt"):
+            ruta_completa = os.path.join(ruta_carpeta, archivo)
+            try:
+                datos_df = pd.read_csv(ruta_completa, sep=' ', 
+                                       decimal=',', skiprows=1, header=None)
+                datos_df = datos_df.apply(pd.to_numeric, errors='coerce')
+                datos = datos_df.values.flatten()
+
+                if np.all(np.isnan(datos)):
+                    print(f"Advertencia: '{archivo}' contiene solo NaNs.")
+                else:
+                    X_features.append(datos)
+                    y_labels.append(etiqueta)
+                    conteo += 1
+            except Exception as e:
+                print(f"Error en {archivo}: {e}")
+    return conteo
+
+# Cargar y homogeneizar datos (Padding con NaN)
+n_buenos = cargar_sustancias(bueno_dir, 1)
+n_malos = cargar_sustancias(malo_dir, 0)
+
+if X_features:
+    max_len = max(len(x) for x in X_features)
+    padded_X_features = []
+    for x in X_features:
+        if len(x) < max_len:
+            padding = np.full(max_len - len(x), np.nan)
+            padded_X_features.append(np.concatenate((x, padding)))
+        else:
+            padded_X_features.append(x)
+    X = np.array(padded_X_features)
+
+y = np.array(y_labels)
+print(f"Forma de la matriz X: {X.shape}")
+\end{lstlisting}
+
+Como se muestra en el \autoref{lst:pytorch_std_carga}, el proceso de carga es idéntico al de Keras: se leen los archivos con \texttt{pandas} (líneas 16--17), se convierten a numérico (línea 18), se aplanan (línea 19) y se aplica padding con NaN hasta la longitud máxima de 242.676 características (líneas 35--44).
+
+\textbf{División del dataset, imputación y conversión a tensores:} A diferencia de Keras, PyTorch requiere una división explícita en tres conjuntos y la conversión de los datos a tensores:
+
+\begin{lstlisting}[language=Python, caption={División del dataset, imputación y conversión a tensores de PyTorch.}, label={lst:pytorch_std_split}]
+# Dividir en entrenamiento+validacion y prueba (80/20)
+X_train_val, X_test, y_train_val, y_test = train_test_split(
+    X, y, test_size=0.20, random_state=42, stratify=y
+)
+
+# Dividir entrenamiento+validacion en entrenamiento y validacion
+X_train, X_val, y_train, y_val = train_test_split(
+    X_train_val, y_train_val, test_size=0.25, random_state=42, 
+    stratify=y_train_val
+)  # 0.25 de 0.8 = 0.2 del total
+
+# Imputacion y Escalado
+imputer = SimpleImputer(strategy='constant', fill_value=0)
+scaler = StandardScaler()
+
+X_train = scaler.fit_transform(imputer.fit_transform(X_train))
+X_val = scaler.transform(imputer.transform(X_val))
+X_test = scaler.transform(imputer.transform(X_test))
+
+# Convertir a Tensores de PyTorch
+X_train_tensor = torch.tensor(X_train, dtype=torch.float32)
+y_train_tensor = torch.tensor(y_train, dtype=torch.float32).unsqueeze(1)
+X_val_tensor = torch.tensor(X_val, dtype=torch.float32)
+y_val_tensor = torch.tensor(y_val, dtype=torch.float32).unsqueeze(1)
+X_test_tensor = torch.tensor(X_test, dtype=torch.float32)
+y_test_tensor = torch.tensor(y_test, dtype=torch.float32).unsqueeze(1)
+
+# Crear DataLoaders para entrenamiento y validacion
+batch_size = 5
+train_dataset = TensorDataset(X_train_tensor, y_train_tensor)
+train_loader = DataLoader(train_dataset, batch_size, shuffle=True)
+
+val_dataset = TensorDataset(X_val_tensor, y_val_tensor)
+val_loader = DataLoader(val_dataset, batch_size, shuffle=False)
+
+print(f"Entrenamiento: {X_train.shape[0]} muestras")
+print(f"Validacion: {X_val.shape[0]} muestras")
+print(f"Prueba final (Test): {X_test.shape[0]} muestras")
+\end{lstlisting}
+
+En el \autoref{lst:pytorch_std_split}, la división se realiza en dos pasos (líneas 2--10): primero se separa el 20\% para test, y luego del 80\% restante se extrae el 25\% para validación (0.25 × 0.8 = 0.2 del total), resultando en una distribución 60/20/20. Las líneas 21--26 convierten los arrays de NumPy a tensores de PyTorch, añadiendo una dimensión extra a las etiquetas con \texttt{unsqueeze(1)}. Los \texttt{DataLoader} (líneas 29--34) permiten iterar sobre los datos en lotes durante el entrenamiento. %chktex 36
+
+\textbf{Definición de la arquitectura de la red neuronal:} Se define una clase que hereda de \texttt{nn.Module}, implementando una arquitectura MLP\@:
+
+\begin{lstlisting}[language=Python, caption={Definición de la clase OlfativaANN en PyTorch.}, label={lst:pytorch_std_model}]
+class OlfativaANN(nn.Module):
+    def __init__(self, input_dim):
+        super(OlfativaANN, self).__init__()
+        self.network = nn.Sequential(
+            nn.Linear(input_dim, 32),
+            nn.ReLU(),
+            nn.Dropout(0.2),
+            nn.Linear(32, 16),
+            nn.ReLU(),
+            nn.Linear(16, 1),
+            nn.Sigmoid()
+        )
+
+    def forward(self, x):
+        return self.network(x)
+
+# Inicializar modelo, funcion de perdida y optimizador
+input_features = X_train.shape[1]
+model = OlfativaANN(input_features)
+criterion = nn.BCELoss()  # Entropia Cruzada Binaria
+optimizer = optim.Adam(model.parameters(), lr=0.001)
+\end{lstlisting}
+
+En el \autoref{lst:pytorch_std_model}, la clase \texttt{OlfativaANN} (líneas 1--15) define la arquitectura mediante \texttt{nn.Sequential}: capa lineal de 32 neuronas (línea 5), activación ReLU (línea 6), Dropout del 20\% (línea 7), capa de 16 neuronas (línea 8), ReLU (línea 9), capa de salida (línea 10) y Sigmoide (línea 11). El modelo se inicializa con la dimensión de entrada (línea 19), se configura la función de pérdida BCE (línea 20) y el optimizador Adam con tasa de aprendizaje 0.001 (línea 21).
+
+\textbf{Bucle de entrenamiento con Early Stopping:} A diferencia de Keras, en PyTorch el bucle de entrenamiento se implementa manualmente:
+
+\begin{lstlisting}[language=Python, caption={Bucle de entrenamiento con Early Stopping en PyTorch.}, label={lst:pytorch_std_train}]
+epochs = 15
+train_losses, val_losses = [], []
+train_accuracies, val_accuracies = [], []
+
+# Parametros para Early Stopping
+early_stopping_patience = 10
+best_val_loss = float('inf')
+patience_counter = 0
+
+for epoch in range(epochs):
+    # Fase de entrenamiento
+    model.train()
+    running_loss = 0.0
+    correct_train, total_train = 0, 0
+    
+    for inputs, labels in train_loader:
+        optimizer.zero_grad()
+        outputs = model(inputs)
+        loss = criterion(outputs, labels)
+        loss.backward()
+        optimizer.step()
+        running_loss += loss.item()
+        
+        predicted = (outputs > 0.5).float()
+        total_train += labels.size(0)
+        correct_train += (predicted == labels).sum().item()
+
+    train_accuracy = 100 * correct_train / total_train
+    train_losses.append(running_loss / len(train_loader))
+    train_accuracies.append(train_accuracy)
+\end{lstlisting}
+
+En el \autoref{lst:pytorch_std_train}, el bucle de entrenamiento (líneas 10--30) itera sobre cada época. En la fase de entrenamiento (líneas 12--30), se activa el modo de entrenamiento (línea 12), se itera sobre los lotes del \texttt{DataLoader} (línea 16), se calcula la pérdida (línea 19), se propaga hacia atrás (línea 20) y se actualizan los pesos (línea 21). Las líneas 24--26 calculan la precisión del entrenamiento.
+
+\begin{lstlisting}[language=Python, caption={Fase de validación y lógica de Early Stopping.}, label={lst:pytorch_std_val}]
+    # Fase de validacion
+    model.eval()
+    val_loss = 0.0
+    correct_val, total_val = 0, 0
+    
+    with torch.no_grad():
+        for inputs, labels in val_loader:
+            outputs = model(inputs)
+            loss = criterion(outputs, labels)
+            val_loss += loss.item()
+            
+            predicted = (outputs > 0.5).float()
+            total_val += labels.size(0)
+            correct_val += (predicted == labels).sum().item()
+
+    val_accuracy = 100 * correct_val / total_val
+    val_losses.append(val_loss / len(val_loader))
+    val_accuracies.append(val_accuracy)
+
+    # Logica de Early Stopping
+    current_val_loss = val_losses[-1]
+    if current_val_loss < best_val_loss:
+        best_val_loss = current_val_loss
+        patience_counter = 0
+    else:
+        patience_counter += 1
+        if patience_counter >= early_stopping_patience:
+            print(f"Early stopping en la epoca {epoch+1}.")
+            break
+\end{lstlisting}
+
+En el \autoref{lst:pytorch_std_val}, la fase de validación (líneas 2--18) se ejecuta sin calcular gradientes (\texttt{torch.no\_grad()}) para ahorrar memoria. La lógica de Early Stopping (líneas 21--29) verifica si la pérdida de validación mejora; si no mejora durante 10 épocas consecutivas, el entrenamiento se detiene. %chktex 36
+
+\textbf{Evaluación y visualización de resultados:} Una vez completado el entrenamiento, se evalúa el modelo en el conjunto de test. El \autoref{lst:pytorch_std_eval} muestra la evaluación final, el \autoref{lst:pytorch_std_curves} presenta la visualización de las curvas de aprendizaje, y el \autoref{lst:pytorch_std_confusion} genera la matriz de confusión:
+
+\begin{lstlisting}[language=Python, caption={Evaluación final del modelo en PyTorch.}, label={lst:pytorch_std_eval}]
+# Evaluacion Final
+model.eval()
+with torch.no_grad():
+    predictions = model(X_test_tensor)
+    predicted_classes = (predictions > 0.5).float()
+    accuracy = (predicted_classes == y_test_tensor).float().mean()
+    print(f"\n--- RESULTADOS FINALES ---")
+    print(f"Precision en Test: {accuracy.item()*100:.2f}%")
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python, caption={Visualización de curvas de aprendizaje en PyTorch.}, label={lst:pytorch_std_curves}]
+epochs_range = range(1, len(train_accuracies) + 1)
+
+plt.figure(figsize=(12, 5))
+
+plt.subplot(1, 2, 1)
+plt.plot(epochs_range, train_accuracies, label='Entrenamiento')
+plt.plot(epochs_range, val_accuracies, label='Validacion')
+plt.title('Precision del Modelo')
+plt.xlabel('Epoca')
+plt.ylabel('Precision (%)')
+plt.legend()
+
+plt.subplot(1, 2, 2)
+plt.plot(epochs_range, train_losses, label='Entrenamiento')
+plt.plot(epochs_range, val_losses, label='Validacion')
+plt.title('Perdida (Loss) del Modelo')
+plt.xlabel('Epoca')
+plt.ylabel('Loss')
+plt.legend()
+
+plt.tight_layout()
+plt.show()
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python, caption={Generación de la matriz de confusión en PyTorch.}, label={lst:pytorch_std_confusion}]
+model.eval()
+with torch.no_grad():
+    predictions = model(X_test_tensor)
+    predicted_classes = (predictions > 0.5).float().cpu().numpy()
+    true_classes = y_test_tensor.cpu().numpy()
+
+cm = confusion_matrix(true_classes, predicted_classes)
+
+plt.figure(figsize=(6, 5))
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',
+            xticklabels=['Malo', 'Bueno'], yticklabels=['Malo', 'Bueno'])
+plt.xlabel('Prediccion')
+plt.ylabel('Valor Real')
+plt.title('Matriz de Confusion')
+plt.show()
+\end{lstlisting}
+
+\textbf{Exportación del modelo:} El modelo se guarda en formato nativo de PyTorch y posteriormente se convierte a TensorFlow Lite mediante ONNX como formato intermedio:
+
+\begin{lstlisting}[language=Python, caption={Guardado del modelo en formato PyTorch.}, label={lst:pytorch_std_save}]
+model_save_path = '/content/drive/MyDrive/Colab Notebooks/modelo_pytorch.pth'
+
+# Guardar el diccionario de estado del modelo
+torch.save(model.state_dict(), model_save_path)
+
+print(f"Modelo guardado exitosamente en: {model_save_path}")
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python, caption={Exportación del modelo PyTorch a ONNX.}, label={lst:pytorch_std_onnx}]
+import onnx
+import onnx_tf
+import tensorflow as tf
+
+# Crear input dummy con la forma esperada
+dummy_input = torch.randn(1, input_features, requires_grad=True)
+onnx_path = '/content/drive/MyDrive/Colab Notebooks/modelo_pytorch.onnx'
+
+# Exportar a ONNX
+torch.onnx.export(model,
+                  dummy_input,
+                  onnx_path,
+                  export_params=True,
+                  opset_version=11,
+                  do_constant_folding=True,
+                  input_names=['input'],
+                  output_names=['output'],
+                  dynamic_axes={'input': {0: 'batch_size'},
+                               'output': {0: 'batch_size'}})
+
+print(f"Modelo exportado a ONNX en: {onnx_path}")
+\end{lstlisting}
+
+\begin{lstlisting}[language=Python, caption={Conversión de ONNX a TensorFlow Lite.}, label={lst:pytorch_std_tflite}]
+# Convertir ONNX a TensorFlow SavedModel
+onnx_model = onnx.load(onnx_path)
+tf_saved_model_path = '/content/drive/MyDrive/Colab Notebooks/modelo_pytorch'
+
+tf_rep = onnx_tf.backend.prepare(onnx_model, device='CPU')
+tf_rep.export_tf(tf_saved_model_path)
+
+# Convertir TensorFlow SavedModel a TFLite
+converter = tf.lite.TFLiteConverter.from_saved_model(tf_saved_model_path)
+tflite_model = converter.convert()
+
+tflite_model_path = 
+            '/content/drive/MyDrive/Colab Notebooks/modelo_pytorch.tflite'
+with open(tflite_model_path, 'wb') as f:
+    f.write(tflite_model)
+
+print(f"Modelo TFLite guardado en: {tflite_model_path}")
+\end{lstlisting}
+
+El \autoref{lst:pytorch_std_save} muestra el guardado del modelo en formato PyTorch. El \autoref{lst:pytorch_std_onnx} presenta la exportación a ONNX (líneas 10--19), y el \autoref{lst:pytorch_std_tflite} detalla el proceso de conversión a TensorFlow Lite, que requiere dos pasos intermedios: primero se convierte ONNX a TensorFlow SavedModel (líneas 2--6), y finalmente se convierte a TensorFlow Lite (líneas 9--14). Este proceso es más complejo que en Keras debido a las diferencias entre los frameworks.
 \par
 
 Para el entrenamiento del ``modelo plus'' con el dataset aumentado, se siguió un procedimiento casi idéntico al descrito anteriormente, asegurando la consistencia en la comparación de resultados entre ambos modelos. Los únicos cambios radicaron en el número de épocas, que se incrementó a 50 para permitir un aprendizaje más profundo, y la adaptación del tamaño del lote (batch size) a 10 muestras por iteración, optimizando así el proceso de entrenamiento con el nuevo conjunto de datos.
