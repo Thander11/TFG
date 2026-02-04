@@ -5,18 +5,18 @@ Con el objetivo de contar con una nariz electrónica operativa que complemente e
 
 La implementación y el desarrollo de la nariz electrónica se estructuran en tres fases:
 \begin{itemize}
-    \item Construcción del conjunto de datos (dataset).
+    \item Construcción del conjunto de datos (\textit{dataset}).
     \item Entrenamiento de la red neuronal.
     \item Desarrollo de la aplicación móvil para la comunicación Bluetooth con la nariz electrónica.
 \end{itemize}
 
 A continuación, se detallan cada una de estas fases.
 
-\subsection{Construcción del dataset}
+\subsection{Construcción del \textit{dataset}}
 Para la construcción del conjunto de datos, se llevaron a cabo múltiples experimentos (tomas de muestras) utilizando la nariz electrónica para recopilar datos de diversas muestras. En total se realizaron 144 experimentos, de los cueles los datos son almacenados en ficheros de texto (uno por cada experimento) que contienen las lecturas de los sensores. Estos ficheros se encuentran disponibles en el repositorio del proyecto mencionado en el capítulo de metodología.
 \par
 
-Se busca hacer una clasificación binaria, es decir, distinguir entre dos clases, además de que el entrenamiento de la ANN se realice con un conjunto de datos equilibrado. Para ello, se ha dividido el dataset en dos carpetas (``BUENO'' y ``MALO''): una para las muestras positivas (hachís) y otra para las muestras negativas (otras sustancias) respectivamente. La primera capeta tiene 62 archivos, miesntras que La segunda tiene 82 archivos.
+Se busca hacer una clasificación binaria, es decir, distinguir entre dos clases, además de que el entrenamiento de la ANN se realice con un conjunto de datos equilibrado. Para ello, se ha dividido el \textit{dataset} en dos carpetas (``BUENO'' y ``MALO''): una para las muestras positivas (hachís) y otra para las muestras negativas (otras sustancias) respectivamente. La primera capeta tiene 62 archivos, miesntras que La segunda tiene 82 archivos.
 \par
 
 En principio se realizaron 76 experimentos (38 de muestras negativas y 38 de muestras positivas). Sin embargo, tras probar la red neuronal en un entorno real, se observó que la ANN captaba bien la sustancia objetivo pero solo si se acercaba mucho el tubo de la nariz a dicha sustancia. Esto es debido a que casi todos los datos positivos eran de la sustancia pura en un bote de muestreo. Por ello, se añadieron más experimentos, tanto positivos como negativos, hasta llegar 58 muestras de cada tipo. No obstante, pese a que en este punto la red neuronal detectaba con precisión la sustancia objetivo, el número de falsos positivos era demasiado alto. Para reducir estos falsos positivos, se añadieron más muestras negativas (además de 4 muestras positivas más como pequeña ampliación), llegando a un total de 82 muestras negativas (y 62 positivas), dando como resultado final las 144 muestras mencionadas anteriormente.
@@ -117,7 +117,7 @@ Además, dado que para las muestras positivas se dispone de un menor numero de m
 
 Un seguimiento detallado de estas tomas de muestras se encuentra en la~\autoref{tab:registro_sustancias_bueno} del Anexo B.
 
-\subsubsection{Limpieza del dataset}
+\subsubsection{Limpieza del \textit{dataset}}
 Todos los archivos de texto de las muestras se han ido guardando en una carpeta llamada \texttt{Por\_procesar}, en la que también se encuentran divididas en las subcarpetas ``BUENO'' y ``MALO''. Estos archivos cuentan con datos, como la presión o la humedad, que no son útiles para el entrenamiento de la ANN, por lo que se ha llevado a cabo un proceso de limpieza y preprocesamiento de los datos para eliminar información irrelevante y preparar los datos para su uso en el entrenamiento de la red neuronal.
 \par
 
@@ -186,7 +186,7 @@ def procesar_archivo(file_path: str, save_path: str) -> None:
     """Lee, limpia y guarda un archivo de datos."""
     df = _leer_csv_robusto(file_path)
 
-    # Columnas que se descartan del dataset
+    # Columnas que se descartan del \textit{dataset}
     columnas_a_borrar = [
         'n', 'temp(scd40)', 'hum(scd40)', 'temp(ens160)',
         'etoh(zmod4410)', 'temperatura(bme688)', 
@@ -251,7 +251,7 @@ El \autoref{lst:procesar_lote} muestra la función \texttt{procesar\_lote} (lín
 def seleccionar_y_limpiar_cli():
     """Interfaz de linea de comandos para procesar archivos."""
     parser = argparse.ArgumentParser(
-        description="Limpia un dataset de sensores.")
+        description="Limpia un \textit{dataset} de sensores.")
     parser.add_argument("--input", "-i", 
         help="Ruta del archivo de entrada (.txt)")
     parser.add_argument("--output", "-o", 
@@ -303,7 +303,7 @@ Los archivos limpios se guardan en las carpetas \texttt{Entrenamiento/BUENO} y \
 Dado que la obtención de muestras físicas es un proceso costoso en tiempo y recursos, el conjunto de datos original puede resultar limitado para entrenar modelos de aprendizaje profundo robustos. Para mitigar el riesgo de sobreajuste (\textit{overfitting}) y mejorar la capacidad de generalización de la red, se ha implementado una técnica de aumento de datos (\textit{Data Augmentation}) mediante un script desarrollado en Python (\texttt{Augmentation.py}).
 \par
 
-Este script procesa los archivos originales de las carpetas \texttt{Entrenamiento/BUENO} y \texttt{Entrenamiento/MALO}, donde se encuentran los datos ``limpios'', para generar un nuevo conjunto de datos aumentado (``BUENO-PLUS'' y ``MALO-PLUS''). El algoritmo se ha configurado para generar 10 nuevas muestras sintéticas por cada muestra original, multiplicando significativamente el volumen del dataset disponible. A continuación se describe el funcionamiento del script detallando cada una de sus partes.
+Este script procesa los archivos originales de las carpetas \texttt{Entrenamiento/BUENO} y \texttt{Entrenamiento/MALO}, donde se encuentran los datos ``limpios'', para generar un nuevo conjunto de datos aumentado (``BUENO-PLUS'' y ``MALO-PLUS''). El algoritmo se ha configurado para generar 10 nuevas muestras sintéticas por cada muestra original, multiplicando significativamente el volumen del \textit{dataset} disponible. A continuación se describe el funcionamiento del script detallando cada una de sus partes.
 
 \textbf{Importación de dependencias y configuración inicial:} El script comienza importando las librerías necesarias y estableciendo la ruta de trabajo:
 
@@ -447,13 +447,13 @@ print(f"\nSe finaliza el proceso. Cada archivo
 
 En el \autoref{lst:aug_main}, la constante \texttt{OBJETIVO\_POR\_ARCHIVO} (línea 2) define cuántas muestras sintéticas se generarán por cada archivo original. El diccionario \texttt{folders} (línea 5) establece el mapeo entre carpetas de entrada y salida. El bucle final (líneas 8--9) procesa ambas categorías (BUENO y MALO) de forma secuencial.
 
-\textbf{Resultados del aumento de datos:} El dataset original constaba de 144 muestras (62 positivas y 82 negativas). Tras aplicar el proceso de aumento de datos, se han generado un total de 1440 muestras sintéticas adicionales (620 positivas y 820 negativas). El nombre de los archivos aumentados sigue la nomenclatura original, añadiendo un sufijo ``-PX'' donde ``X'' es un número secuencial que identifica cada muestra sintética generada a partir de la misma muestra original.
+\textbf{Resultados del aumento de datos:} El \textit{dataset} original constaba de 144 muestras (62 positivas y 82 negativas). Tras aplicar el proceso de aumento de datos, se han generado un total de 1440 muestras sintéticas adicionales (620 positivas y 820 negativas). El nombre de los archivos aumentados sigue la nomenclatura original, añadiendo un sufijo ``-PX'' donde ``X'' es un número secuencial que identifica cada muestra sintética generada a partir de la misma muestra original.
 \par
 
 En estos nuevos archivos el número total de filas por archivo es de 100, correspondientes a las 100 lecturas temporales extraídas en cada ventana. Multiplicando estas 100 filas por las 1440 muestras aumentadas, se obtiene un total de 144.000 nuevas entradas para el entrenamiento de la red neuronal.
 \par
 
-De esta forma, se consigue un dataset más rico y variado, permitiendo que la red neuronal aprenda a reconocer patrones incluso en presencia de ruido o variaciones temporales.
+De esta forma, se consigue un \textit{dataset} más rico y variado, permitiendo que la red neuronal aprenda a reconocer patrones incluso en presencia de ruido o variaciones temporales.
 
 \subsection{Entrenamiento de la red neuronal}
 Como se ha mencionado en apartados enteriores de este documento, no se entrenará una sola ANN, sino que se entrenarán varios modelos con distintos frameworks (Keras y PyTorch) y conjuntos de datos (concretamente con un conjunto de datos normal y otro conjunto de datos aumentado) para comparar resultados y determinar cuál se adapta mejor a las necesidades del proyecto.
@@ -487,7 +487,7 @@ from google.colab import drive
 print("Librerias cargadas correctamente.")
 \end{lstlisting}
 
-Como se muestra en el \autoref{lst:keras_imports}, se utilizan \texttt{numpy} y \texttt{pandas} para la manipulación de datos, \texttt{matplotlib} y \texttt{seaborn} para visualización, \texttt{sklearn} para el preprocesamiento y división del dataset, y \texttt{tensorflow.keras} para la construcción y entrenamiento de la red neuronal. La línea 13 importa el módulo de Google Drive para acceder a los archivos almacenados en la nube.
+Como se muestra en el \autoref{lst:keras_imports}, se utilizan \texttt{numpy} y \texttt{pandas} para la manipulación de datos, \texttt{matplotlib} y \texttt{seaborn} para visualización, \texttt{sklearn} para el preprocesamiento y división del \textit{dataset}, y \texttt{tensorflow.keras} para la construcción y entrenamiento de la red neuronal. La línea 13 importa el módulo de Google Drive para acceder a los archivos almacenados en la nube.
 
 \textbf{Carga y etiquetado de datos:} La función de carga de datos está diseñada específicamente para procesar los archivos generados por el script de limpieza, extrayendo únicamente las lecturas de la fase de adsorción:
 
@@ -542,7 +542,7 @@ y = np.array(y_labels)
 print(f"Forma de la matriz X: {X.shape}")
 \end{lstlisting}
 
-\textbf{División del dataset y escalado:} Para una evaluación rigurosa del modelo, se realiza una división estratificada del dataset en tres conjuntos: entrenamiento (70\%), validación (15\%) y test (15\%):
+\textbf{División del \textit{dataset} y escalado:} Para una evaluación rigurosa del modelo, se realiza una división estratificada del \textit{dataset} en tres conjuntos: entrenamiento (70\%), validación (15\%) y test (15\%):
 
 \begin{lstlisting}[language=Python, caption={División estratificada y escalado de los datos.}, label={lst:keras_split}]
 # Primera division: Separa el 15% para el TEST FINAL.

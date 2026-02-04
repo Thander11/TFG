@@ -1,28 +1,25 @@
 \chapter{Alcance y objetivos}
 En esta sección se describen los objetivos principales y específicos del proyecto, así como el alcance del mismo.
 
-\section{Alcance}
-El alcande de este proyecto se centra en el desarrollo de un sistema capaz de detectar la presencia de una sustancia específica usando una nariz electrónica, similar a la función que desempeñan los agentes caninos de la Guardia Civil. El proyecto abarca desde la recolección y preprocesamiento de datos espectrales, hasta el entrenamiento de un modelo de red neuronal para la clasificación de las muestras, así como la creación de una aplicación móvil para facilitar la interacción con el sistema desarrollado. 
-\par
-
-Sin embargo, no se contempla la creación o mejora de una nariz electrónica, sino que se usará una ya existente.
-
 \section{Objetivos}
 
 \subsection{Objetivo general}
-El objetivo general de este proyecto es comprobar la viablilidad de una nariz electrónica para realizar un trabajo similar al de los agentes caninos de la Guardia Civil en la detección de sustancias. Con ello se pretende proporcionar una herramienta tecnológica que pueda servir de apoyo en tareas de control de sustancias, evitando una sobrecarga de trabajo para los agentes y sus guías, asi como proporcionando una segunda verificación si se considera oportuno.
+El objetivo general de este proyecto es comprobar la viablilidad de una nariz electrónica para realizar un trabajo similar al de los agentes caninos de la Guardia Civil en la detección de sustancias. Con ello se pretende proporcionar una nueva herramienta tecnológica fácil de usar que pueda servir de apoyo en algunas tareas de control de sustancias, evitando una sobrecarga de trabajo para los agentes caninos y sus guías, asi como proporcionando una segunda verificación si se considera oportuno.
+\par
+
+Cabe destacar que el objetivo no es desarrollar un sistema que pueda sustituir a los agentes caninos, sino proporcionar una herramienta adicional que pueda ser útil como apoyo en ciertos escenarios específicos o como complemento a los agentes caninos cuando estos no estén disponibles.
 
 \subsection{Objetivos específicos}
 Con el fin de alcanzar el objetivo general, se han definido los siguientes objetivos específicos:
 
 \begin{itemize}
-    \item \textbf{Creación de un dataset:} Recolectar y organizar un conjunto de datos espectrales representativo que incluya muestras con y sin la sustancia objetivo. Este proceso se divide en dos fases:
+    \item \textbf{Creación de un \textit{dataset}:} Recolectar y organizar un conjunto de datos espectrales representativo que incluya muestras con y sin la sustancia objetivo. Este proceso se divide en dos fases:
     \begin{itemize}
         \item Llevar a cabo un plan de experimentación para recolectar datos espectrales de muestras con y sin la sustancia objetivo.
         \item Preprocesar los datos recolectados para asegurar su calidad y adecuación para el entrenamiento de la red neuronal.
     \end{itemize}
 
-    \item \textbf{Desarrollo de un modelo de red neuronal:} Entrenar un modelo de red neuronal utilizando el dataset creado, con el objetivo de clasificar las muestras en función de la presencia o ausencia de la sustancia objetivo.
+    \item \textbf{Desarrollo de un modelo de red neuronal:} Entrenar un modelo de red neuronal utilizando el \textit{dataset} creado, con el objetivo de clasificar las muestras en función de la presencia o ausencia de la sustancia objetivo.
     
     \item \textbf{Creación de una aplicación móvil:} Desarrollar una aplicación móvil que permita la interacción con la nariz electrónica, facilitando la adquisición de datos y la visualización de resultados.
     
@@ -30,3 +27,9 @@ Con el fin de alcanzar el objetivo general, se han definido los siguientes objet
     
     \item \textbf{Comparativa con los agentes caninos:} Realizar pruebas comparativas entre la nariz electrónica y los agentes caninos para evaluar la efectividad del sistema desarrollado en condiciones reales.
 \end{itemize}
+
+\section{Alcance}
+El alcande de este proyecto se centra en el desarrollo de un sistema capaz de detectar la presencia de una sustancia determinada usando una nariz electrónica, similar a la función que desempeñan los agentes caninos de la Guardia Civil. El proyecto abarca desde la recolección y preprocesamiento de datos espectrales hasta el entrenamiento de un modelo de red neuronal para la clasificación de las muestras, así como la creación de una aplicación móvil para facilitar la interacción con el sistema desarrollado. 
+\par
+
+Sin embargo, quedan fuera de los objetivos la creación o mejora de una nariz electrónica, ya que se utilizará una ya existente.

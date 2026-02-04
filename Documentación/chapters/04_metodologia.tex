@@ -128,9 +128,9 @@ Pese a haber recopilado información acerca de las narices electrónicas y su fu
 
 Tras la formación se decidió que el ``entrenamiento de la nariz electrónica'' consisitiria en el entrenamiento de una red neuronal artificial (ANN) para que, a partir de los datos obtenidos por la nariz electrónica al analizar diferentes muestras, pudiera detectar la presencia de hachís. Este ``entrenamiento de la nariz electrónica'' se dividió en cinco subtareas principales:
 \begin{enumerate}
-    \item Toma de muestras con la nariz electrónica para crear el dataset.
+    \item Toma de muestras con la nariz electrónica para crear el \textit{dataset}.
     \item Creación de un script para la limpieza y preprocesamiento de los datos obtenidos.
-    \item Creación de un script para ampliar el dataset mediante técnicas de aumento de datos.
+    \item Creación de un script para ampliar el \textit{dataset} mediante técnicas de aumento de datos.
     \item Desarrollo y entrenamiento de la ANN\@.
     \item Desarrollo de una aplicación móvil para controlar la nariz electrónica y utilizar la ANN entrenada.
 \end{enumerate}
@@ -204,15 +204,15 @@ Para la fase de toma de muestras, en conjunto con la nariz electrónica menciona
     \caption{Interfaz de la aplicación móvil para el control de la toma de muestras.}\label{fig:app_toma_muestras}
 \end{figure}
 
-\subsubsection{Limpieza y ampliación del dataset}
-Para la limpieza y preprocesamiento de los datos obtenidos durante la fase de toma de muestras, se busca crear un script que automatice este proceso y facilite la preparación del dataset para su posterior análisis y entrenamiento de la ANN\@. Además también se buscar crear otro script para la ampliación del dataset. Existen varias posibilidades para llevar a cabo estas tareas, entre las que se incluyen:
+\subsubsection{Limpieza y ampliación del \textit{dataset}}
+Para la limpieza y preprocesamiento de los datos obtenidos durante la fase de toma de muestras, se busca crear un script que automatice este proceso y facilite la preparación del \textit{dataset} para su posterior análisis y entrenamiento de la ANN\@. Además también se buscar crear otro script para la ampliación del \textit{dataset}. Existen varias posibilidades para llevar a cabo estas tareas, entre las que se incluyen:
 
 \begin{itemize}
     \item \textbf{Python:} Python es un lenguaje de propósito general altamente versátil que se ha convertido en el estándar de facto para la ciencia de datos y el análisis de datos. Su sintaxis legible y el abundante ecosistema de librerías especializadas (como NumPy, Pandas, Scikit-learn) lo hacen ideal para tareas de preprocesamiento. NumPy permite realizar operaciones vectorizadas eficientes sobre arrays de datos, mientras que Pandas proporciona estructuras de datos poderosas como DataFrames para manipular y transformar datos tabulares. Para el aumento de datos (data augmentation), se dispone de librerías como Imgaug o Albumentations para imágenes, y otras herramientas de sobremuestreo y suavizado para datos numéricos. La curva de aprendizaje es suave, permitiendo escribir código legible y mantenible rápidamente.
     \item \textbf{R:} R es un lenguaje estadístico especializado en análisis de datos e investigación científica. Dispone de paquetes muy maduros como dplyr (para manipulación de datos) y caret (para preprocesamiento y aumento de datos). Es particularmente potente para análisis estadísticos complejos y visualización de datos mediante ggplot2. Sin embargo, R puede resultar más lento que Python en operaciones intensivas, especialmente con grandes volúmenes de datos. Su curva de aprendizaje es más pronunciada para usuarios sin experiencia estadística, aunque es muy poderoso una vez se domina.
     \item \textbf{Bash + herramientas UNIX:} Las herramientas de línea de comandos UNIX (grep, awk, sed, cut, join) permiten realizar transformaciones de datos directamente en archivos de texto mediante tuberías (pipes). Esto es extremadamente eficiente en términos de consumo de memoria, ya que procesa el archivo línea a línea sin cargar todo en memoria. Es especialmente útil para tareas simples como filtrado, extracción de columnas y transformaciones básicas. Sin embargo, para operaciones más complejas como normalización estadística o aumento de datos basado en algoritmos sofisticados, resulta tedioso y propenso a errores. Requiere conocimiento profundo de las herramientas UNIX y puede afectar la reproducibilidad si no se documentan bien los comandos.
     \item \textbf{SQL + scripts:} Si los datos se encuentran en una base de datos relacional, SQL es una opción poderosa para filtrado, agregación y transformación de datos. Lenguajes como SQL con Python (ejecutando consultas SQL desde scripts de Python) combinan la potencia declarativa de SQL con la flexibilidad de un lenguaje de programación. Sin embargo, esto requiere que los datos estén en una base de datos, añadiendo complejidad infraestructural. Además, el aumento de datos generativo (como la síntesis de nuevas muestras) es más difícil de implementar usando solo SQL\@.
-    \item \textbf{Apache Spark:} Apache Spark es un framework de procesamiento distribuido diseñado para trabajar con Big Data\@. Proporciona APIs en Python (PySpark), R (SparkR) y SQL\@. Es tremendamente escalable y puede procesar datos que no caben en una sola máquina distribuyéndolos en un cluster. Sin embargo, Spark tiene un overhead significativo de inicialización y sincronización entre nodos, lo que lo hace ineficiente para datasets pequeños (típicamente menor a 1 GB). Es más apropiado para pipelines de datos en producción con millones de registros distribuidos.
+    \item \textbf{Apache Spark:} Apache Spark es un framework de procesamiento distribuido diseñado para trabajar con Big Data\@. Proporciona APIs en Python (PySpark), R (SparkR) y SQL\@. Es tremendamente escalable y puede procesar datos que no caben en una sola máquina distribuyéndolos en un cluster. Sin embargo, Spark tiene un overhead significativo de inicialización y sincronización entre nodos, lo que lo hace ineficiente para \textit{dataset}s pequeños (típicamente menor a 1 GB). Es más apropiado para pipelines de datos en producción con millones de registros distribuidos.
 \end{itemize}
 
 A continuación, en la~\autoref{tab:comparativa_herramientas_datos} se presenta una tabla comparativa de estas herramientas considerando criterios relevantes para este proyecto.
@@ -238,7 +238,7 @@ A continuación, en la~\autoref{tab:comparativa_herramientas_datos} se presenta 
 	\textbf{Python} & 
 	\begin{itemize}[nosep] \item Ecosistema completo (NumPy, Pandas, Scikit-learn) \item Sintaxis clara y fácil de aprender \item Múltiples librerías de data augmentation \item Reproducibilidad y documentación excelente \item Comunidad muy activa \item Versatilidad para otros usos del proyecto \end{itemize} &
 	\begin{itemize}[nosep] \item Rendimiento más bajo con Big Data \item Requiere bibliotecas externas para casi todo \end{itemize} &
-	\cellcolor{green!20} Muy alta. Ideal para datasets pequeños-medianos con requerimientos complejos. \\
+	\cellcolor{green!20} Muy alta. Ideal para \textit{dataset}s pequeños-medianos con requerimientos complejos. \\
 	\midrule
 	\textbf{R} &
 	\begin{itemize}[nosep] \item Diseño especializado en estadística \item Paquetes estadísticos muy maduros (dplyr, caret) \item Gráficas y análisis exploratorio avanzados \item Comunidad científica sólida \end{itemize} &
@@ -258,9 +258,9 @@ A continuación, en la~\autoref{tab:comparativa_herramientas_datos} se presenta 
 	\textbf{Apache Spark} &
 	\begin{itemize}[nosep] \item Escalabilidad a Big Data \item Procesamiento distribuido eficiente \item Múltiples lenguajes (PySpark, SparkR, SQL) \item Optimizaciones automáticas \end{itemize} &
 	\begin{itemize}[nosep] \item Overhead significativo para datos pequeños \item Curva de aprendizaje pronunciada \item Requiere cluster/cloud (costo infraestructural) \item Complejidad operacional \end{itemize} &
-	Baja para este proyecto. Overkill para datasets pequeños-medianos. \\
+	Baja para este proyecto. Overkill para \textit{dataset}s pequeños-medianos. \\
 \end{xltabular}
-{\captionsetup{type=table,hypcap=false}\captionof{table}{Comparativa de herramientas para limpieza y ampliación del dataset.}\label{tab:comparativa_herramientas_datos}}
+{\captionsetup{type=table,hypcap=false}\captionof{table}{Comparativa de herramientas para limpieza y ampliación del \textit{dataset}.}\label{tab:comparativa_herramientas_datos}}
 
 \normalsize
 
@@ -336,9 +336,9 @@ Existen varias plataformas para ejecutar el entrenamiento de modelos, proporcion
 \begin{itemize}
     \item \textbf{Orange/KNIME:} Son plataformas que permiten crear tuberías de datos completas (limpieza, entrenamiento y evaluación) de forma visual sin necesidad de código. Ofrecen una interfaz intuitiva y son ideales para exploración inicial de datos. Sin embargo, son menos flexibles que el código directo, tienen limitaciones para modelos muy complejos, y ofrecen control limitado sobre parámetros específicos.
     
-    \item \textbf{Kaggle Kernels:} Proporciona un entorno en la nube listo para ejecutar notebooks con acceso gratuito a GPUs y TPUs. Cuenta con una comunidad muy activa con competiciones regulares, está enfocado en ciencia de datos, y ofrece datasets listos para usar. Sin embargo, tiene límites de tiempo de ejecución, ofrece menos control sobre hardware, y está más orientado a competiciones que a investigación general.
+    \item \textbf{Kaggle Kernels:} Proporciona un entorno en la nube listo para ejecutar notebooks con acceso gratuito a GPUs y TPUs. Cuenta con una comunidad muy activa con competiciones regulares, está enfocado en ciencia de datos, y ofrece \textit{dataset}s listos para usar. Sin embargo, tiene límites de tiempo de ejecución, ofrece menos control sobre hardware, y está más orientado a competiciones que a investigación general.
     
-    \item \textbf{Google Colab:} Ofrece un entorno en la nube basado en notebooks Jupyter con acceso gratuito a GPUs y TPUs de Google. Permite integración directa con Google Drive para almacenar notebooks, modelos y datos, es fácil de compartir y colaborar en proyectos, y es suficiente para datasets pequeños-medianos. Las desventajas incluyen que las sesiones se desconectan si no se usan, hay cuotas limitadas de acceso a GPU, y existe latencia en la comunicación de red.
+    \item \textbf{Google Colab:} Ofrece un entorno en la nube basado en notebooks Jupyter con acceso gratuito a GPUs y TPUs de Google. Permite integración directa con Google Drive para almacenar notebooks, modelos y datos, es fácil de compartir y colaborar en proyectos, y es suficiente para \textit{dataset}s pequeños-medianos. Las desventajas incluyen que las sesiones se desconectan si no se usan, hay cuotas limitadas de acceso a GPU, y existe latencia en la comunicación de red.
 \end{itemize}
 
 A continuación se presenta la tabla comparativa de estos entornos.
@@ -367,12 +367,12 @@ A continuación se presenta la tabla comparativa de estos entornos.
 	Baja. Mejor para prototipado rápido. \\
 	\midrule
 	\textbf{Kaggle Kernels} &
-	\begin{itemize}[nosep] \item Acceso gratuito a GPUs/TPUs \item Comunidad activa con competiciones \item Datasets listos para usar \item Reproducibilidad facilitada \end{itemize} &
+	\begin{itemize}[nosep] \item Acceso gratuito a GPUs/TPUs \item Comunidad activa con competiciones \item \textit{dataset}s listos para usar \item Reproducibilidad facilitada \end{itemize} &
 	\begin{itemize}[nosep] \item Tiempo de ejecución limitado \item Menos control sobre hardware \item Más orientado a competiciones \end{itemize} &
 	Media. Bueno para competiciones. \\
 	\midrule
 	\textbf{Google Colab} &
-	\begin{itemize}[nosep] \item Acceso gratuito a GPUs/TPUs de Google \item Integración con Google Drive \item Notebooks Jupyter nativos \item Fácil de compartir y colaborar \item Suficiente para datasets pequeños-medianos \end{itemize} &
+	\begin{itemize}[nosep] \item Acceso gratuito a GPUs/TPUs de Google \item Integración con Google Drive \item Notebooks Jupyter nativos \item Fácil de compartir y colaborar \item Suficiente para \textit{dataset}s pequeños-medianos \end{itemize} &
 	\begin{itemize}[nosep] \item Sesiones se desconectan si no se usan \item Cuotas limitadas de acceso a GPU \item Latencia en red \end{itemize} &
 	\cellcolor{green!20} Muy alta. Ideal para este proyecto. \\
 \end{xltabular}
@@ -380,7 +380,7 @@ A continuación se presenta la tabla comparativa de estos entornos.
 
 \normalsize
 
-Se ha optado por Google Colab como entorno de ejecución, ya que proporciona acceso gratuito a GPUs y TPUs, facilitando el entrenamiento de modelos complejos sin necesidad de hardware potente en local. Además, permite guardar notebooks, modelos y datasets directamente en Google Drive, garantizando persistencia y facilitando el acceso desde diferentes dispositivos.
+Se ha optado por Google Colab como entorno de ejecución, ya que proporciona acceso gratuito a GPUs y TPUs, facilitando el entrenamiento de modelos complejos sin necesidad de hardware potente en local. Además, permite guardar notebooks, modelos y \textit{dataset}s directamente en Google Drive, garantizando persistencia y facilitando el acceso desde diferentes dispositivos.
 
 \paragraph{Frameworks}
 
