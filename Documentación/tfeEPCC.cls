@@ -1,7 +1,7 @@
 \NeedsTeXFormat{LaTeX2e}[2021/11/15]
 \ProvidesClass{tfeEPCC}[2025/01/18 v1.0 LaTeX document class for Bachelor or Master's Theses in the School of Technology of Cáceres (UEx)]
 
-\LoadClass[12pt,a4paper,oneside]{book}
+\LoadClass[12pt,a4paper,twoside,openright]{book}
 
 \RequirePackage{etoolbox}
 \RequirePackage{appendix}
