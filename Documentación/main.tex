@@ -1,6 +1,11 @@
-\documentclass[minitoc, hidelinks, headlogo, framedcover]{tfeEPCC}
+% chktex-file 48
+\documentclass[hidelinks, headlogo, framedcover]{tfeEPCC}
+\usepackage[T1]{fontenc} % Cambiar encoding a T1 para más caracteres
 \usepackage[spanish, es-tabla]{babel} % Comentar si se va a realizar en inglés
 %\usepackage{parskip} % Quitar comentario si se quieren distinguir los párrafos con saltos y quitar las sangrías
+% Espaciado y sangría de párrafos (manteniendo la sangría)
+\setlength{\parskip}{0.7em}
+\setlength{\parindent}{1.5em}
 
 % Ajuste para notas al margen (todonotes): evitar advertencias de margen
 \setlength{\marginparwidth}{2cm}
@@ -10,15 +15,82 @@
 \usepackage[version=4]{mhchem}
 \usepackage{tabularx}
 \usepackage{booktabs}
+\usepackage{xltabular}
+\usepackage{colortbl} % Para colorear celdas en tablas
+\usepackage{caption}
+\usepackage{float} % Para usar [H] y fijar la posición de figuras/tablas
+\usepackage[section]{placeins} % Evita que los flotantes crucen secciones (añade \FloatBarrier)
+\usepackage{dirtree} % Para dibujar estructuras de directorios
+\usepackage{fancybox} % Para agregar sombreado a las figuras
+\usepackage{algorithm} % Para pseudocódigos
+\usepackage{algpseudocode} % Para la sintaxis de algoritmos
+\usepackage{listings} % Para destacar codigo con colores
+\usepackage{xcolor} % Para colores en codigo
+\usepackage{hyperref}
+
+% Renombrar "Listing" a "Código"
+\renewcommand{\lstlistingname}{Código}
+
+% Configuración de listings con colores
+\definecolor{codegreen}{rgb}{0.13,0.55,0.13}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{codeblue}{rgb}{0.0,0.0,0.7}
+\definecolor{codeorange}{rgb}{0.8,0.4,0.0}
+\definecolor{backcolour}{rgb}{0.97,0.97,0.97}
+
+\lstset{
+  language=Python,
+  columns=fullflexible,
+  basicstyle=\ttfamily\small,
+  breaklines=true,
+  inputencoding=utf8,
+  extendedchars=true,
+  % Colores para sintaxis
+  backgroundcolor=\color{backcolour},
+  commentstyle=\color{codegreen}\itshape,
+  keywordstyle=\color{codeblue}\bfseries,
+  stringstyle=\color{codeorange},
+  numberstyle=\tiny\color{codegray},
+  % Números de línea
+  numbers=left,
+  numbersep=8pt,
+  stepnumber=1,
+  % Espaciado y bordes
+  frame=single,
+  framesep=3pt,
+  rulecolor=\color{codegray},
+  xleftmargin=2em,
+  framexleftmargin=1.5em,
+  tabsize=4,
+  showspaces=false,
+  showstringspaces=false,
+  % Caption en la parte inferior
+  captionpos=b,
+  % Palabras clave adicionales de Python
+  morekeywords={True,False,None,self,as,with,yield,lambda,async,await},
+  emph={pd,DataFrame,Path,argparse,subprocess,sys},
+  emphstyle=\color{codepurple},
+  % Caracteres especiales UTF-8
+  literate=
+    {á}{{\'a}}1 {é}{{\'e}}1 {í}{{\'i}}1 {ó}{{\'o}}1 {ú}{{\'u}}1
+    {Á}{{\'A}}1 {É}{{\'E}}1 {Í}{{\'I}}1 {Ó}{{\'O}}1 {Ú}{{\'U}}1
+    {ñ}{{\~n}}1 {Ñ}{{\~N}}1 {ü}{{\"u}}1 {Ü}{{\"U}}1
+    {º}{{\textordmasculine}}1 {ª}{{\textordfeminine}}1
+    {¿}{{?`}}1 {¡}{{!`}}1
+}
 
 % Rellenar con los datos del estudiante y el trabajo
 \estudiante{Raúl Martín-Romo Sánchez}{Grado}{Ingeniería Informática en Ingeniería del Software}
 \title{Estudio de viabilidad de una Nariz Electrónica como herramienta de apoyo para los Agentes Caninos}
-\keywords{Nariz Electrónica\and e-Nose\and Agentes Caninos\and Detección de Sustancias\and Sensores\and Unidad Canina}
+\keywords{Nariz Electrónica\and Agentes Caninos\and Sensores\and Red Neuronal Artificial\and Aplicación Móvil \and Hachís\and Sustancia objetivo}
 
 \begin{document}
-\sloppy 
-\pagebreak 
+% Definir color azul clarito para cabeceras de tablas
+\definecolor{lightblue}{RGB}{173,216,230}
+
+\sloppy%
+\pagebreak%
 
 %%%%%%%%%%%%% PORTADA %%%%%%%%%%%%%
 % Poner convocatoria y año de presentación
@@ -39,29 +111,43 @@
 \contraportadaTFE{tutor = Pablo García Rodríguez, cotutor = Jesús Lozano Rogado}
 
 %%%% CAPÍTULOS INTRODUCTORIOS %%%%
-\pagenumbering{gobble}
+\pagenumbering{Roman}
+\setcounter{page}{1}
 \chapter*{Agradecimientos} % Apartado opcional, descomentar si se quiere añadir
+Me gustaría expresar mi más sincero agradecimiento a aquellas personas que han influido en el desarrollo de este trabajo de una manera u otra. En primer lugar, a mis tutores, Pablo García Rodríguez y Jesús Lozano Rogado, por su orientación, apoyo y asesoramiento indispensable para lograr este trabajo, y a Cristina Brugera Salas por su orientación acerca del funcionamiento de la nariz electrónica y su atención cuando tenía algún problema con la misma.
+\par
 
-% Dedicatorias del trabajo, pueden ser en español o inglés dependiendo de lo que se considere más apropiado
+También me gustaría agradecer a mi familia por su apoyo incondicional durante toda mi etapa universitaria, y a mis amigos por su compañía en este viaje y ayudarme cuando lo necesitaba. En concreto, en relación con este proyecto, quiero agradecer a mis compañeros y amigos Alejandro Barrena, Pablo Natera y Pablo Fernández por su aportación de ideas, resolver mis dudas, revisar esta memoria para buscar errores y posibles mejoras, y haber aguantado el ruido de la nariz electrónica durante tantos días.
+\par
 
-\chapter*{Glosario}
+Por último pero no por ello menos importante, quiero dar las gracias a los miembros del Servicio Cinológico de la Guardia Civil por su disposición para ayudarme en todo lo que he necesitado, proporcionar las muestras necesarias, por permitirme conocer de primera mano el trabajo que realizan los agentes caninos en su día a día y por lo bien que me han tratado cuando he tenido que ir a la comandancia.
 
+\chapter*{Dedicatoria} % Dedicatorias del trabajo, pueden ser en español o inglés dependiendo de lo que se considere más apropiado
+Quiero dedicar este trabajo a esas personas que, pese a que pueda llegar a parecerles un poco raro, me han animado y apoyado siempre en mi objetivo de unirme al cuerpo cinológico. Estas personas son mis padres, mi hermana, mis abuelos y mis amigos, todos personas muy importantes en mi vida y a las que aprecio muchísimo. Muchas gracias por aguantarme todo este tiempo, espero poder contar con todos vosotros en los años venideros.
+
+\cleardoublepage%
 
 \chapter*{Resumen}
-EL RESUMEN EN ESPAÑOL
+Se aborda el estudio de viabilidad de una nariz electrónica como herramienta de apoyo a agentes caninos en tareas de detección de sustancias, investigando sus fundamentos tecnológicos basados en sensores MOS y aplicaciones actuales. Se construye un \textit{dataset} de muestras de hachís y sustancias negativas, entrenándose  redes neuronales en Keras y PyTorch con regularización Dropout, evaluadas con y sin aumento de datos.
+
+Se desarrollan una aplicación móvil con comunicación Bluetooth y modelos exportados a TensorFlow Lite. Ambos modelos alcanzan precisiones elevadas (96\% y 94.67\%), sin sobreajuste. En pruebas comparativas con un agente canino especializado (Zape) de la Guardia Civil se evalúan aciertos, velocidad y precisión. Zape logra 100\% de aciertos en 25 segundos máximo, mientras que la \textit{e-nose} obtiene 50\% de aciertos en más de 155 segundos, demostrando limitaciones ante corrientes de aire y detección en presencia de personas.
+
+Se concluye que la \textit{e-nose} constituye una herramienta complementaria viable en situaciones específicas donde agentes caninos no estén disponibles. Se proponen mejoras futuras: especializar modelos por contexto de uso, desarrollar detectores multisustancia aprovechando la arquitectura modular, mejorar la tolerancia ambiental del dispositivo e implementar interfaces más intuitivas.
 
 \noindent\textbf{Palabras clave}: \printkeywords.
 
 \chapter*{Abstract}
-EL RESUMEN EN INGLÉS
+This work addresses the feasibility study of an electronic nose as a support tool for canine agents in substance detection tasks, investigating its technological foundations based on MOS sensors and current applications. A \textit{dataset} of hashish samples and negative substances is constructed, training neural networks in Keras and PyTorch with Dropout regularization, evaluated with and without data augmentation.
 
-\noindent\textbf{Keywords}: Most important or descriptive words, separated by commas.
+A mobile application with Bluetooth communication is developed and models are exported to TensorFlow Lite. Both models achieve high accuracy rates (96\% and 94.67\%), without overfitting. In comparative tests with a specialized canine agent (Zape) from the Civil Guard, successes, speed, and accuracy are evaluated. Zape achieves 100\% success rate in a maximum of 25 seconds, while the \textit{e-nose} obtains 50\% success rate in more than 155 seconds, demonstrating limitations when facing air currents and detection in the presence of people.
+
+It is concluded that the \textit{e-nose} constitutes a viable complementary tool in specific situations where canine agents are not available. Future improvements are proposed: specialize models by use context, develop multi-substance detectors leveraging the modular architecture, improve environmental tolerance of the device, and implement more intuitive interfaces.
+
+\noindent\textbf{Keywords}: Electronic Nose, Canine Agents, Sensors, Artificial Neural Network, Mobile Application, Hashish, Target substance.
 
 % Índices con enlaces de las secciones, tablas y figuras
 \newpage
 \pagestyle{plain}
-\pagenumbering{Roman}
-\setcounter{page}{1}
 \tableofcontents
 %\pagebreak
 \newpage
@@ -111,7 +197,8 @@ EL RESUMEN EN INGLÉS
 
 \pagenumbering{arabic}
 % Aumentar la altura del encabezado para evitar la advertencia de fancyhdr
-\setlength{\headheight}{14.49998pt}
+\setlength{\headheight}{26pt}
+\addtolength{\topmargin}{-12pt}
 \pagestyle{fancy}
 \setcounter{page}{1}
 
@@ -141,6 +228,7 @@ EL RESUMEN EN INGLÉS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%% ANEXOS %%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% chktex 48
 \startappendices
 
 %%%%%%%% ANEXO 1 %%%%%%%%
@@ -148,6 +236,58 @@ EL RESUMEN EN INGLÉS
 
 %%%%%%%% ANEXO 2 %%%%%%%%
 \import{appendices}{02_anexo_2.tex}
+
+%%%%%%%% ANEXO 3 %%%%%%%%
+\import{appendices}{03_anexo_3.tex}
+
+%%%%%%%% ANEXO 4 %%%%%%%%
+\import{appendices}{04_anexo_4.tex}
+
+%%%%%%%% ANEXO 5 %%%%%%%%
+\import{appendices}{05_anexo_5.tex}
+
+%%%%%%%% GLOSARIO %%%%%%%%
+\chapter*{Glosario}
+\begin{description}
+    \item[Agente Canino:] Perro entrenado específicamente para realizar tareas especializadas de seguridad, rescate o detección de sustancias. Los agentes caninos destacan por su excepcional sentido del olfato, pudiendo detectar y localizar drogas, explosivos, personas desaparecidas y otras sustancias de interés.
+    
+    \item[Biomímesis:] Ciencia que estudia la naturaleza como fuente de inspiración para el desarrollo de tecnologías y sistemas que resuelvan problemas humanos mediante la imitación de modelos, sistemas o elementos biológicos.
+    
+    \item[Compuestos Orgánicos Volátiles (COVs):] Grupo de sustancias químicas orgánicas cuya presión de vapor es lo suficientemente alta en condiciones ambientales normales como para evaporarse significativamente y entrar en la atmósfera. Son las moléculas clave en la detección olfativa.
+    
+    \item[Epitelio Olfativo:] Tejido sensorial especializado ubicado en la cavidad nasal que contiene los receptores olfativos (neuronas sensoriales olfativas). Es responsable de detectar moléculas odorantes volátiles y convertirlas en señales nerviosas que se transmiten al cerebro para la percepción del olfato.
+    
+    \item[Compuestos de Azufre Volátiles (VSCs):] Sustancias químicas que contienen azufre y presentan una alta volatilidad. Estos compuestos suelen tener olores fuertes y característicos, y son de gran interés en estudios de detección olfativa y análisis ambiental debido a su bajo umbral de detección por sistemas biológicos y sensores.
+    
+    \item[Quimiometría:] Disciplina científica que utiliza métodos matemáticos y estadísticos para diseñar o seleccionar procedimientos de medida óptimos y proporcionar la máxima información química relevante mediante el análisis de datos químicos.
+    
+    \item[Análisis de Componentes Principales (PCA):] Método estadístico de reducción de la dimensionalidad que transforma un conjunto de variables correlacionadas en un número menor de variables no correlacionadas llamadas componentes principales, facilitando la identificación de patrones y agrupamientos.
+    
+    \item[Análisis de Función de Discriminantes (DFA):] Técnica estadística utilizada para determinar qué variables permiten distinguir mejor entre dos o más grupos de muestras previamente definidos, con el fin de crear un modelo predictivo de clasificación.
+    
+    \item[Análisis de Clusters (CA):] Técnica exploratoria de análisis de datos que agrupa objetos o muestras de tal manera que la similitud entre los miembros de un mismo grupo sea máxima y la similitud con miembros de otros grupos sea mínima.
+    
+    \item[Artificial Neuronal Network (ANN):] Redes neuronales artificiales en españo, son modelos computacionales inspirados en el funcionamiento del sistema nervioso central biológico. Están compuestos por capas de nodos interconectados que aprenden a reconocer patrones complejos y relaciones no lineales en los datos.
+    
+    \item[Máquinas Vectoriales de Soporte (SVM):] Algoritmos de aprendizaje automático supervisado capaces de resolver problemas de clasificación y regresión mediante la búsqueda de un hiperplano óptimo que maximice la separación entre diferentes clases en un espacio multidimensional.
+    
+    \item[Servicio cinológico:] Unidad o equipo especializado en el adiestramiento, cuidado y empleo de perros con fines de seguridad, rescate o detección de sustancias ilícitas y especímenes protegidos.
+    
+    \item[Tráfico de marfil:] Comercio ilegal de colmillos de elefantes y otros animales que poseen defensas de marfil. Es una de las principales amenazas para la conservación de la fauna silvestre a nivel global.
+    
+    \item[Sobreajuste (Overfitting):] Fenómeno que ocurre cuando un modelo de aprendizaje automático se ajusta demasiado a los datos de entrenamiento, capturando ruido y detalles irrelevantes, lo que reduce su capacidad de generalizar y rendir correctamente ante nuevos datos no vistos.
+
+    \item[Dropout:] Técnica de regularización utilizada en el entrenamiento de redes neuronales artificiales para prevenir el sobreajuste. Consiste en desactivar aleatoriamente un porcentaje de neuronas en una capa durante cada iteración del entrenamiento, forzando a la red a aprender características más robustas.
+    
+    \item[ReLU (Rectified Linear Unit):] Función de activación utilizada en redes neuronales que transforma los valores de entrada anulando los negativos (convirtiéndolos en cero) y manteniendo los positivos. Es eficiente computacionalmente y ayuda a mitigar el problema del desvanecimiento del gradiente.
+
+    \item[Sigmoide:] Función matemática de activación que tiene una curva en forma de ``S''. Transforma cualquier valor real de entrada en un valor comprendido en el rango entre 0 y 1, por lo que es ampliamente utilizada en la capa de salida de modelos de clasificación binaria para representar probabilidades.
+
+    \item[Bluetooth Low Energy (BLE):] Tecnología de red inalámbrica de área personal diseñada para aplicaciones de bajo consumo energético y corto alcance. A diferencia del Bluetooth clásico, está optimizada para dispositivos que requieren operar durante largos periodos con baterías limitadas, transmitiendo pequeñas cantidades de datos de forma periódica.
+
+    \item[Indoor Air Quality (IAQ):] Término que hace referencia a la calidad del aire dentro y alrededor de edificios y estructuras. En el contexto de narices electrónicas y sensores de gas, se utiliza un índice IAQ para cuantificar la presencia de Compuestos Orgánicos Volátiles (COVs) y otros contaminantes, sirviendo como referencia para calibrar o validar las condiciones ambientales durante la toma de muestras.
+
+\end{description}
 
 \pagebreak
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -159,5 +299,5 @@ EL RESUMEN EN INGLÉS
 %%%%%%%% BIBLIOGRAFÍA %%%%%%%%
 % Se puede cambiar el estilo de la bibliografía, por defecto es 'unsrturl'
 % Por ejemplo: \makebibliography{alphaurl}
-\makebibliography
+\makebibliography%
 \end{document}

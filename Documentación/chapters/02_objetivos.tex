@@ -1,1 +1,43 @@
 \chapter{Alcance y objetivos}
+En esta sección se describen los objetivos principales y específicos del proyecto, así como el alcance del mismo.
+
+\section{Objetivos}
+
+\subsection{Objetivo general}
+El objetivo general de este proyecto es comprobar la viabilidad de una nariz electrónica para realizar un trabajo similar al de los agentes caninos de la Guardia Civil en la detección de sustancias. Con ello se pretende proporcionar una nueva herramienta tecnológica fácil de usar que pueda servir de apoyo en algunas tareas de control de sustancias, evitando una sobrecarga de trabajo para los agentes caninos y sus guías, así como proporcionando una segunda verificación si se considera oportuno.
+\par
+
+Cabe destacar que el objetivo no es desarrollar un sistema que pueda sustituir a los agentes caninos, sino proporcionar una herramienta adicional que pueda ser útil como apoyo en ciertos escenarios específicos o como complemento a los agentes caninos cuando estos no estén disponibles.
+
+\subsection{Objetivos específicos}
+Con el fin de alcanzar el objetivo general, se han definido los siguientes objetivos específicos:
+
+\begin{itemize}
+    \item \textbf{Creación de un \textit{dataset}:} Recolectar y organizar un conjunto de datos espectrales representativo que incluya muestras con y sin la sustancia objetivo. Este proceso se divide en dos fases:
+    \begin{itemize}
+        \item Llevar a cabo un plan de experimentación para recolectar datos espectrales de muestras con y sin la sustancia objetivo.
+        \item Preprocesar los datos recolectados para asegurar su calidad y adecuación para el entrenamiento de la red neuronal.
+    \end{itemize}
+
+    \item \textbf{Desarrollo de un modelo de red neuronal:} Entrenar un modelo de red neuronal utilizando el \textit{dataset} creado, con el objetivo de clasificar las muestras en función de la presencia o ausencia de la sustancia objetivo.
+    
+    \item \textbf{Creación de una aplicación móvil:} Desarrollar una aplicación móvil que permita la interacción con la nariz electrónica, facilitando la adquisición de datos y la visualización de resultados.
+    
+    \item \textbf{Evaluación del modelo:} Evaluar el rendimiento del modelo mediante gráficas y matrices de confusión.
+    
+    \item \textbf{Comparativa con los agentes caninos:} Realizar pruebas comparativas entre la nariz electrónica y los agentes caninos para evaluar la efectividad del sistema desarrollado en condiciones reales.
+\end{itemize}
+
+\section{Alcance}
+El alcance de este proyecto se centra en el desarrollo de un sistema capaz de detectar la presencia de una sustancia determinada usando una nariz electrónica, similar a la función que desempeñan los agentes caninos de la Guardia Civil. La investigación no solo aborda la viabilidad tecnológica, sino que engloba todo el flujo de trabajo necesario para la implementación de una herramienta de apoyo operativa.
+\par
+
+A continuación, se detallan las áreas fundamentales que comprende el alcance de este trabajo:
+
+\begin{itemize}
+    \item \textbf{Investigación y Estado del Arte:} Análisis profundo de los fundamentos tecnológicos de las narices electrónicas basados en sensores de óxido metálico (MOS), así como del funcionamiento del servicio cinológico actual, identificando las sinergias posibles entre ambas disciplinas.
+    \item \textbf{Desarrollo de un sistema basado en detección con narices electrónicas:} Creación de un sistema completo que incluye la recolección de datos, el desarrollo de modelos de aprendizaje automático y la implementación de una interfaz móvil para facilitar su uso en el exterior.
+    \item \textbf{Validación y Comparativa:} Realización de pruebas exhaustivas para evaluar la efectividad del sistema desarrollado en comparación con los agentes caninos, asegurando que el sistema cumple con los requisitos operativos necesarios.
+\end{itemize}
+
+Sin embargo, quedan fuera de los objetivos la creación o mejora de una nariz electrónica, ya que se utilizará una ya existente. Además, el proyecto se centra exclusivamente en la detección de una sustancia específica, sin abordar la detección de múltiples sustancias. Esta sustancia ha sido seleccionada dentro de las opciones con las que cuenta la Guardia Civil.
