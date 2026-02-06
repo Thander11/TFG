@@ -660,10 +660,10 @@ Por otra parte, comparando ambos frameworks directamente, se puede observar que 
 
 Tras analizar estos resultados, es posible concluir que el uso de datos ampliados ha mejorado la robustez y capacidad de generalización de los modelos en ambos frameworks, aunque Keras parece beneficiarse más de esta técnica en términos de reducción del sobreajuste, quedando el modelo normal de Keras como el que peor resultados presenta de los cuatro modelos entrenados seguido del modelo normal de PyTorch, el cual a su vez es superado por su versión aumentada, quedando el modelo de Keras con datos ampliados como el mejor de los cuatro modelos estandar.
 
-\subsection{Pseudocódigos}
+\section{Pseudocódigos}
 A continuación se presentan los pseudocódigos de los procedimientos de entrenamiento implementados en Keras y PyTorch. Es el mismo para ambos modelos normales y aumentados, con la única diferencia en el dataset utilizado para el entrenamiento, y las etapas y tamaño de lote mencionados anteriormente.
 
-\subsubsection{Keras}
+\subsection{Keras}
 
 \noindent\textbf{Algoritmo: Flujo de entrenamiento de la Red Neuronal para detección de sustancias (Keras).}
 
@@ -706,7 +706,7 @@ A continuación se presentan los pseudocódigos de los procedimientos de entrena
 \State~Convertir modelo a TensorFlow Lite (.tflite) para despliegue móvil/embebido
 \end{algorithmic}
 
-\subsubsection{PyTorch}
+\subsection{PyTorch}
 
 \noindent\textbf{Algoritmo: Flujo de entrenamiento de la Red Neuronal para detección de sustancias (PyTorch).}
 
