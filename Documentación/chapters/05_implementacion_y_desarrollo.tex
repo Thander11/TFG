@@ -1,4 +1,4 @@
-﻿\chapter{Implementacion, desarrollo y pruebas comparativas}
+﻿\chapter{Implementación, desarrollo y pruebas comparativas}
 \section{Implementación y desarrollo}
 Con el objetivo de contar con una nariz electrónica operativa que complemente el trabajo de los agentes caninos, se decidió entrenar una red neuronal artificial. Esta se integrará en una aplicación Bluetooth para dispositivos móviles que controlará la nariz electrónica. Dicha red neuronal será la encargada de determinar si la muestra analizada corresponde o no a la sustancia objetivo.
 \par
@@ -13,10 +13,10 @@ La implementación y el desarrollo de la nariz electrónica se estructuran en tr
 A continuación, se detallan cada una de estas fases.
 
 \subsection{Construcción del \textit{dataset}}
-Para la construcción del conjunto de datos, se llevaron a cabo múltiples experimentos (tomas de muestras) utilizando la nariz electrónica para recopilar datos de diversas muestras. En total se realizaron 144 experimentos, de los cueles los datos son almacenados en ficheros de texto (uno por cada experimento) que contienen las lecturas de los sensores. Estos ficheros se encuentran disponibles en el repositorio del proyecto mencionado en el capítulo de metodología.
+Para la construcción del conjunto de datos, se llevaron a cabo múltiples experimentos (tomas de muestras) utilizando la nariz electrónica para recopilar datos de diversas muestras. En total se realizaron 144 experimentos, de los cuales los datos son almacenados en ficheros de texto (uno por cada experimento) que contienen las lecturas de los sensores. Estos ficheros se encuentran disponibles en el repositorio del proyecto mencionado en el capítulo de metodología.
 \par
 
-Se busca hacer una clasificación binaria, es decir, distinguir entre dos clases, además de que el entrenamiento de la ANN se realice con un conjunto de datos equilibrado. Para ello, se ha dividido el \textit{dataset} en dos carpetas (``BUENO'' y ``MALO''): una para las muestras positivas (hachís) y otra para las muestras negativas (otras sustancias) respectivamente. La primera capeta tiene 62 archivos, miesntras que La segunda tiene 82 archivos.
+Se busca hacer una clasificación binaria, es decir, distinguir entre dos clases, además de que el entrenamiento de la ANN se realice con un conjunto de datos equilibrado. Para ello, se ha dividido el \textit{dataset} en dos carpetas (``BUENO'' y ``MALO''): una para las muestras positivas (hachís) y otra para las muestras negativas (otras sustancias) respectivamente. La primera carpeta tiene 62 archivos, mientras que la segunda tiene 82 archivos.
 \par
 
 En principio se realizaron 76 experimentos (38 de muestras negativas y 38 de muestras positivas). Sin embargo, tras probar la red neuronal en un entorno real, se observó que la ANN captaba bien la sustancia objetivo pero solo si se acercaba mucho el tubo de la nariz a dicha sustancia. Esto es debido a que casi todos los datos positivos eran de la sustancia pura en un bote de muestreo. Por ello, se añadieron más experimentos, tanto positivos como negativos, hasta llegar 58 muestras de cada tipo. No obstante, pese a que en este punto la red neuronal detectaba con precisión la sustancia objetivo, el número de falsos positivos era demasiado alto. Para reducir estos falsos positivos, se añadieron más muestras negativas (además de 4 muestras positivas más como pequeña ampliación), llegando a un total de 82 muestras negativas (y 62 positivas), dando como resultado final las 144 muestras mencionadas anteriormente.
@@ -25,13 +25,13 @@ En principio se realizaron 76 experimentos (38 de muestras negativas y 38 de mue
 Para asignarle un nombre identificativo a cada experimento, se ha usado la nomenclatura EXP\_X\_Y-Z, donde:
 
 \begin{itemize}
-    \item \textbf{EXP:} Es una anrebiatura de ``EXPERIMENTO''.
+    \item \textbf{EXP:} Es una abreviatura de ``EXPERIMENTO''.
     \item \textbf{X:} Indica si la muestra pertenece a la calse ``BUENO'' (B) o ``MALO'' (M).
-    \item \textbf{Y:} Es un índicie que, en la muestras positivias, sirve para llevar un conteo de los experimentos realizados, mientras que, en las muestras negativas, se aumenta dicho índice cada vez que se cambia de sustancia.
+    \item \textbf{Y:} Es un índice que, en las muestras positivas, sirve para llevar un conteo de los experimentos realizados, mientras que, en las muestras negativas, se aumenta dicho índice cada vez que se cambia de sustancia.
     \item \textbf{Z:} Es un número secuencial que identifica el experimento dentro de cada sustancia. Es usado en las muestras negativas para diferenciar entre experimentos realizados con la misma sustancia bajo distintas condiciones. En las muestras positivas se omite ya que siempre se trabaja con hachís.
 \end{itemize}
 
-En cada archivo hay hasta 210 filas de datos, y en un entrenamiento a tiempo real cada una de las filas será una entrada independiente para la ANN\@. Al procesar los archivos se eliminan varias de estas filas de datos. Tras el procesamiento de archivos, se eliminan las 59 primeras filas que corresponden a la fase de desorción, la última fila, que también corresponde a esta fase y las 15 primeras filas de la fase de adsorción.
+En cada archivo hay hasta 210 filas de datos, y en un entrenamiento a tiempo real cada una de las filas será una entrada independiente para la ANN\@. Al procesar los archivos se eliminan varias de estas filas de datos. Tras el procesamiento, se eliminan las 59 primeras filas que corresponden a la fase de desorción, la última fila, que también corresponde a esta fase y las 15 primeras filas de la fase de adsorción.
 \par
 
 El cálculo del número total de entradas después del procesamiento se puede expresar matemáticamente como:
@@ -43,35 +43,35 @@ El cálculo del número total de entradas después del procesamiento se puede ex
 donde 210 representa las filas iniciales por archivo, se restan las 59 filas de desorción inicial, 1 fila de desorción final, y 15 filas iniciales de adsorción, resultando en 135 filas de datos válidos. Al multiplicar por los 144 experimentos realizados, se obtiene un total de 19.440 entradas para el entrenamiento de la red neuronal.
 
 \subsubsection{Proceso de toma de muestras}
-Se trata de un proceso cíclico que consta de dos fases: desorción (toma de aire limpio para limpiar los sensores y establecer la linea base) y adsorción (toma de la muestra).
+Se trata de un proceso cíclico que consta de dos fases: desorción (toma de aire limpio para limpiar los sensores y establecer la línea base) y adsorción (toma de la muestra).
 \par
 
-Para este proyecto se ha buscado recrear situaciones lo más parecidas posibles a una situación real, por ejemplo, un control de carretera. Para ello, se ha establecido un solo ciclo, con una fase de desorción de 120 segundos (dos minutos), para eliminar cualquier posible resto de impureza que haya posido quedar en los sensores, y una fase de adsorción de 300 segundos (cinco minutos).
+Para este proyecto se ha buscado recrear situaciones lo más parecidas posibles a una situación real, como controles de carretera. Para ello, se ha establecido un solo ciclo, con una fase de desorción de 120 segundos (dos minutos), para eliminar cualquier posible resto de impureza que haya podido quedar en los sensores, y una fase de adsorción de 300 segundos (cinco minutos).
 \par
 
-Para que el aire entre en la carcasa y entre en contacto con los sensores, se conectan tubos flexibles a las entradas de la carcasa. En la entrada de desorción (IM\_D) se conecta a un tubo conectado a un pequeño purificador de aire para que el aire esté limpio. En la entrada de adsorción (IM\_A) se conecta a un tubo que conecta con el bote de muestreo donde estará la sustancia. A su vez, este bote de muestreo también esta conectado a otro purificador de aire para que entre aire limpio en el bote y se cree una corriente de aire, permitiendo que el aire de dentro del bote pueda ser absorbido mas facilmente por el tubo conectado a la nariz. Esta disposición puede observarse en la Figura~\autoref{fig:setup_muestreo}.
+Para que el aire entre en la carcasa y esté en contacto con los sensores, se conectan tubos flexibles a las entradas de la carcasa. En la entrada de desorción (IM\_D) se conecta a un tubo a su vez conectado a un pequeño purificador de aire para que el aire esté limpio. En la entrada de adsorción (IM\_A) se conecta a un tubo que conecta con el bote de muestreo donde estará la sustancia. A su vez, este bote de muestreo también esta conectado a otro purificador de aire para que entre aire limpio en el bote y se cree una corriente de aire, permitiendo que el aire de dentro del bote pueda ser absorbido mas facilmente por el tubo conectado a la nariz. Esta disposición puede observarse en la~\autoref{fig:setup_muestreo}.
 
 \begin{figure}[H]
     \centering
-    \shadowbox{\includegraphics[width=0.65\textwidth]{pictures/Circuito_entero.jpg}}
+    \shadowbox{\includegraphics[width=0.6\textwidth]{pictures/Circuito_entero.jpg}}
     \caption{Disposición del equipo para la muestra EXP\_M\_5--1.}\label{fig:setup_muestreo}
 \end{figure}
 
-Por otra parte, también es posible tomar muestras sin necesidad de usar el bote de muestreo, conectando directamente un tubo de adsorción que enctre en contacto con el aire, por ejemplo para tomar muestra de la calidad de aire de una habitación entera, o colocandolo cerca de una sustancia, como ocurre en la~\autoref{fig:setup_muestreo_sin_bote}.
+Por otra parte, también es posible tomar muestras sin necesidad de usar el bote de muestreo, conectando directamente un tubo de adsorción que entre en contacto con el aire, por ejemplo para tomar muestra de la calidad de aire de una habitación entera, o colocandolo cerca de una sustancia, como ocurre en la~\autoref{fig:setup_muestreo_sin_bote}.
 
 \begin{figure}[H]
     \centering
-    \shadowbox{\includegraphics[width=0.65\textwidth]{pictures/Circuito_abierto.jpg}}
+    \shadowbox{\includegraphics[width=0.6\textwidth]{pictures/Circuito_abierto.jpg}}
     \caption{Disposición del equipo para la muestra EXP\_B\_34.}\label{fig:setup_muestreo_sin_bote}
 \end{figure}
 
-Antes de poder empezar a tomar muestras, es imprescidible encender la nariz electrónica con una hora o 45 minutos de antelación para que los sensores se estabilicen térmicamente y las lecturas sean fiables.
+Antes de poder empezar a tomar muestras, es imprescindible encender la nariz electrónica con una hora o 45 minutos de antelación para que los sensores se estabilicen térmicamente y las lecturas sean fiables.
 \par
 
-Una vez los sensores se han calentado y la sustancia está preparada, solo queda conectar la nariz electrónica a un telefono movil android mediante Bluetooth y usar la aplicación móvil desarrollada para controlar la toma de muestras. Habría que configurar en número de ciclos y los tiempos de adsorción y desorción en las condiciones que se han mencionado anteriormente (1 ciclo, 120 segundos de desorción y 300 segundos de adsorción) y ya podría iniciarse la toma de muestras enviando el comando a través de la aplicación. Para saber como configurar la aplicación y conectarla a la nariz electrónica, se puede consultar el Anexo C.
+Una vez los sensores se han calentado y la sustancia está preparada, solo queda conectar la nariz electrónica a un teléfono móvil Android mediante Bluetooth y usar la aplicación móvil desarrollada para controlar la toma de muestras. Habría que configurar en número de ciclos y los tiempos de adsorción y desorción en las condiciones que se han mencionado anteriormente (1 ciclo, 120 segundos de desorción y 300 segundos de adsorción) y ya podría iniciarse la toma de muestras enviando el comando a través de la aplicación. Para saber como configurar la aplicación y conectarla a la nariz electrónica, se puede consultar el Anexo C.
 \par
 
-Una vez haya finalizado la toma de la muestra, los datos se habrán al macenado en un fichero de texto llamado ``DATOS.txt'' en la tarjeta SD de la nariz electrónica. El siguiente paso es copiar este fichero al ordenador y cambiarle el nombre por el correspondiente a la nomenclatura mencionada anteriormente. Es importante borrar el contenido de la tarjeta SD antes de iniciar una nueva toma de muestras. De no hacerse, los datos de la siguiente muestra se añadirán al final del fichero ``DATOS.txt''.
+Una vez haya finalizado la toma de la muestra, los datos se habrán almacenado en un fichero de texto llamado ``DATOS.txt'' en la tarjeta SD de la nariz electrónica. El siguiente paso es copiar este fichero al ordenador y cambiarle el nombre por el correspondiente a la nomenclatura mencionada anteriormente. Es importante borrar el contenido de la tarjeta SD antes de iniciar una nueva toma de muestras. De no hacerse, los datos de la siguiente muestra se añadirán al final del fichero ``DATOS.txt''.
 
 \subsubsection{Muestras negativas}
 Para las muestras negativas, se han utilizado diversas sustancias que pueden encontrarse en un entorno cotidiano y que no deben ser confundidas con la sustancia objetivo. Estas sustancias incluyen alimentos como cacao en polvo, limón exprimido, salsas, cajas vacias, aire limpio, etc. Un seguimiento detallado de la obtención de las características de estas sustancias se encuentra en la~\autoref{tab:registro_sustancias_malo} del Anexo A.
@@ -80,40 +80,41 @@ Para las muestras negativas, se han utilizado diversas sustancias que pueden enc
 Para cada sustancia (excepto la primera, que se hizo como una prueba), se han realizado múltiples experimentos bajo diferentes condiciones, como el estado del bote de muestreo (abierto o cerrado) y la presencia o ausencia de corriente de aire. Esto permite evaluar cómo estas variables afectan las lecturas de los sensores y la capacidad de la ANN para distinguir entre la sustancia objetivo y otras sustancias.
 \par
 
-Por otra parte, no todas las muestras negativas se han tomado de sutancias usando el bote de muestreo. Algunas muestras se han tomado directamente del aire de una habitación, una caja o de un coche, sitios donde puede encontrase el hachís.
+Por otra parte, no todas las muestras negativas se han tomado de sustancias usando el bote de muestreo. Algunas muestras se han tomado directamente del aire de una habitación, una caja o de un coche, sitios donde puede encontrase el hachís.
 
 \subsubsection{Muestras positivas}
-Las muestras positivas se han tomado usando hasta cinco tipos diferentes de hachís, es decir, que provienene de cinco fuentes distintas, y cinta de envalar con restos de dicha sustancia. Esto se ha hecho para que la ANN pueda generalizar mejor y no se sobreentrene con las características específicas de un solo tipo de hachís. Pueden verse algunas de estas muestras en la~\autoref{fig:hachis_1}, la~\autoref{fig:cinta_envalar} y la~\autoref{fig:hachis_2}.
+Las muestras positivas se han tomado usando hasta cinco tipos diferentes de hachís, es decir, que provienen de cinco fuentes distintas, y cinta de envalar con restos de dicha sustancia. Esto se ha hecho para que la ANN pueda generalizar mejor y no se sobreentrene con las características específicas de un solo tipo de hachís. Pueden verse algunas de estas muestras en la~\autoref{fig:hachis_1}, la~\autoref{fig:cinta_envalar} y la~\autoref{fig:hachis_2}.
 
 \begin{figure}[H]
     \centering
     \shadowbox{\includegraphics[width=0.5\textwidth]{pictures/Bote_hachis.jpg}}
-    \caption{Muestra de hachis usada de la toma 1 a la 4.}\label{fig:hachis_1}
+    \caption{Muestra de hachís usada de la toma 1 a la 4.}\label{fig:hachis_1}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \shadowbox{\includegraphics[width=0.5\textwidth]{pictures/Cinta embalar.jpg}}
-    \caption{Muestra de hachis usada de la toma 17 a la 20.}\label{fig:cinta_envalar}
+    \caption{Muestra de hachís usada de la toma 17 a la 20.}\label{fig:cinta_envalar}
 \end{figure}
 
 \begin{figure}[H]
     \centering
     \shadowbox{\includegraphics[width=0.5\textwidth]{pictures/Taco_hachis.jpg}}
-    \caption{Muestra de hachis usada de la toma 33 a la 38.}\label{fig:hachis_2}
+    \caption{Muestra de hachís usada de la toma 33 a la 38.}\label{fig:hachis_2}
 \end{figure}
 
 Para los cuatro primeros tipos se han realizado multiples experimentos bajo distintas condiciones, como el estado del bote de muestreo (abierto o cerrado) o si la tapa del recipiente donde se encontraba el hachís estaba puesta o no.
 \par
 
-En el caso del quinto tipo de hachís (la muestra mas grande), los expremientos se han realizado sin usar el bote de muestreo, tomando los datos de la muestra directamente del aire de una caja cerrada y de un coche cerrado. Esto se ha hecho para simular situaciones reales donde el hachís puede estar oculto en espacios cerrados.
+En el caso del quinto tipo de hachís (la muestra más grande), los experimentos se han realizado sin usar el bote de muestreo, tomando los datos de la muestra directamente del aire de una caja cerrada y de un coche cerrado. Esto se ha hecho para simular situaciones reales donde el hachís puede estar oculto en espacios cerrados.
 \par
 
 Por otro lado, la cinta de envalar se ha usado para tomar muestras, tanto usando el bote de muestreo, como en distintas situaciones como puede ser dentro de una caja o una maleta, o incluso simplemente con el bote donde esta almacenada abierto en una habitación.
 \par
 
-Además, dado que para las muestras positivas se dispone de un menor numero de muestras en comparación con las negativas, se ha optado por repetir algunos experimentos para aumentar la cantidad de datos disponibles para el entrenamiento de la ANN, ya que, pese a tratarse de la misma muestra, los resiltados pueden ser ligeramente diferentes entre una toma y otra.
-\par
+Además, dado que para las muestras positivas se dispone de un menor número de muestras en comparación con las negativas, se ha optado por repetir algunos experimentos para aumentar la cantidad de datos disponibles para el entrenamiento de la ANN, ya que, pese a tratarse de la misma muestra, los resultados pueden ser ligeramente diferentes entre una toma y otra.
+
+\newpage
 
 Un seguimiento detallado de estas tomas de muestras se encuentra en la~\autoref{tab:registro_sustancias_bueno} del Anexo B.
 
@@ -375,6 +376,8 @@ En el \autoref{lst:augment_pipeline}, la función \texttt{augment\_pipeline\_fix
     return augmented_samples[:target_files]
 \end{lstlisting}
 
+\newpage
+
 En el \autoref{lst:augment_noise}, el bucle principal (líneas 2--22) extrae ventanas del DataFrame original. Para cada ventana, se generan múltiples variaciones (líneas 11--22). El proceso de \textit{Jittering} (líneas 17--18) aplica ruido gaussiano multiplicativo: se genera una matriz de valores aleatorios con distribución normal $\mathcal{N}(1, 0.005)$ y se multiplica elemento a elemento con las características. Esto altera ligeramente la amplitud de las señales preservando su morfología. La etiqueta original (columna \texttt{Aire/muestra}) se mantiene intacta (línea 14) para no corromper la información de clase.
 
 \textbf{Procesamiento de carpetas:} La siguiente función se encarga de procesar todos los archivos de una carpeta y guardar los resultados:
@@ -456,7 +459,7 @@ En estos nuevos archivos el número total de filas por archivo es de 100, corres
 De esta forma, se consigue un \textit{dataset} más rico y variado, permitiendo que la red neuronal aprenda a reconocer patrones incluso en presencia de ruido o variaciones temporales.
 
 \subsection{Entrenamiento de la red neuronal}
-Como se ha mencionado en apartados enteriores de este documento, no se entrenará una sola ANN, sino que se entrenarán varios modelos con distintos frameworks (Keras y PyTorch) y conjuntos de datos (concretamente con un conjunto de datos normal y otro conjunto de datos aumentado) para comparar resultados y determinar cuál se adapta mejor a las necesidades del proyecto.
+Como se ha mencionado en apartados enteriores de este documento, no se entrenará una sola ANN, sino que se entrenarán varios modelos con distintos frameworks (Keras y PyTorch) y conjuntos de datos, concretamente con un conjunto de datos normal y otro conjunto de datos aumentado, para comparar resultados y determinar cuál se adapta mejor a las necesidades del proyecto.
 \par
 
 Entre esos modelos se entrenaron modelos estándar y modelos optimizados para su uso en tiempo real en la aplicación móvil que controla la nariz electrónica. Para ver como se han entrenado los modelos estándar y los resultados obtenidos, se puede consultar el Anexo D.
@@ -678,7 +681,7 @@ print("Desviaciones para Flutter:", list(np.sqrt(scaler.var_)))
 El \autoref{lst:keras_scaler} muestra el último paso, que es crítico para el despliegue: se extraen las medias (\texttt{scaler.mean\_}) y desviaciones estándar ($\sqrt{\texttt{scaler.var\_}}$) calculadas durante el entrenamiento. Estos 13 valores (uno por cada sensor) deben configurarse en la aplicación móvil para normalizar las lecturas en tiempo real de la misma forma que se normalizaron los datos de entrenamiento, garantizando así la fidelidad de las predicciones.
 
 \subsection{Desarrollo de la aplicación móvil}
-Anteriormente se ha mencionado que la aplicación se ha desarrollado usando Flutter y es importante destacar que, para que los modelos puedan ser ejecutados en dispositivos móviles, es necesario convertirlos a un formato compatible con TensorFlow Lite (.tflite). Los modelos entrenados en Keras se han convertido a este formato directamente, mientras que los modelos desarrollados en PyTorch requieren una conversión adicional. Esta conversión se realiza primero exportando el modelo a ONNX (Open Neural Network Exchange) y luego utilizando el convertidor de ONNX a TensorFlow Lite. Sin embargo, la conversion de PyTorch a ONNX presenta ciertos problemas de compatibilidad, por lo que no se ha podido completar este proceso para los modelos desarrollados en PyTorch. Por otro lado, los modelos deben de ser entrenados y optimizados específicamente para su uso a tiempo real, ya que la aplicación móvil debe ser capaz de procesar los datos de los sensores y realizar inferencias en tiempo real sin que haya retrasos perceptibles para el usuario.
+Anteriormente se ha mencionado que la aplicación se ha desarrollado usando Flutter y es importante destacar que, para que los modelos puedan ser ejecutados en dispositivos móviles, es necesario convertirlos a un formato compatible con TensorFlow Lite (.tflite). Los modelos entrenados en Keras se han convertido a este formato directamente, mientras que los modelos desarrollados en PyTorch requieren una conversión adicional. Esta conversión se realiza primero exportando el modelo a ONNX (\textit{Open Neural Network Exchange}) y luego utilizando el convertidor de ONNX a TensorFlow Lite. Sin embargo, la conversion de PyTorch a ONNX presenta ciertos problemas de compatibilidad, por lo que no se ha podido completar este proceso para los modelos desarrollados en PyTorch. Por otro lado, los modelos deben de ser entrenados y optimizados específicamente para su uso a tiempo real, ya que la aplicación móvil debe ser capaz de procesar los datos de los sensores y realizar inferencias en tiempo real sin que haya retrasos perceptibles para el usuario.
 \par
 
 Por este motivo, la aplicación móvil solo integra los modelos desarrollados en Keras a tiempo real. La aplicación permite al usuario seleccionar entre el modelo normal y el modelo plus, dependiendo de sus necesidades y del entorno en el que se utilice la nariz electrónica.
@@ -704,7 +707,7 @@ Una vez instalado todo el software necesario y creado el proyecto Flutter usando
 La aplicación sigue una arquitectura modular para separar la lógica de comunicación de la interfaz de usuario.
 \par
 
-La estructura de ficheros de la aplicación móvil se muestra en la~\autoref{fig:estructura_app}. En el proyecto hay dos carpetas importantes: la carpeta \texttt{assets}, donde estan el icono de la aplicación y los modelos y su configuración, y la carpeta \texttt{lib}, donde hay otras subcarpetas. La carpeta \texttt{screens} contiene las distintas pantallas de la aplicación, como la pantalla principal (donde se encuentra la lista de dispositivos disponibles), la pantalla de análisis (donde se controla el análisis de datos) y la pantalla de configuración (donde se puede modificar los ajustes del análisis). La carpeta \texttt{utils} alberga funciones auxiliares, en este caso, la navegación entre pantallas. La carpeta \texttt{widgets} contiene componentes reutilizables, actualmente solo la barra de navegación superior. El archivo \texttt{main.dart} es el punto de entrada de la aplicación, donde se inicializan las dependencias y se configura la navegación entre pantallas.
+La estructura de ficheros de la aplicación móvil se muestra en la~\autoref{fig:estructura_app}. En el proyecto hay dos carpetas importantes: la carpeta \texttt{assets}, donde estan el icono de la aplicación y los modelos y su configuración, y la carpeta \texttt{lib}, donde hay otras subcarpetas. La carpeta \texttt{screens} contiene las distintas pantallas de la aplicación, como la pantalla principal (listado de dispositivos disponibles), la pantalla de análisis (control del análisis de datos) y la pantalla de configuración (modificación de los ajustes del análisis). La carpeta \texttt{utils} alberga funciones auxiliares, en este caso, la navegación entre pantallas. La carpeta \texttt{widgets} contiene componentes reutilizables, actualmente solo la barra de navegación superior. El archivo \texttt{main.dart} es el punto de entrada de la aplicación, donde se inicializan las dependencias y se configura la navegación entre pantallas.
 
 \begin{figure}[H]
     \centering
@@ -747,7 +750,7 @@ Es necesario que los datos de los sensores se preprocesen de la misma manera que
     \item Quita el espacio que hay al inicio de la primera fila de datos.
     \item Elimina la primera fila que contiene la cabecera.
     \item Ignora la fila con los nombres de las columnas. Es necesario para que el programa no intente convertir texto en números.
-    \item Dart usa el punto como decimal por defecto, así que no es necesario cambiar puntos por comas, así que además, en vez de cambiar las comas por espacios, las usa como separadores directamente.
+    \item Dart usa el punto como decimal por defecto, así que no es necesario cambiar puntos por comas. Además, en vez de cambiar las comas por espacios, las usa como separadores directamente.
     \item Si el valor de la ultima columna es 0 (aire limpio de la desorción) lo omite.
     \item Elimina las columnas que no son necesarias para la inferencia (presión, humedad, temperatura, etc.).
 \end{enumerate}
@@ -758,7 +761,7 @@ Acto seguido se aplica la normalización estadística aplicando un ``StandardSca
 Para finalizar se utiliza ``Zero-Padding'' para adaptar la entrada individual de sensores al tamaño esperado por el modelo (242.676 datos), devolviendo una probabilidad de impureza.
 
 \subsubsection{Diseño de interfaz y experiencia de usuario}
-La interfaz de usuario (UI) de la aplicación móvil ha sido diseñada para ser intuitiva y fácil de usar, permitiendo a los usuarios interactuar con la nariz electrónica de manera eficiente. Se han implementado varias pantallas clave tales como una pantalla principal en la que se muestra una lista de dispositivos Bluetooth disponibles para conectarse, una pantalla de ajustes en la que se pueden configurar parámetros del análisis, tales como el número de ciclos, los tiempos de adsorción y desorción y la activación del modo AutoStop y de la vibración, y una pantalla de análisis donde se visualizan los datos en tiempo real. La pantalla de analisis cuenta con los siguientes componenetes:
+La interfaz de usuario (UI) de la aplicación móvil ha sido diseñada para ser intuitiva y fácil de usar, permitiendo a los usuarios interactuar con la nariz electrónica de manera eficiente. Se han implementado varias pantallas clave tales como una pantalla principal en la que se muestra una lista de dispositivos Bluetooth disponibles para conectarse; una pantalla de ajustes en la que se pueden configurar parámetros del análisis, tales como el número de ciclos, los tiempos de adsorción y desorción y la activación del modo AutoStop y de la vibración; y una pantalla de análisis donde se visualizan los datos en tiempo real. La pantalla de analisis cuenta con los siguientes componenetes:
 
 \begin{itemize}
     \item \textbf{Desplegable de modelos:} Un desplegable en el que se puede seleccionar el modelo de IA a utilizar.

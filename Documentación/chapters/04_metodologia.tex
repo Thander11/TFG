@@ -4,42 +4,39 @@
 Desde el principio se definieron cinco fases principales:
 
 \begin{itemize}
-    \item Reuniones iniciales.
-    \item Búsqueda de información.
-    \item Formación y entrenamiento de la nariz electrónica (e\nobreakdash-nose).
-    \item Pruebas comparativas con los agentes caninos.
+    \item Reuniones iniciales, donde se decide el tema del proyecto.
+    \item Búsqueda de información para aprender acerca de las narices electrónicas y la labor de los agentes caninos.
+    \item Formación y entrenamiento de la nariz electrónica (\textit{e-nose}), donde se realiza el desarrollo de todo el sistema.
+    \item Pruebas comparativas con los agentes caninos, para evaluar la efectividad de la nariz electrónica en condiciones reales.
     \item Redacción final de la documentación.
 \end{itemize}
 
-Sin embargo, el contenido específico, la secuencia detallada y la carga de trabajo dentro de cada fase no podían fijarse de antemano, ya que dependen de la disponibilidad de recursos, de las personas implicadas y de la información que se vaya obteniendo durante el avance del proyecto. Por este motivo se adoptó un enfoque ligero, apoyado en metodologías ágiles (Scrum y Kanban), que facilita mantener un ritmo constante y una alta capacidad de adaptación ante cambios y necesidades emergentes.
+Sin embargo, el contenido específico, la secuencia detallada y la carga de trabajo dentro de cada fase no podían fijarse de antemano, ya que dependen de la disponibilidad de recursos, de las personas implicadas y de la información que se vaya obteniendo durante el desarrollo del proyecto. Por este motivo se adoptó un enfoque ligero, apoyado en metodologías ágiles (Scrum y Kanban), que facilita mantener un ritmo constante y una alta capacidad de adaptación ante cambios y necesidades emergentes.
 
-Si bien se puede considerar a la Guardia Civil como el cliente final del proyecto, existen otros roles en este tipo de metodologías ágiles que también son relevantes, como el Product Owner (responsable de definir las prioridades y objetivos del proyecto), el Scrum Master (responsable de facilitar la implementación de la metodología ágil y eliminar obstáculos) y los desarrolladores. En este caso, dada la naturaleza del proyecto (un trabajo de fin de grado), el propio autor de este trabajo asume todos estos roles, gestionando tanto la planificación y ejecución del proyecto como la comunicación con los guías caninos de la Guardia Civil.
+Si bien se puede considerar a la Guardia Civil como el cliente final del proyecto, existen otros roles en este tipo de metodologías ágiles que también son relevantes, como el Product Owner (responsable de definir las prioridades y objetivos del proyecto), el Scrum Master (responsable de facilitar la implementación de la metodología ágil y eliminar obstáculos) y los desarrolladores. En este caso, dada la naturaleza académica del proyecto, el propio autor de este trabajo asume todos estos roles, gestionando tanto la planificación y ejecución del proyecto como la comunicación con los guías caninos de la Guardia Civil.
 
 \subsubsection{Control de versiones con Git}
 Para garantizar la trazabilidad y poder revertir cambios si fuera necesario, se utiliza Git como sistema de control de versiones. Esto permite mantener un historial detallado de todas las modificaciones realizadas en el código y la documentación, facilitando la gestión del proyecto.
 \par
 
-Esto se logra a traves de un repositorio privado en GitHub gestionado mediante ramas, en el que se almacena todo el código fuente, documentación, información recopilada a modo de apuntes y recursos relacionados con el proyecto.
-\par
-
-Este proceso se lleva a cabo usando GitHub Desktop, una aplicación que proporciona una interfaz gráfica para gestionar repositorios Git alojados en GitHub. Esta herramienta facilita la realización de operaciones comunes de Git, como commits, push, pull y la gestión de ramas, sin necesidad de utilizar la línea de comandos.
+Esto se logra a través de un \href{https://github.com/Thander11/TFG}{repositorio público} en GitHub gestionado mediante ramas, en el que se almacena todo el código fuente, documentación, información recopilada a modo de apuntes y recursos relacionados con el proyecto. También se hace uso de GitHub Desktop, una aplicación que proporciona una interfaz gráfica para gestionar repositorios Git alojados en GitHub. Esta herramienta facilita la realización de operaciones comunes de Git, como commits, push, pull y la gestión de ramas, sin necesidad de utilizar la línea de comandos.
 
 \subsubsection{Sprints adaptativos}
-Se define como sprint a cada una de las fases anteriormente mencionadas. La duración de cada sprint se fija en funcion de una estimación del tiempo que se cree necesario para lograr los objetivos establecidos para esa fase.
+Se define como sprint a cada una de las fases del proyecto anteriormente mencionadas. La duración de cada sprint se fija en función de una estimación del tiempo que se cree necesario para lograr los objetivos establecidos para esa fase.
 \par
 
-Antes de que inicie cada sprint (en los ultimos días del sprint anterior), se hace una organiacación aproximada de las tareas a realizar. Al comenzar el sprint, se hace una planificación más detallada de las tareas a realizar, asignando prioridades y fijando fechas de las posibles reuniones con los implicados. Durante el sprint, se revisa periódicamente el progreso y se ajustan las tareas y prioridades según sea necesario.
+Antes de que inicie cada sprint (en los últimos días del sprint anterior), se hace una organización aproximada de las tareas a realizar. Al comenzar el sprint, se hace una planificación más detallada de las tareas a realizar, asignando prioridades y fijando fechas de las posibles reuniones con los implicados. Durante el sprint, se revisa periódicamente el progreso y se ajustan las tareas y prioridades según sea necesario.
 
 \subsubsection{Github Projects y Tablero Kanban}
 
-Para la gestión de tareas, sprints y el seguimiento del progreso del proyecto, se utiliza GitHub Projects (en el repositorio anteriormente mencionado), que cuenta con un tablero Kanban integrado, como el que se muestra en la~\autoref{fig:tablero_kanban}. Este tablero permite visualizar las tareas en diferentes estados (Backlog, Ready, In progress, Done) y facilita la organización y priorización de las actividades. Cada tarea se representa como una tarjeta que puede moverse entre las columnas según su estado actual, proporcionando una visión clara del avance del proyecto.
+Para la gestión de tareas, sprints y el seguimiento del progreso del proyecto, se utiliza GitHub Projects sobre el repositorio anteriormente mencionado, que cuenta con un tablero Kanban integrado, como el que se muestra en la~\autoref{fig:tablero_kanban}. Este tablero permite visualizar las tareas en diferentes estados (\textit{Backlog}, \textit{Ready}, \textit{In progress}, \textit{Done}) y facilita la organización y priorización de las actividades. Cada tarea se representa como una tarjeta que puede moverse entre las columnas según su estado actual, proporcionando una visión clara del avance del proyecto.
 
 Cada estado del tablero Kanban tiene un significado específico:
 \begin{itemize}
-    \item \textbf{Backlog:} Aquí se encuentran todas las tareas que se han identificado pero que aún no están listas para ser trabajadas. Estas tareas pueden ser ideas, requisitos o cualquier actividad pendiente que necesite ser planificada.
-    \item \textbf{Ready:} En esta columna se colocan las tareas que están listas para ser abordadas. Esto significa que se han definido claramente, tienen los recursos necesarios y están priorizadas para su ejecución en el sprint actual.
-    \item \textbf{In progress:} Esta columna contiene las tareas que están actualmente en desarrollo. Los desarrolladores trabajan activamente en estas tareas, y su progreso se monitorea para asegurar que se completen a tiempo.
-    \item \textbf{Done:} Aquí se mueven las tareas que han sido completadas con éxito. Esto permite tener una visión clara de lo que se ha logrado hasta el momento y facilita la evaluación del progreso del proyecto.
+    \item \textbf{\textit{Backlog}:} Aquí se encuentran todas las tareas que se han identificado pero que aún no están listas para ser trabajadas. Estas tareas pueden ser ideas, requisitos o cualquier actividad pendiente que necesite ser planificada.
+    \item \textbf{\textit{Ready}:} En esta columna se colocan las tareas que están listas para ser abordadas. Esto significa que se han definido claramente, tienen los recursos necesarios y están priorizadas para su ejecución en el sprint actual.
+    \item \textbf{\textit{In progress}:} Esta columna contiene las tareas que están actualmente en desarrollo. Los desarrolladores trabajan activamente en estas tareas, y su progreso se monitorea para asegurar que se completen a tiempo.
+    \item \textbf{\textit{Done}:} Aquí se mueven las tareas que han sido completadas con éxito. Esto permite tener una visión clara de lo que se ha logrado hasta el momento y facilita la evaluación del progreso del proyecto.
 \end{itemize}
 
 \begin{figure}[H]
@@ -49,10 +46,10 @@ Cada estado del tablero Kanban tiene un significado específico:
 \end{figure}
 
 \section{Planificación}
-Pese a no saber exactamente que tareas se van a realizar en cada sprint, se establece unas fechas aproximadas para cada sprint en base a la duración estimada de cada fase repartiendo el tiempo disponible hasta la fecha límite de entrega del proyecto. Sin embargo, estas fechas son flexibles y pueden ajustarse según las necesidades del proyecto y el progreso real alcanzado en cada fase, el cual puede verse afectado por diversos facotres externos. De esta forma es posible distinguir una planificación inicial (fechas aproximadas) y una planificación final (fechas definitivas).
+Pese a no saber exactamente qué tareas se van a realizar en cada sprint, se establece unas fechas aproximadas para cada sprint en base a la duración estimada de cada fase repartiendo el tiempo disponible hasta la fecha límite de entrega del proyecto. Sin embargo, estas fechas son flexibles y pueden ajustarse según las necesidades del proyecto y el progreso real alcanzado en cada fase, el cual puede verse afectado por diversos factores externos. De esta forma es posible distinguir una planificación inicial (fechas aproximadas) y una planificación final (fechas definitivas).
 
 \subsection{Planificación inicial}
-Como se ha comentado anteriormente, esta planificación inicial se basa en una estimación del tiempo necesario para completar cada fase del proyecto dentro del tiempo limite, además de tener tener una semana de margen para posibles retrasos o imprevistos. Esta planificación inicial se muestra en la~\autoref{tab:planificacion_inicial}.
+Como se ha comentado anteriormente, esta planificación inicial se basa en una estimación del tiempo necesario para completar cada fase del proyecto dentro del tiempo limite, además de tener una semana de margen para posibles retrasos o imprevistos. Esta planificación inicial se muestra en la~\autoref{tab:planificacion_inicial}.
 
 \begin{table}[H]
 	\centering
@@ -63,13 +60,13 @@ Como se ha comentado anteriormente, esta planificación inicial se basa en una e
 		\midrule
 		06/11/2025--14/11/2025 & Sprint 1: Reuniones iniciales y elección del tema & Primera reunión con los guías caninos y decisión del tema del proyecto.\\
 		\midrule
-        20/11/2025--04/12/2025 & Sprint 2: Revisión bibliográfica y estado del arte & Recopilación de información necesaria para el proyecto y redaccón del marco teórico.\\
+        20/11/2025--04/12/2025 & Sprint 2: Revisión bibliográfica y estado del arte & Recopilación de información necesaria para el proyecto y redacción del marco teórico.\\
         \midrule
-        05/12/2025--10/01/2026 & Sprint 3: Formación y entrenamiento de la nariz electrónica & Cuerpo principal del proyecto. Entrenar una ANN para que detecte hachís y desarrollar una aplicación para controlar la nariz electrónica y que use esta red neuronal.\\
+        05/12/2025--10/01/2026 & Sprint 3: Formación y entrenamiento de la nariz electrónica & Cuerpo principal del proyecto. Entrenamiento de una ANN para que detecte hachís y desarrollo de una aplicación para controlar la nariz electrónica y que use esta red neuronal.\\
         \midrule
         11/01/2026--18/01/2026 & Sprint 4: Diseño del enfoque experimental, comparación y analisis de datos & Realización de pruebas para comparar la nariz electrónica con el olfato canino.\\
         \midrule
-        19/01/2026--31/01/2026 & Sprint 5: Redacción final del TFG & Finalizar la memoria y corregir los posibles errores.\\
+        19/01/2026--31/01/2026 & Sprint 5: Redacción final del TFG & Finalización de la memoria y corregir los posibles errores.\\
         \bottomrule
 		
 	\end{tabularx}
@@ -87,9 +84,9 @@ El diagrama de Gantt de la~\autoref{fig:gantt_planificacion_inicial} muestra una
 \end{figure}
 
 \subsection{Planificación final}
-La planificación inicial es una planificación ideal en la que se cumplen todas las fechas establecidas. Sin embargo, en la práctica, es posible que surjan imprevistos o retrasos que hagan que no se pueda terminar lo establecio en un sprint dentro de su tiempo estimado.
+La planificación inicial es una planificación ideal en la que se cumplen todas las fechas establecidas. Sin embargo, en la práctica, es posible que surjan imprevistos o retrasos que hagan que no se pueda terminar lo establecido en un sprint dentro de su tiempo estimado.
 
-Estos retrasos pueden verze reflejados en la~\autoref{fig:seguimiento}, donde se muestra una hoja de calculo en la que se ha llevado un control de las fechas teóricas y reales de cada tarea, así como el estado de cada una de ellas y el desfase (positivo si se ha acabado antes de lo previsto, negativo si se ha acabado después de lo previsto).
+Estos retrasos pueden verse reflejados en la~\autoref{fig:seguimiento}, donde se muestra una hoja de cálculo en la que se ha llevado un control de las fechas teóricas y reales de cada tarea, así como el estado de cada una de ellas y su respectivo desfase (positivo si se ha acabado antes de lo previsto, negativo si se ha acabado después de lo previsto).
 
 \begin{figure}[H]
     \centering
@@ -101,10 +98,7 @@ Estos retrasos pueden verze reflejados en la~\autoref{fig:seguimiento}, donde se
 \textbf{Duración:} 6 de noviembre--14 de noviembre de 2025 (Completado según lo planificado).
 \par
 
-En primer lugar se llevó a cabo una reunión con los guías caninos de la Guadia Civil para discutir posibles temas para el TFG\@. Tras evaluar varias opciones, se decidió centrar el proyecto en la comparación entre una nariz electrónica y agentes caninos para la detección de hachís. Esta decisión se tomó teniendo en cuenta los recursos disponibles, la relevancia del tema y el interés personal del autor. Al principio se preguntó a Jesus Lozano Rogado (cotutor del TFG y experto en narices electrónicas) si este tema era viable y factible dentro del tiempo y recursos disponibles, a lo que respondió afirmativamente, confirmandose así el tema de este trabjo.
-\par
-
-Al comenzo de este capítulo se menciona que las fases se definieron desde el principio, lo cual no es del todo cierto. En realidad, estas fases se definieron durante este sprint, una vez que se decidió el tema del proyecto y se comprendió mejor su alcance y los recursos disponibles.
+En primer lugar se llevó a cabo una reunión con los guías caninos de la Guardia Civil para discutir posibles temas para el TFG\@. Tras evaluar varias opciones, se decidió centrar el proyecto en la comparación entre una nariz electrónica y agentes caninos para la detección de hachís. Esta decisión se tomó teniendo en cuenta los recursos disponibles, la relevancia del tema y el interés personal del autor. Tras consultarlo con el cotutor del proyecto, Jesus Lozano Rogado (experto en narices electrónicas) se consideró un trabajo viable y factible dentro del tiempo y recursos disponibles.
 \par
 
 \subsubsection{Sprint 2: Revisión bibliográfica y estado del arte}
@@ -123,10 +117,10 @@ Este sprint se dedicó a la recopilación de información relevante sobre narice
 Este es el sprint más largo y complejo del proyecto, ya que implica el desarrollo del producto principal.
 \par
 
-Pese a haber recopilado información acerca de las narices electrónicas y su funciionamiento, era necesario una explicación más detallada sobre el uso. Por ello, este sprint comienza con una reunión con el Dr.\ Jesús Lozano Rogado para acordar un día en el que poder visitar el laboratorio de sensores de la Escuela de Ingenierías Industriales de Badajoz y recibir una formación práctica por parte de Cristina Brugera Salas sobre el uso de la nariz electrónica diseñada y construida por ella. Esta formación fue fundamental para entender cómo utilizar la nariz electrónica de manera efectiva y terminar de enfocar el rumbo que debía tomar el proyecto.
+Pese a haber recopilado información acerca de las narices electrónicas y su funcionamiento, era necesaria una explicación más detallada sobre el uso. Por ello, este sprint comienza con una reunión con el Dr.\ Jesús Lozano Rogado para acordar un día en el que poder visitar el laboratorio de sensores de la Escuela de Ingenierías Industriales de Badajoz y recibir una formación práctica por parte de Cristina Brugera Salas sobre el uso de la nariz electrónica diseñada y construida por ella. Esta formación fue fundamental para entender cómo utilizar la nariz electrónica de manera efectiva y terminar de enfocar el rumbo que debía tomar el proyecto.
 \par
 
-Tras la formación se decidió que el ``entrenamiento de la nariz electrónica'' consisitiria en el entrenamiento de una red neuronal artificial (ANN) para que, a partir de los datos obtenidos por la nariz electrónica al analizar diferentes muestras, pudiera detectar la presencia de hachís. Este ``entrenamiento de la nariz electrónica'' se dividió en cinco subtareas principales:
+Tras la formación se decidió que el ``entrenamiento de la nariz electrónica'' consisitiria en el entrenamiento de una red neuronal artificial (ANN) para que, a partir de los datos obtenidos por la nariz electrónica al analizar diferentes muestras, pudiera detectar la presencia de hachís. Este entrenamiento se dividió en cinco subtareas principales:
 \begin{enumerate}
     \item Toma de muestras con la nariz electrónica para crear el \textit{dataset}.
     \item Creación de un script para la limpieza y preprocesamiento de los datos obtenidos.
@@ -135,13 +129,13 @@ Tras la formación se decidió que el ``entrenamiento de la nariz electrónica''
     \item Desarrollo de una aplicación móvil para controlar la nariz electrónica y utilizar la ANN entrenada.
 \end{enumerate}
 
-Por otra parte se vio la posivilidad de acoplar la nariz electrónica a un perro robot en caso de que sobrase tiempo (prioridad baja). Sin embargo, debido a los retrasos acumulados en este sprint, esta tarea se ha descartado para centrarse en completar las tareas principales del sprint.
+Por otra parte se vio la posibilidad de acoplar la nariz electrónica a un perro robot en caso de que sobrase tiempo (prioridad baja). Sin embargo, debido a retrasos acumulados, esta tarea se ha descartado para centrarse en completar las tareas principales del sprint.
 \par
 
 \subsubsection{Sprint 4: Diseño del enfoque experimental, comparación y analisis de datos}
 \textbf{Duración:} 25 de enero--2 de febrero (Retraso)
 
-\textbf{Motivo del retraso:} Retraso acumulado y no disponivilidad del guía hasta el 2 de febrero.
+\textbf{Motivo del retraso:} Retraso acumulado y no disponibilidad del guía hasta el 2 de febrero.
 \par
 
 El mismo día que se finalizó el sprint 3, se contactó con el guía canino para planificar las pruebas comparativas entre la nariz electrónica y los agentes caninos. Sin embargo, debido a la agenda del guía, no fue posible realizar estas pruebas hasta el 2 de febrero de 2026. Por lo tanto, este sprint se ha dedicado principalmente a preparar el diseño experimental y analizar los datos obtenidos durante las pruebas, que se llevarán a cabo en la fecha mencionada.
@@ -164,10 +158,10 @@ El diagrama de Gantt de la~\autoref{fig:gantt_planificacion_final} muestra la pl
 \end{figure}
 
 \section{Herramientas utilizadas}
-Dada la naturaleza del proyecto, es posible dsitinguir entre dos tipos de herramientas: herramientas hardware y herramientas software.
+Dada la naturaleza del proyecto, es posible distinguir entre dos tipos de herramientas: herramientas hardware y herramientas software.
 
 \subsection{Herramientas hardware}
-Aquí se encuentra la principal herramienta para este estudio: la nariz electrónica utilizada para la toma de datos de las ditintas muestras y, posteriormente, para la realización de las pruebas con la ANN y la neuva aplicación móvil. 
+Aquí se encuentra la principal herramienta para este estudio: la nariz electrónica utilizada para la toma de datos de las distintas muestras y, posteriormente, para la realización de las pruebas con la ANN y la nueva aplicación móvil. 
 \par
 
 \begin{figure}[H]
@@ -176,7 +170,7 @@ Aquí se encuentra la principal herramienta para este estudio: la nariz electró
     \caption{Carcasa de la nariz electrónica.}\label{fig:nariz_electronica}
 \end{figure}
 
-En la~\autoref{fig:nariz_electronica} se puede observar dicha nariz electrónica desde una vista exterior (la carcasa), donde están los orificios de entrada y salida de aire. La ``verdadera'' nariz electrónica es una placa PCB, diseñada y programada en el laboratorio de sensores de la Esuela de Ingenierias Industriales de Badajoz, que se encuentra en el interior de la carcasa. En esta placa es donde se encuentran los sensores de gases y el microcontrolador PIC32MM0256GPM048, además de contar con un módulo Bluetooth Rn4871 para la comunicación con una aplicación movil que la controla, y una entrada microUSB para poder conectarla a la corriente y cargar la bateria con la que cuenta. Toda esta placa se muestra en la~\autoref{fig:placa_pcb}.
+En la~\autoref{fig:nariz_electronica} se puede observar dicha nariz electrónica desde una vista exterior (la carcasa), donde están los orificios de entrada y salida de aire. La ``verdadera'' nariz electrónica es una placa PCB, diseñada y programada en el laboratorio de sensores de la Escuela de Ingenierías Industriales de Badajoz, que se encuentra en el interior de la carcasa. En esta placa es donde se encuentran los sensores de gases y el microcontrolador PIC32MM0256GPM048, además de contar con un módulo Bluetooth Rn4871 para la comunicación con una aplicación móvil que la controla, y una entrada microUSB para poder conectarla a la corriente y cargar la batería con la que cuenta. Toda esta placa se muestra en la~\autoref{fig:placa_pcb}.
 \par
 
 \begin{figure}[H]
@@ -196,7 +190,7 @@ El conjunto de sensores que componen esta nariz electrónica es el siguiente:
 \subsection{Herramientas software}
 
 \subsubsection{Toma de muestras}
-Para la fase de toma de muestras, en conjunto con la nariz electrónica mencionada en el apartado anterior, se ha utilzado una aplicación móvil que permite controlar la nariz electrónica a través de Bluetooth, enviando comandos a través de la aplicación, y recoger los datos obtenidos por los sensores. Esta aplicación facilita la configuración de los parámetros de medición, el inicio y la detención de las pruebas, así como el almacenamiento y exportación de los datos recopilados para su posterior análisis. En la~\autoref{fig:app_toma_muestras} se muestra una captura de pantalla de la interfaz de la aplicación móvil mencionada.
+Para la fase de toma de muestras, en conjunto con la nariz electrónica mencionada en el apartado anterior, se ha utilizado una aplicación móvil que permite controlar la nariz electrónica a través de Bluetooth, enviando comandos a través de la aplicación, y recogiendo los datos obtenidos por los sensores. Esta aplicación facilita la configuración de los parámetros de medición, el inicio y la detención de las pruebas, así como el almacenamiento y exportación de los datos recopilados para su posterior análisis. En la~\autoref{fig:app_toma_muestras} se muestra una captura de pantalla de la interfaz de la aplicación móvil mencionada.
 
 \begin{figure}[H]
     \centering
@@ -205,17 +199,17 @@ Para la fase de toma de muestras, en conjunto con la nariz electrónica menciona
 \end{figure}
 
 \subsubsection{Limpieza y ampliación del \textit{dataset}}
-Para la limpieza y preprocesamiento de los datos obtenidos durante la fase de toma de muestras, se busca crear un script que automatice este proceso y facilite la preparación del \textit{dataset} para su posterior análisis y entrenamiento de la ANN\@. Además también se buscar crear otro script para la ampliación del \textit{dataset}. Existen varias posibilidades para llevar a cabo estas tareas, entre las que se incluyen:
+Para la limpieza y preprocesamiento de los datos obtenidos durante la fase de toma de muestras, se busca crear un script que automatice este proceso y facilite la preparación del \textit{dataset} para su posterior análisis y entrenamiento de la ANN\@. Además, también se busca crear otro script para la ampliación del \textit{dataset}. Existen varias posibilidades para llevar a cabo estas tareas, entre las que se incluyen:
 
 \begin{itemize}
-    \item \textbf{Python:} Python es un lenguaje de propósito general altamente versátil que se ha convertido en el estándar de facto para la ciencia de datos y el análisis de datos. Su sintaxis legible y el abundante ecosistema de librerías especializadas (como NumPy, Pandas, Scikit-learn) lo hacen ideal para tareas de preprocesamiento. NumPy permite realizar operaciones vectorizadas eficientes sobre arrays de datos, mientras que Pandas proporciona estructuras de datos poderosas como DataFrames para manipular y transformar datos tabulares. Para el aumento de datos (data augmentation), se dispone de librerías como Imgaug o Albumentations para imágenes, y otras herramientas de sobremuestreo y suavizado para datos numéricos. La curva de aprendizaje es suave, permitiendo escribir código legible y mantenible rápidamente.
+    \item \textbf{Python:} Python es un lenguaje de propósito general altamente versátil que se ha convertido en el estándar \textit{de facto} para la ciencia de datos y el análisis de datos. Su sintaxis legible y el abundante ecosistema de librerías especializadas (como NumPy, Pandas, Scikit-learn) lo hacen ideal para tareas de preprocesamiento y \textit{data augmentation}. NumPy permite realizar operaciones vectorizadas eficientes sobre arrays de datos, mientras que Pandas proporciona estructuras de datos poderosas como DataFrames para manipular y transformar datos tabulares. La curva de aprendizaje es suave, permitiendo escribir código legible y mantenible rápidamente.
     \item \textbf{R:} R es un lenguaje estadístico especializado en análisis de datos e investigación científica. Dispone de paquetes muy maduros como dplyr (para manipulación de datos) y caret (para preprocesamiento y aumento de datos). Es particularmente potente para análisis estadísticos complejos y visualización de datos mediante ggplot2. Sin embargo, R puede resultar más lento que Python en operaciones intensivas, especialmente con grandes volúmenes de datos. Su curva de aprendizaje es más pronunciada para usuarios sin experiencia estadística, aunque es muy poderoso una vez se domina.
-    \item \textbf{Bash + herramientas UNIX:} Las herramientas de línea de comandos UNIX (grep, awk, sed, cut, join) permiten realizar transformaciones de datos directamente en archivos de texto mediante tuberías (pipes). Esto es extremadamente eficiente en términos de consumo de memoria, ya que procesa el archivo línea a línea sin cargar todo en memoria. Es especialmente útil para tareas simples como filtrado, extracción de columnas y transformaciones básicas. Sin embargo, para operaciones más complejas como normalización estadística o aumento de datos basado en algoritmos sofisticados, resulta tedioso y propenso a errores. Requiere conocimiento profundo de las herramientas UNIX y puede afectar la reproducibilidad si no se documentan bien los comandos.
-    \item \textbf{SQL + scripts:} Si los datos se encuentran en una base de datos relacional, SQL es una opción poderosa para filtrado, agregación y transformación de datos. Lenguajes como SQL con Python (ejecutando consultas SQL desde scripts de Python) combinan la potencia declarativa de SQL con la flexibilidad de un lenguaje de programación. Sin embargo, esto requiere que los datos estén en una base de datos, añadiendo complejidad infraestructural. Además, el aumento de datos generativo (como la síntesis de nuevas muestras) es más difícil de implementar usando solo SQL\@.
-    \item \textbf{Apache Spark:} Apache Spark es un framework de procesamiento distribuido diseñado para trabajar con Big Data\@. Proporciona APIs en Python (PySpark), R (SparkR) y SQL\@. Es tremendamente escalable y puede procesar datos que no caben en una sola máquina distribuyéndolos en un cluster. Sin embargo, Spark tiene un overhead significativo de inicialización y sincronización entre nodos, lo que lo hace ineficiente para \textit{dataset}s pequeños (típicamente menor a 1 GB). Es más apropiado para pipelines de datos en producción con millones de registros distribuidos.
+    \item \textbf{Bash + herramientas UNIX:} Las herramientas de línea de comandos UNIX (grep, awk, sed, cut, join) permiten realizar transformaciones de datos directamente en archivos de texto mediante tuberías (pipes). Esto es extremadamente eficiente en términos de consumo de memoria, ya que procesa el archivo línea a línea sin cargar todo en memoria. Es especialmente útil para el filtrado, extracción de columnas y transformación de datos. Sin embargo, para operaciones más complejas como normalización estadística o aumento de datos basado en algoritmos sofisticados, resulta tedioso y propenso a errores. Requiere conocimiento profundo de las herramientas UNIX y puede afectar la reproducibilidad si no se documentan bien los comandos.
+    \item \textbf{SQL + scripts:} Si los datos se encuentran en una base de datos relacional, SQL es una opción poderosa para filtrado, agregación y transformación de datos. Lenguajes como SQL con Python (ejecutando consultas SQL desde scripts de Python) combinan la potencia declarativa de SQL con la flexibilidad de un lenguaje de programación. Sin embargo, esto requiere que los datos estén en una base de datos, añadiendo complejidad infraestructural. Además, el aumento de datos generativo, como la síntesis de nuevas muestras es más difícil de implementar usando solo SQL\@.
+    \item \textbf{Apache Spark:} Apache Spark es un framework de procesamiento distribuido diseñado para trabajar con Big Data\@. Proporciona APIs en Python (PySpark), R (SparkR) y SQL\@. Es tremendamente escalable y puede procesar datos que no caben en una sola máquina distribuyéndolos en un clúster. Sin embargo, Spark tiene un \textit{overhead} significativo de inicialización y sincronización entre nodos, lo que lo hace ineficiente para \textit{dataset}s pequeños (típicamente menor a 1 GB). Es más apropiado para pipelines de datos en producción con millones de registros distribuidos.
 \end{itemize}
 
-A continuación, en la~\autoref{tab:comparativa_herramientas_datos} se presenta una tabla comparativa de estas herramientas considerando criterios relevantes para este proyecto.
+A continuación, en la~\autoref{tab:comparativa_herramientas_datos} se presenta una comparativa de estas herramientas considerando criterios relevantes para este proyecto.
 
 \footnotesize
 \setlength{\tabcolsep}{4pt}
@@ -236,7 +230,7 @@ A continuación, en la~\autoref{tab:comparativa_herramientas_datos} se presenta 
 \bottomrule
 \endlastfoot%
 	\textbf{Python} & 
-	\begin{itemize}[nosep] \item Ecosistema completo (NumPy, Pandas, Scikit-learn) \item Sintaxis clara y fácil de aprender \item Múltiples librerías de data augmentation \item Reproducibilidad y documentación excelente \item Comunidad muy activa \item Versatilidad para otros usos del proyecto \end{itemize} &
+	\begin{itemize}[nosep] \item Ecosistema completo (NumPy, Pandas, Scikit-learn) \item Sintaxis clara y fácil de aprender \item Múltiples librerías de \textit{data augmentation} \item Reproducibilidad y documentación excelente \item Comunidad muy activa \item Versatilidad para otros usos del proyecto \end{itemize} &
 	\begin{itemize}[nosep] \item Rendimiento más bajo con Big Data \item Requiere bibliotecas externas para casi todo \end{itemize} &
 	\cellcolor{green!20} Muy alta. Ideal para \textit{dataset}s pequeños-medianos con requerimientos complejos. \\
 	\midrule
@@ -252,13 +246,13 @@ A continuación, en la~\autoref{tab:comparativa_herramientas_datos} se presenta 
 	\midrule
 	\textbf{SQL + scripts} &
 	\begin{itemize}[nosep] \item Excelente para filtrado y agregación en BDs \item Declarativo e intuitivo \item Escalabilidad mediante RDBMS optimizadas \end{itemize} &
-	\begin{itemize}[nosep] \item Requiere infraestructura de base de datos \item Data augmentation generativa compleja \item Mezcla de lenguajes dificulta mantenimiento \end{itemize} &
+	\begin{itemize}[nosep] \item Requiere infraestructura de base de datos \item \textit{data augmentation} generativa compleja \item Mezcla de lenguajes dificulta mantenimiento \end{itemize} &
 	Baja-Media. Aplicable si los datos están en una BD, pero requiere lenguajes auxiliares. \\
 	\midrule
 	\textbf{Apache Spark} &
 	\begin{itemize}[nosep] \item Escalabilidad a Big Data \item Procesamiento distribuido eficiente \item Múltiples lenguajes (PySpark, SparkR, SQL) \item Optimizaciones automáticas \end{itemize} &
-	\begin{itemize}[nosep] \item Overhead significativo para datos pequeños \item Curva de aprendizaje pronunciada \item Requiere cluster/cloud (costo infraestructural) \item Complejidad operacional \end{itemize} &
-	Baja para este proyecto. Overkill para \textit{dataset}s pequeños-medianos. \\
+	\begin{itemize}[nosep] \item \textit{Overhead} significativo para datos pequeños \item Curva de aprendizaje pronunciada \item Requiere clúster/cloud (costo infraestructural) \item Complejidad operacional \end{itemize} &
+	Baja para este proyecto. Excesivo para \textit{datasets} pequeños-medianos. \\
 \end{xltabular}
 {\captionsetup{type=table,hypcap=false}\captionof{table}{Comparativa de herramientas para limpieza y ampliación del \textit{dataset}.}\label{tab:comparativa_herramientas_datos}}
 
@@ -274,16 +268,16 @@ Dado que se tratan de unos scripts sencillos, se ha optado por utilizar Python p
 Para el desarrollo y entrenamiento de redes neuronales existen múltiples lenguajes de programación, cada uno con características distintivas:
 
 \begin{itemize}
-    \item \textbf{Python:} Es un lenguaje de propósito general que se ha convertido en el estándar de facto para Machine Learning y Deep Learning. Ofrece un excelente ecosistema de librerías especializadas (TensorFlow, PyTorch, Keras), es sencillo de aprender y utilizar, cuenta con una amplia comunidad y soporte, proporciona gran flexibilidad para prototipado rápido, y el autor posee familiaridad significativa con el lenguaje. Sin embargo, presenta un rendimiento más lento comparado con lenguajes compilados.
+    \item \textbf{Python:} Es un lenguaje de propósito general que se ha convertido en el estándar \textit{de facto} para Machine Learning y Deep Learning. Ofrece un excelente ecosistema de librerías especializadas (TensorFlow, PyTorch, Keras), es sencillo de aprender y utilizar, cuenta con una amplia comunidad y soporte, proporciona gran flexibilidad para prototipado rápido, y el autor posee familiaridad significativa con el lenguaje. Sin embargo, presenta un rendimiento más lento comparado con lenguajes compilados.
     
     \item \textbf{C++:} Es un lenguaje compilado que destaca por su velocidad inigualable de ejecución y gestión manual de memoria, permitiendo mayor control sobre los recursos del sistema. Sin embargo, presenta una curva de aprendizaje muy pronunciada, es más complejo de desarrollar, y cuenta con menos librerías de alto nivel especializadas en Machine Learning.
     
-    \item \textbf{Julia:} Es un lenguaje científico de reciente desarrollo que proporciona gran velocidad de ejecución comparable a C++, resolviendo el ``problema de los dos lenguajes'' permitiendo investigar y producir en el mismo entorno sin pérdida de velocidad. Está específicamente diseñado para computación científica. Sin embargo, su comunidad es más pequeña que la de Python, cuenta con menos librerías de ML maduras, y su ecosistema aún está en desarrollo.
+    \item \textbf{Julia:} Es un lenguaje científico de reciente desarrollo que proporciona gran velocidad de ejecución comparable a C++, resolviendo el ``problema de los dos lenguajes'', en el que se usa lenguaje de alto nivel para escribir código y lenguaje de bajo nivel para la ejecución, permitiendo investigar y producir en el mismo entorno sin pérdida de velocidad. Está específicamente diseñado para computación científica. Sin embargo, su comunidad es más pequeña que la de Python, cuenta con menos librerías de ML maduras, y su ecosistema aún está en desarrollo.
     
     \item \textbf{Mojo:} Es un lenguaje experimental que combina la sintaxis de Python con el rendimiento de C++, estando específicamente diseñado para hardware de IA (TPUs y GPUs). A pesar de estas ventajas, es un lenguaje muy nuevo con pocos precedentes, comunidad incipiente, y librerías limitadas.
 \end{itemize}
 
-A continuación se presenta una tabla comparativa de estos lenguajes considerando criterios relevantes para este proyecto.
+A continuación, en la~\autoref{tab:comparativa_lenguajes_ann}, se presenta una comparativa de estos lenguajes considerando criterios relevantes para este proyecto.
 
 \footnotesize
 \setlength{\tabcolsep}{4pt}
@@ -306,7 +300,7 @@ A continuación se presenta una tabla comparativa de estos lenguajes considerand
 	\textbf{Python} &
 	\begin{itemize}[nosep] \item Buen ecosistema y librerías \item Sencillo de aprender y utilizar \item Amplia comunidad y soporte \item Flexibilidad y prototipado \item Familiaridad con el lenguaje \end{itemize} &
 	\begin{itemize}[nosep] \item Rendimiento más lento comparado con lenguajes compilados \end{itemize} &
-	\cellcolor{green!20} Muy alta. Estándar de facto para Machine Learning/Deep Learning. \\
+	\cellcolor{green!20} Muy alta. Estándar \textit{de facto} para Machine Learning/Deep Learning. \\
 	\midrule
 	\textbf{C++} &
 	\begin{itemize}[nosep] \item Velocidad inigualable de ejecución \item Gestión manual de memoria \item Mayor control de recursos \end{itemize} &
@@ -336,12 +330,12 @@ Existen varias plataformas para ejecutar el entrenamiento de modelos, proporcion
 \begin{itemize}
     \item \textbf{Orange/KNIME:} Son plataformas que permiten crear tuberías de datos completas (limpieza, entrenamiento y evaluación) de forma visual sin necesidad de código. Ofrecen una interfaz intuitiva y son ideales para exploración inicial de datos. Sin embargo, son menos flexibles que el código directo, tienen limitaciones para modelos muy complejos, y ofrecen control limitado sobre parámetros específicos.
     
-    \item \textbf{Kaggle Kernels:} Proporciona un entorno en la nube listo para ejecutar notebooks con acceso gratuito a GPUs y TPUs. Cuenta con una comunidad muy activa con competiciones regulares, está enfocado en ciencia de datos, y ofrece \textit{dataset}s listos para usar. Sin embargo, tiene límites de tiempo de ejecución, ofrece menos control sobre hardware, y está más orientado a competiciones que a investigación general.
+    \item \textbf{Kaggle Kernels:} Proporciona un entorno en la nube listo para ejecutar \textit{notebooks} con acceso gratuito a GPUs y TPUs. Cuenta con una comunidad muy activa con competiciones regulares, está enfocado en ciencia de datos, y ofrece \textit{dataset}s listos para usar. Sin embargo, tiene límites de tiempo de ejecución, ofrece menos control sobre hardware, y está más orientado a competiciones que a investigación general.
     
-    \item \textbf{Google Colab:} Ofrece un entorno en la nube basado en notebooks Jupyter con acceso gratuito a GPUs y TPUs de Google. Permite integración directa con Google Drive para almacenar notebooks, modelos y datos, es fácil de compartir y colaborar en proyectos, y es suficiente para \textit{dataset}s pequeños-medianos. Las desventajas incluyen que las sesiones se desconectan si no se usan, hay cuotas limitadas de acceso a GPU, y existe latencia en la comunicación de red.
+    \item \textbf{Google Colab:} Ofrece un entorno en la nube basado en \textit{notebooks} Jupyter con acceso gratuito a GPUs y TPUs de Google. Permite integración directa con Google Drive para almacenar \textit{notebooks}, modelos y datos, es fácil de compartir y colaborar en proyectos, y es suficiente para \textit{dataset}s pequeños-medianos. Las desventajas incluyen que las sesiones se desconectan si no se usan, hay cuotas limitadas de acceso a GPU, y existe latencia en la comunicación de red.
 \end{itemize}
 
-A continuación se presenta la tabla comparativa de estos entornos.
+A continuación, en la~\autoref{tab:comparativa_entornos_ann}, se presenta una comparativa de estos entornos.
 
 \footnotesize
 \setlength{\tabcolsep}{4pt}
@@ -372,7 +366,7 @@ A continuación se presenta la tabla comparativa de estos entornos.
 	Media. Bueno para competiciones. \\
 	\midrule
 	\textbf{Google Colab} &
-	\begin{itemize}[nosep] \item Acceso gratuito a GPUs/TPUs de Google \item Integración con Google Drive \item Notebooks Jupyter nativos \item Fácil de compartir y colaborar \item Suficiente para \textit{dataset}s pequeños-medianos \end{itemize} &
+	\begin{itemize}[nosep] \item Acceso gratuito a GPUs/TPUs de Google \item Integración con Google Drive \item \textit{Notebooks} Jupyter nativos \item Fácil de compartir y colaborar \item Suficiente para \textit{dataset}s pequeños-medianos \end{itemize} &
 	\begin{itemize}[nosep] \item Sesiones se desconectan si no se usan \item Cuotas limitadas de acceso a GPU \item Latencia en red \end{itemize} &
 	\cellcolor{green!20} Muy alta. Ideal para este proyecto. \\
 \end{xltabular}
@@ -380,7 +374,7 @@ A continuación se presenta la tabla comparativa de estos entornos.
 
 \normalsize
 
-Se ha optado por Google Colab como entorno de ejecución, ya que proporciona acceso gratuito a GPUs y TPUs, facilitando el entrenamiento de modelos complejos sin necesidad de hardware potente en local. Además, permite guardar notebooks, modelos y \textit{dataset}s directamente en Google Drive, garantizando persistencia y facilitando el acceso desde diferentes dispositivos.
+Se ha optado por Google Colab como entorno de ejecución, ya que proporciona acceso gratuito a GPUs y TPUs, facilitando el entrenamiento de modelos complejos sin necesidad de hardware potente en local. Además, permite guardar \textit{notebooks}, modelos y \textit{dataset}s directamente en Google Drive, garantizando persistencia y facilitando el acceso desde diferentes dispositivos.
 
 \paragraph{Frameworks}
 
@@ -391,12 +385,12 @@ Existen varios frameworks especializados para el desarrollo y entrenamiento de r
     
     \item \textbf{TensorFlow/Keras:} Está diseñado principalmente para producción y despliegue en aplicaciones reales. Ofrece una interfaz de alto nivel muy intuitiva que facilita la creación de modelos, cuenta con un ecosistema móvil robusto (TensorFlow Lite), permite crear redes complejas en pocas líneas de código, y tiene amplia documentación y tutoriales. Las desventajas incluyen que es menos flexible que PyTorch, la depuración es más complicada, y la comunidad está menos orientada hacia investigación experimental.
     
-    \item \textbf{JAX:} Es un framework de bajo nivel para computación numérica con diferenciación automática, construido sobre NumPy. Proporciona flexibilidad extrema y es muy usado en investigación científica e IA\@. El enfoque funcional permite optimizaciones avanzadas y JIT compilation para mayor velocidad. Sin embargo, requiere más código para tareas simples, la comunidad es más pequeña que PyTorch/TensorFlow, y tiene menos librerías de alto nivel preimplementadas.
+    \item \textbf{JAX:} Es un framework de bajo nivel para computación numérica con diferenciación automática, construido sobre NumPy. Proporciona flexibilidad extrema y es muy usado en investigación científica e IA\@. El enfoque funcional permite optimizaciones avanzadas y JIT \textit{compilation} para mayor velocidad. Sin embargo, requiere más código para tareas simples, la comunidad es más pequeña que PyTorch/TensorFlow, y tiene menos librerías de alto nivel preimplementadas.
     
     \item \textbf{PyTorch Lightning:} Es una abstracción sobre PyTorch que simplifica el código de entrenamiento, mejorando la legibilidad y reproducibilidad. Separa la lógica del modelo de la lógica de entrenamiento, facilita el uso de GPUs/TPUs sin cambios de código, y proporciona un framework estándar para el desarrollo. Las desventajas son que añade una capa de abstracción que puede ser excesiva para prototipos rápidos, y reduce la flexibilidad en ciertos casos de uso muy específicos.
 \end{itemize}
 
-A continuación se presenta la tabla comparativa de estos frameworks.
+A continuación, en la~\autoref{tab:comparativa_frameworks_ann}, se presenta una comparativa de estos frameworks.
 
 \footnotesize
 \setlength{\tabcolsep}{4pt}
@@ -427,34 +421,36 @@ A continuación se presenta la tabla comparativa de estos frameworks.
 	\cellcolor{green!20} Muy alta. Bueno para producción y despliegue. \\
 	\midrule
 	\textbf{JAX} &
-	\begin{itemize}[nosep] \item Flexibilidad extrema \item JIT compilation para velocidad \item Diferenciación automática avanzada \item Ideal para investigación \item Enfoque funcional permite optimizaciones \end{itemize} &
+	\begin{itemize}[nosep] \item Flexibilidad extrema \item JIT \textit{compilation} para velocidad \item Diferenciación automática avanzada \item Ideal para investigación \item Enfoque funcional permite optimizaciones \end{itemize} &
 	\begin{itemize}[nosep] \item Requiere más código para tareas simples \item Comunidad más pequeña \item Menos librerías de alto nivel \item Curva de aprendizaje empinada \end{itemize} &
 	Media. Excelente para investigación avanzada. \\
 	\midrule
 	\textbf{PyTorch Lightning} &
 	\begin{itemize}[nosep] \item Simplifica código de entrenamiento \item Mejora reproducibilidad \item Separación clara de responsabilidades \item GPU/TPU sin cambios de código \item Estándares de desarrollo \end{itemize} &
-	\begin{itemize}[nosep] \item Abstracción excesiva para prototipos rápidos \item Reduce flexibilidad en casos específicos \item Overhead para proyectos sencillos \end{itemize} &
+	\begin{itemize}[nosep] \item Abstracción excesiva para prototipos rápidos \item Reduce flexibilidad en casos específicos \item \textit{Overhead} para proyectos sencillos \end{itemize} &
 	Alta. Bueno para proyectos estructurados. \\
 \end{xltabular}
 {\captionsetup{type=table,hypcap=false}\captionof{table}{Comparativa de frameworks para entrenamiento de ANN.}\label{tab:comparativa_frameworks_ann}}
 
 \normalsize
 
-Se han elegido PyTorch y Keras como frameworks principales para este proyecto. Se entrenarán modelos con ambos frameworks utilizando los mismos datos y parámetros para realizar una comparación rigurosa y determinar cuál se adapta mejor a las necesidades específicas del proyecto. Adicionalmente, se evaluará el potencial de JAX para implementaciones experimentales que requieran máxima flexibilidad, y PyTorch Lightning para optimizar reproducibilidad y estructuración del código. Se utilizarán librerías complementarias como Scikit-Learn para preprocesamiento, Pandas para manipulación de datos y NumPy para operaciones numéricas.
+Se han elegido PyTorch y Keras como frameworks principales para este proyecto. Se entrenarán modelos con ambos frameworks utilizando los mismos datos y parámetros para realizar una comparación rigurosa y determinar cuál se adapta mejor a las necesidades específicas del proyecto. Se utilizarán librerías complementarias como Scikit-Learn para preprocesamiento, Pandas para manipulación de datos y NumPy para operaciones numéricas.
 
 \subsubsection{Aplicación Bluetooth}
 
 Para el desarrollo de la aplicación móvil que se comunicará con la nariz electrónica a través de Bluetooth, se han evaluado diferentes opciones de frameworks y plataformas. A continuación se presentan las herramientas consideradas:
 
 \begin{itemize}
-	\item \textbf{Flutter:} Framework multiplataforma que compila a código nativo, permitiendo crear aplicaciones para iOS y Android con una única base de código. Ofrece estabilidad en la comunicación Bluetooth mediante bibliotecas como \textit{flutter\_blue\_plus}, soporte para cargar modelos de TensorFlow Lite directamente desde assets, reactividad en la interfaz mediante Streams, y capacidad de ejecutar procesos intensivos en Isolates sin congelar la UI\@. Ideal para aplicaciones en tiempo real con restricciones de latencia.
+	\item \textbf{Flutter:} Framework multiplataforma que compila a código nativo, permitiendo crear aplicaciones para iOS y Android con una única base de código. Ofrece estabilidad en la comunicación Bluetooth mediante bibliotecas como \textit{flutter\_blue\_plus}, soporte para cargar modelos de TensorFlow Lite directamente desde \text{assets}, reactividad en la interfaz mediante Streams, y capacidad de ejecutar procesos intensivos en Isolates sin congelar la UI\@. Ideal para aplicaciones en tiempo real con restricciones de latencia.
 	
-	\item \textbf{React Native:} Plataforma web-first que permite código compartido entre iOS y Android. Facilita la gestión de lógica compleja mediante hooks, selector dinámico de modelos, y temporizadores. Sin embargo, la configuración de permisos iniciales (Bluetooth, storage) es tediosa y la latencia introducida por el puente JavaScript-nativo puede ser problemática para comunicaciones de tiempo real.
+	\item \textbf{React Native:} Plataforma \textit{web-first} que permite código compartido entre iOS y Android. Facilita la gestión de lógica compleja mediante \textit{hooks}, selector dinámico de modelos, y temporizadores. Sin embargo, la configuración de permisos iniciales (Bluetooth, \textit{storage}) es tediosa y la latencia introducida por el puente JavaScript-nativo puede ser problemática para comunicaciones de tiempo real.
 	
 	\item \textbf{Kotlin:} Lenguaje nativo de Android que proporciona control total sobre APIs de Bluetooth (BluetoothGatt), latencia predictible, y máxima eficiencia energética mediante integración con TensorFlow Lite nativo. Requiere desarrollo separado para iOS y está limitado a ecosistema Android, aumentando complejidad de mantenimiento.
 	
 	\item \textbf{Capacitor:} Framework que actúa como puente entre tecnologías web (Angular, React, Vue) y APIs nativas mediante plugins. Permite ejecutar modelos con TensorFlow.js en capa web y acceder a APIs nativas de Bluetooth, pero introduce latencia adicional por su arquitectura basada en capas web, limitando viabilidad para procesamiento en tiempo real de flujos sensoriales continuos.
 \end{itemize}
+
+A continuación, en la~\autoref{tab:comparativa_herramientas_bluetooth}, se presenta una comparativa de estas herramientas.
 
 \footnotesize
 \setlength{\tabcolsep}{4pt}
@@ -480,8 +476,8 @@ Para el desarrollo de la aplicación móvil que se comunicará con la nariz elec
 	\cellcolor{green!20} Muy alta. Óptimo para tiempo real. \\
 	\midrule
 	\textbf{React Native} &
-	\begin{itemize}[nosep] \item Lógica compleja fácil con hooks \item Código compartido web y móvil \item Comunidad muy grande \item Buena documentación \item Gestión de estado madura \end{itemize} &
-	\begin{itemize}[nosep] \item Latencia introducida por puente JS-nativo \item Configuración de permisos tedosa \item Overhead de performance para datos continuos \item Compilación lenta en proyectos grandes \end{itemize} &
+	\begin{itemize}[nosep] \item Lógica compleja fácil con \textit{hooks} \item Código compartido web y móvil \item Comunidad muy grande \item Buena documentación \item Gestión de estado madura \end{itemize} &
+	\begin{itemize}[nosep] \item Latencia introducida por puente JS-nativo \item Configuración de permisos tedosa \item \textit{Overhead} de performance para datos continuos \item Compilación lenta en proyectos grandes \end{itemize} &
 	Media. Viable solo con optimizaciones. \\
 	\midrule
 	\textbf{Kotlin} &
@@ -491,7 +487,7 @@ Para el desarrollo de la aplicación móvil que se comunicará con la nariz elec
 	\midrule
 	\textbf{Capacitor} &
 	\begin{itemize}[nosep] \item Puente oficial entre web y nativo \item Acceso a APIs nativas mediante plugins \item Compatible con frameworks web populares \item Prototipado rápido \item Reutilización de código web \end{itemize} &
-	\begin{itemize}[nosep] \item Latencia excesiva para Bluetooth continuo \item Arquitectura en capas (overhead) \item Menos control sobre hardware \item Overhead de máquina virtual web \end{itemize} &
+	\begin{itemize}[nosep] \item Latencia excesiva para Bluetooth continuo \item Arquitectura en capas (\textit{overhead}) \item Menos control sobre hardware \item \textit{Overhead} de máquina virtual web \end{itemize} &
 	Baja. No recomendado para tiempo real. \\
 \end{xltabular}
 {\captionsetup{type=table,hypcap=false}\captionof{table}{Comparativa de herramientas para desarrollo de aplicación Bluetooth.}\label{tab:comparativa_herramientas_bluetooth}}
