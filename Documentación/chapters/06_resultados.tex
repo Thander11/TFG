@@ -1,0 +1,99 @@
+\chapter{Resultados}
+En este capítulo se presentan los resultados obtenidos tras el entrenamiento y evaluación de los modelos de redes neuronales implementados en Keras en tiempo real, así como una comparación de los resultados de las evaluaciones. Además, se incluyen los resultados de las pruebas comparativas realizadas entre la nariz electrónica entrenada y el agente canino de la Guardia Civil encargado en la detección de drogas.
+
+\section{Resultados de redes neuronales}
+el rendimiento se visualiza mediante curvas de aprendizaje Accuracy (Precisión) y Loss (Pérdida) y una matriz de confusión.
+\par
+
+Empezando con el modelo que no cuenta con datos aumentados (con una precisión del 96\%), se observan sus gráficas en la~\autoref{fig:curvas_keras_real} y su matriz de confusión en la~\autoref{fig:matriz_confusion_keras_real}.
+
+\begin{figure}[H]
+    \centering
+    \shadowbox{\includegraphics[width=0.8\textwidth]{pictures/Curvas_entrenamiento_keras_real.png}}
+    \caption{Curvas de aprendizaje del modelo ANN sin aumento de datos}\label{fig:curvas_keras_real}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \shadowbox{\includegraphics[width=0.7\textwidth]{pictures/Matriz_confusion_keras_real.png}}
+    \caption{Matriz de confusión del modelo ANN sin aumento de datos}\label{fig:matriz_confusion_keras_real}
+\end{figure}
+
+En la matriz de confusión se puede apreciar que, pese a haber falsos positivos y negativos, son pocos en comparación con los aciertos. También es posible observar que el número de falsos negativos es ligeramente mayor que el de falsos positivos, lo cual no es un problema dado que se toman datos cada 2 segundos y, como se toman tantos datos a la hora de buscar la sustancia, no es relevante que alguno de ellos sea un falso negativo.
+\par
+
+En la gráfica de precisión se observa que tanto el conjunto de entrenamiento como el de validación alcanzan una precisión alta y similar, lo que indica que el modelo generaliza bien y no sufre de sobreajuste. Esto se respalda con la gráfica de pérdida, que muestra una disminución constante en ambas curvas, lo que también es un buen indicativo del rendimiento del modelo y una muestra de falta de sobreajuste. Además, se han completado todas las épocas disponibles sin que se haya activado el \textit{Early Stopping}, lo que indica que el modelo ha podido aprender de manera efectiva durante todo el proceso de entrenamiento.
+\par
+
+Continuando con el modelo que cuenta con datos aumentados (con una precisión del 94.67\%), se observan sus gráficas en la~\autoref{fig:curvas_keras_aumentado} y su matriz de confusión en la~\autoref{fig:matriz_confusion_keras_aumentado}.
+
+\begin{figure}[H]
+    \centering
+    \shadowbox{\includegraphics[width=0.8\textwidth]{pictures/Curvas_entrenamiento_keras-plus_real.png}}
+    \caption{Curvas de aprendizaje del modelo ANN con aumento de datos}\label{fig:curvas_keras_aumentado}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \shadowbox{\includegraphics[width=0.7\textwidth]{pictures/Matriz_confusion_keras-plus_real.png}}
+    \caption{Matriz de confusión del modelo ANN con aumento de datos}\label{fig:matriz_confusion_keras_aumentado}
+\end{figure}
+
+En la matriz de confusión se observa un comportamiento similar al del modelo sin aumento de datos, con un número reducido de falsos positivos y negativos en comparación con los aciertos. De nuevo, el número de falsos negativos es ligeramente mayor que el de falsos positivos, lo cual no es un problema por el mismo motivo explicado anteriormente.
+\par
+
+En la gráfica de precisión, tanto el conjunto de entrenamiento como el de validación alcanzan una precisión alta, aunque en este caso hay una mayor diferencia entre el entrenamiento y la validación, alcanzando valores más altos durante la validación. La gráfica de pérdida muestra una disminución constante en ambas curvas, siendo una disminución mayor en la validación, lo que también es un buen indicativo de que, pese a haber más diferencia entre entrenamiento y validación en la precisión, no hay sobreajuste.
+
+\newpage
+
+Comparando ambos modelos, se observa que el modelo sin aumento de datos tiene una precisión ligeramente superior (96\% frente a 94.67\%). Sin embargo, ambos modelos muestran un buen rendimiento y generalización, con matrices de confusión que indican un bajo número de falsos positivos y falsos negativos.
+
+\section{Resultados de pruebas comparativas}
+Al llevar a cabo la prueba número 0, se pudo comprobar que la nariz electrónica funcionaba correctamente, ya que fue capaz de detectar el hachís oculto en una de las cajas vacías sin ningún problema.
+\par
+
+Para poder cuantificar y comparar los resultados obtenidos por la nariz electrónica y Zape en el resto de pruebas, se han establecido una serie de métricas de evaluación para cada una de las pruebas. Estas métricas incluyen:
+
+\begin{itemize}
+    \item \textbf{Acierto:} Si ha habido un falso positivo (-1), se ha podido detectar la sustancia objetivo correctamente (1) o no (0).
+    \item \textbf{Tiempo:} Segundos que se ha tardado en dar una respuesta final cuando se detecta la sustancia objetivo.
+    \item \textbf{Precisión:} Como de concreta es la zona o área marcada donde se detecta la sustancia objetivo (del 1 al 10).
+\end{itemize}
+
+A medida que se han ido realizando las pruebas, se han ido anotando los resultados obtenidos en una hoja de cálculo, la cual se muestra en la~\autoref{fig:tabla_comparaciones}.
+
+\begin{figure}[H]
+    \centering
+    \shadowbox{\includegraphics[width=0.9\textwidth]{pictures/Tabla_comparaciones.png}}
+    \caption{Tabla comparativa de resultados entre Zape y la nariz electrónica}\label{fig:tabla_comparaciones}
+\end{figure}
+
+En esta tabla es posible ver las distintas pruebas realizadas, junto a la puntuación obtenida en cada una de las métricas establecidas para Zape y la nariz electrónica siendo A-Z y A-N los aciertos de Zape y la nariz electrónica respectivamente, T(s)-Z y T(s)-N los tiempos de Zape y la nariz electrónica respectivamente, y P-Z y P-N las precisiones de Zape y la nariz electrónica respectivamente.% chktex 36
+\par
+
+A continuación se muestran métrica por métrica las puntuaciones asignadas a cada una de las pruebas realizadas, empezando por los aciertos, donde Zape ha conseguido una cantidad de aciertos del 100\%, habiendo detectado correctamente el hachís en todas las pruebas realizadas. Por otro lado, la nariz electrónica ha conseguido un 50\% de aciertos, habiendo fallado en las pruebas 2 y 3.
+\par
+
+El fallo en la prueba 2 se debió a la fuerte corriente de aire que había en ese momento, lo cual dificulta en gran medida la obtención de partículas por parte de la nariz electrónica. En la prueba 3, el fallo se debió a que no se han incluido datos de entrenamiento relacionados con ropa, perfumes o colonias, el aroma del gel o champú que use dicha persona, o incluso el propio olor corporal humano.
+\par
+
+Se decidió dar por fallida la prueba por parte de la nariz electrónica en el momento en el que se desveló la localización del hachís y, pese a saber donde estaba, no se consiguió detectar la sustancia.
+\par
+
+Continuando con la velocidad, que está representada de forma gráfica en la~\autoref{fig:comp_velocidad} se observa una clara diferencia entre ambos sistemas siendo Zape más rápido en la detección. Lo máximo que ha tardado Zape en detectar el hachís han sido 25 segundos en la segunda prueba, mientras que la nariz electrónica ha tenido un tiempo mínimo de 155 segundos (2 minutos y 35 segundos) en la primera prueba. Además en las pruebas 2 y 3, donde la nariz electrónica no ha conseguido detectar el hachís, se ha superado el tiempo máximo establecido de 5 minutos (300 segundos) por lo que después de un tiempo tras superarlo se decidió dar por finalizada la prueba. Esta gran cantidad de tiempo que ha tardado la nariz electrónica en detectar el hachís se debe a la velocidad con la que se toman los datos (cada 2 segundos) y a la necesidad de mover el tubo por toda la zona para intentar localizar la sustancia, lo cual requiere mucho tiempo en comparación con Zape, que solo necesita unos segundos para analizar el aire y poder indicar en que zona está la sustancia.
+
+\begin{figure}[H]
+    \centering
+    \shadowbox{\includegraphics[width=0.7\textwidth]{pictures/Comp_velocidades.png}}
+    \caption{Comparativa de tiempos entre Zape y la nariz electrónica}\label{fig:comp_velocidad}
+\end{figure}
+
+Finalmente, la precisión está representada de forma gráfica en la~\autoref{fig:comp_precision} donde se observa que Zape ha conseguido una precisión perfecta, obteniendo un 10 en todas las pruebas. Por otro lado, la nariz electrónica solo ha conseguido esta puntuación en la prueba 4, donde se pudo determinar bien en que mochila estaba la sustancia gracias a la subida de porcentaje que marcaba la aplicación, permitiendo concretar en los bolsillos de qué mochila había que indagar más. En la prueba 1 ha obtenido un 3 debido a las dificultades que tuvo para localizar la caja concreta donde estaba oculto el hachís, debido a que esta contenía papel de relleno que dificultaba la dispersión del aroma, teniendo que meter el tubo debajo del papel para poder detectar la sustancia. En la prueba 3 no consiguió detectar el hachís, pero se le ha asignado una puntuación de 3 debido a que, pese a no pasar el umbral de detección cuando debía hacerlo, marcaba un porcentaje del 35\%, indicando que había posibilidades de que la sustancia estuviera cerca (como ocurrió en la prueba 4), pero no terminó de diferenciarla. Por otro lado, en la prueba 2 se le ha asignado una puntuación de 0 al no haber detectado el hachís en ningún momento debido a que la corriente fuerte de aire impedía que la nariz electrónica pudiera captar bien las partículas provenientes del recipiente con el hachís.
+
+\begin{figure}[H]
+    \centering
+    \shadowbox{\includegraphics[width=0.7\textwidth]{pictures/Comp_precision.png}}
+    \caption{Comparativa de precisión entre Zape y la nariz electrónica}\label{fig:comp_precision}
+\end{figure}
+
+En resumen, Zape ha demostrado ser un sistema de detección de drogas altamente efectivo, superando a la nariz electrónica en todas las métricas evaluadas. La rapidez y precisión de Zape en la detección del hachís lo convierten en una herramienta valiosa para las fuerzas de seguridad en la lucha contra el tráfico de drogas. Por otro lado, pese a que en algunos casos ha dado resultados favorables, la nariz electrónica ha mostrado limitaciones en su capacidad para detectar el hachís en ciertas situaciones, sobre todo en condiciones ambientales adversas, lo que resalta la importancia de seguir mejorando y desarrollando tecnologías de detección más avanzadas.

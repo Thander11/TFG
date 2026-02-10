@@ -1,0 +1,88 @@
+% Plantilla mínima para TFG (TFG / Trabajo Fin de Grado)
+% Archivo: Info_TFG.tex
+% Cómo usar: editar título/autor y dividir en capítulos con \include o \input si se desea.
+% Compilar (recomendado): usar latexmk o pdflatex + biber/bibtex según bibliografía.
+% Ejemplo PowerShell (TeX Live / MiKTeX instalado):
+%   latexmk -pdf Info_TFG.tex
+% o, paso a paso:
+%   pdflatex Info_TFG.tex; biber Info_TFG; pdflatex Info_TFG.tex; pdflatex Info_TFG.tex
+
+\documentclass[12pt,a4paper,oneside]{report}
+
+% Codificación y idioma
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+
+% Márgenes y microtipografía
+\usepackage[a4paper,margin=2.5cm]{geometry}
+\usepackage{microtype}
+
+% Gráficos, tablas y matemáticas
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{booktabs}
+\usepackage{amsmath,amssymb}
+
+% Hipervínculos
+\usepackage[hidelinks]{hyperref}
+
+% Numeración de secciones sin dependencia de capítulos (1,2,3... en vez de 0.1,0.2)
+\usepackage{chngcntr}
+\counterwithout{section}{chapter}
+
+% Configuración del título/portada (personaliza según la normativa de tu universidad)
+\title{Comparación de Nariz Electrónica con olfato de Agentes Caninos para la detección de sustancias}
+\author{Raúl Martín-Romo Sánchez\\
+	\textit{Grado en Ingeniería Informática del Software}\\
+	\textbf{Tutor:} Pablo García Rodríguez\\
+    \textbf{Co-tutor:} Jesús Lozano Rogado}
+\date{\today}
+
+\begin{document}
+
+% Portada en la misma primera página (sin página separada)
+\begingroup
+\begin{center}
+	{\LARGE \textbf{Estudio de viabilidad de una Nariz Electrónica como herramienta de apoyo para los Agentes Caninos}\par}
+	\vspace{1em}
+	{\large Raúl Martín-Romo Sánchez\par}
+	{\small Grado en Ingeniería Informática del Software\par}
+	\vspace{0.5em}
+	{\small \textbf{Tutor:} Pablo García Rodríguez \quad \textbf{Co-tutor:} Jesús Lozano Rogado\par}
+	\vspace{1em}
+	{\small \today\par}
+\end{center}
+\bigskip
+\endgroup
+
+% Capítulos de ejemplo
+\section{Idea del proyecto}
+Desarrollar una nariz electrónica capaz de detectar un tipo de  sustancias y compararla con el olfato de los agentes caninos entrenados del cuerpo de detección de sustancias de la Guardia Civil.
+
+\section{Motivación}
+Las principales motivaciones de este trabajo son las siguientes:
+\begin{itemize}
+	\item Admiración desde siempre por el trabajo de las unidades caninas de los cuerpos de seguridad.
+	\item Querer ayudar a facilitar y mejorar el trabajo de los cuerpos caninos proporcionando apoyo o quitando carga de trabajo cuando sea demasiada.
+\end{itemize}
+
+\section{Objetivos}
+A continuación se mencionan los objetivos principales del proyecto:
+\begin{itemize}
+	\item Estudio de la nariz electrónica y sus diferentes aplicaciones.
+	\item Formación y entrenamiento de la nariz electrónica para la detección de una sustancia.
+	\item Comparación de la nariz electrónica con el olfato de los agentes caninos entrenados del cuerpo de detección de sustancias de la Guardia Civil.
+\end{itemize}
+Se busca crear una nariz electrónica que, aunque no iguale el rendimiento de los agentes caninos, ofrezca una ayuda viable en términos de costo, mantenimiento y disponibilidad.
+
+\section{Materiales}
+Sensores MOX (Sensores de óxidos metálicos) y materiales por identificar tras la formación con Jesús Lozano Rogado.
+
+\section{Resultados esperados}
+Tras la finalización del proyecto se espera obtener una nariz electrónica capaz de detectar un tipo de sustancia y que su rendimiento sea comparable al de los agentes caninos entrenados del cuerpo de detección de sustancias de la Guardia Civil de.
+No obstante, se espera que el olfato canino siga siendo superior en términos de precisión y rapidez, pero la nariz electrónica podría ofrecer ventajas en términos de costo, mantenimiento y disponibilidad, siendo una buena herramienta de apoyo para este trabajo, pero no como sustitución total de los miembros de este cuerpo.
+
+\end{document}
+

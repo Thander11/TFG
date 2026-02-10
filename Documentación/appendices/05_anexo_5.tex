@@ -1,0 +1,562 @@
+\chapter{Pseudocódigos de Sniffer}
+En este anexo se presentan los pseudocódigos de los archivos principales que componen la aplicación móvil Sniffer desarrollada para la detección de drogas mediante la nariz electrónica. Estos pseudocódigos describen la lógica y el flujo de datos dentro de la aplicación, facilitando la comprensión de su funcionamiento y estructura.
+
+\section{Pantalla principal}
+
+La pantalla principal de la aplicación es responsable de gestionar el escaneo de dispositivos Bluetooth disponibles, la solicitud de permisos necesarios y la navegación hacia la pantalla de análisis una vez seleccionado un dispositivo.
+\par
+
+\noindent\textbf{Algoritmo: Flujo de escaneo y selección de dispositivos Bluetooth (Pantalla Principal).}
+
+\begin{algorithmic}[1]
+\State~Entrada: Solicitud de búsqueda de dispositivos Bluetooth
+\State~Salida: Navegación a pantalla de análisis con dispositivo seleccionado
+
+\State~Fase 1: Solicitud y Validación de Permisos
+\State~Crear lista de permisos: bluetoothScan, bluetoothConnect, location
+\State~Solicitar permisos al sistema operativo
+\State~Obtener estado de cada permiso como booleano
+\If{todos los permisos están otorgados}
+    \State~Proceder a fase de escaneo
+\Else%
+    \State~Mostrar notificación: permisos necesarios
+    \State~Detener flujo de inicialización
+\EndIf%
+
+\State~Fase 2: Obtención de Dispositivos Conectados
+\State~Obtener lista de dispositivos conectados del sistema
+\For{cada dispositivo conectado}
+    \State~Convertir dispositivo a objeto ScanResult
+    \State~Crear estructura de datos con nombre e ID
+    \State~Añadir a lista scanResults
+\EndFor%
+
+\State~Fase 3: Iniciación del Escaneo Bluetooth
+\State~Detener escaneo previo para evitar conflictos
+\State~Iniciar nuevo escaneo con duración de 15 segundos
+\State~Configurar listener para eventos de descubrimiento
+
+\State~Fase 4: Procesamiento de Resultados del Escaneo
+\State~Crear conjunto de IDs de dispositivos mostrados
+\State~Monitorear stream de scanResults
+\For{cada dispositivo descubierto}
+    \If{nombre no vacío AND ID no en existingIds}
+        \State~Añadir dispositivo a lista scanResults
+    \EndIf%
+\EndFor%
+\State~Actualizar interfaz mediante setState() %chktex 36
+
+\State~Fase 5: Monitoreo del Estado de Escaneo
+\State~Crear listener para monitor de estado de escaneo
+\If{isScanning es verdadero}
+    \State~Mostrar barra de progreso linear
+\Else%
+    \State~Ocultar barra de progreso
+\EndIf%
+
+\State~Fase 6: Renderización de Lista de Dispositivos
+\For{cada dispositivo en scanResults}
+    \State~Extraer nombre del dispositivo
+    \State~Crear listener para estado de conexión
+    \If{nombre contiene NOSE OR ESP32}
+        \State~Marcar como nariz electrónica
+        \State~Aplicar estilos especiales: borde azul
+        \State~Mostrar nombre en negrita
+    \Else%
+        \State~Aplicar estilos estándar
+    \EndIf%
+    \State~Renderizar tarjeta de dispositivo
+\EndFor%
+
+\State~Fase 7: Actualización de Estado de Conexión
+\For{cada dispositivo mostrado}
+    \If{estado = conectado}
+        \State~Mostrar: CONECTADO
+    \Else%
+        \State~Mostrar: ID remoto del dispositivo
+    \EndIf%
+\EndFor%
+
+\State~Fase 8: Selección de Dispositivo por Usuario
+\If{dispositivo NO está conectado}
+    \State~Detener escaneo Bluetooth
+    \State~Establecer conexión con dispositivo
+\EndIf%
+\State~Esperar confirmación de conexión
+\State~Navegar a pantalla de análisis
+
+\State~Fase 9: Limpieza Automática al Retornar
+\For{cada dispositivo en lista de conectados}
+    \State~Desconectar dispositivo
+\EndFor%
+\State~Limpiar lista de scanResults
+\State~Reiniciar escaneo
+\end{algorithmic}
+
+\section{Pantalla de análisis}
+
+La pantalla de análisis es el núcleo funcional de la aplicación, donde se realiza la comunicación continua con la nariz electrónica, se capturan datos de sensores en tiempo real y se ejecutan modelos de inteligencia artificial para la detección de sustancias. La pantalla combina procesamiento de datos, normalización estadística e inferencia neural para clasificar las muestras.
+\par
+
+\noindent\textbf{Algoritmo: Flujo de análisis y detección de sustancias (Pantalla de Análisis).}
+
+\begin{algorithmic}[1]
+\State~Entrada: Dispositivo Bluetooth conectado con servicios UART disponibles
+\State~Salida: Clasificación de muestra con confianza probabilística
+
+\State~Fase 1: Carga de Configuración de Modelos
+\State~Cargar archivo JSON models-config.json desde assets
+\State~Parsear estructura JSON extrayendo lista de modelos
+\For{cada modelo en lista}
+    \State~Extraer parámetros: id, displayName, fileName
+    \State~Extraer vectores: medias, desviaciones
+    \State~Crear instancia ModelConfig con parámetros
+    \State~Añadir a lista availableConfigs
+\EndFor%
+\If{lista de modelos no vacía}
+    \State~Establecer primer modelo como defecto
+    \State~Cargar archivo TFLite del modelo inicial
+\EndIf%
+
+\State~Fase 2: Establecimiento de Conexión Bluetooth
+\State~Esperar confirmación de conexión del dispositivo
+\State~Aplicar retardo de 500 ms para estabilización
+\State~Descubrir servicios disponibles en el dispositivo
+
+\State~Fase 3: Identificación de Servicios UART
+\For{cada servicio descubierto}
+    \If{UUID del servicio = servicio UART transparente}
+        \For{cada característica en servicio}
+            \If{UUID característica contiene 9616}
+                \State~Almacenar característica como uartChar
+                \State~Habilitar notificaciones en característica
+                \State~Configurar listener para datos recibidos
+            \EndIf%
+        \EndFor%
+    \EndIf%
+\EndFor%
+
+\State~Fase 4: Procesamiento de Datos en Tiempo Real
+\State~Inicializar buffer de string vacío
+\State~Cuando se reciben datos desde dispositivo:
+\State~Convertir bytes a string y acumular en buffer
+\If{buffer contiene salto de línea}
+    \State~Dividir buffer por saltos de línea
+    \State~Preservar última línea incompleta en buffer
+    \For{cada línea completa}
+        \State~Eliminar espacios en blanco
+        \If{línea = STOP OR contiene AutoStop Mode}
+            \State~Detener análisis
+            \State~Mostrar diálogo: Experimento Finalizado
+        \EndIf%
+        \If{línea comienza con \#}
+            \State~Ignorar línea (eco de comando)
+        \EndIf%
+        \If{línea = OK}
+            \State~Añadir mensaje: OK --- Comando aceptado
+        \Else%
+            \State~Procesar línea como trama de sensores
+            \If{validación exitosa AND análisis en progreso}
+                \State~Pasar datos a red neuronal
+            \EndIf%
+        \EndIf%
+    \EndFor%
+\EndIf%
+
+\State~Fase 5: Procesamiento y Extracción de Datos
+\State~Dividir trama por comas para extraer tokens
+\If{número de tokens mayor o igual a 21}
+    \State~Definir índices de sensores: 1,4,5,6,7,8,9,10,12,14,15,16,20
+    \For{cada índice de sensor}
+        \State~Extraer token en posición índice
+        \State~Reemplazar comas por puntos
+        \State~Convertir a double
+        \State~Almacenar en lista sensoresLimpios
+    \EndFor%
+    \State~Extraer fase de muestreo del último token
+    \If{fase = 1.0 (Muestra)}
+        \State~Retornar lista de sensores procesados
+    \Else%
+        \State~Descartar datos
+        \State~Retornar null
+    \EndIf%
+\Else%
+    \State~Retornar null (trama inválida)
+\EndIf%
+
+\State~Fase 6: Normalización de Datos
+\State~Obtener configuración de modelo: medias y desviaciones
+\For{cada valor i en datos de entrada}
+    \State~Obtener media mu-i y desviación sigma-i
+    \If{sigma-i = 0}
+        \State~Usar sigma-i = 1.0 para evitar división por cero
+    \EndIf%
+    \State~Aplicar normalización: x-scaled[i] = (x[i] --- mu-i) / sigma-i
+\EndFor%
+\State~Reshape vector a forma [1, 13] para entrada del modelo
+
+\State~Fase 7: Inferencia en Red Neuronal TFLite
+\State~Validar que intérprete TFLite esté cargado
+\State~Validar que configuración de modelo esté seleccionada
+\State~Crear tensor de salida con forma [1, 1]
+\State~Ejecutar: interpreter.run con entrada normalizada
+\State~Extraer probabilidad de salida: P = output[0][0]
+
+\State~Fase 8: Actualización de Resultado y Retroalimentación
+\State~Actualizar resultadoIA con nueva probabilidad
+\If{P mayor o igual a 0.7 AND vibración habilitada}
+    \State~Verificar disponibilidad de vibrador
+    \If{vibrador disponible}
+        \State~Ejecutar vibración de 500 ms como alerta
+    \EndIf%
+\EndIf%
+\State~Actualizar interfaz con nuevo resultado
+\State~Mostrar sustancia detectada o aire limpio
+\State~Mostrar porcentaje de confianza
+
+\State~Fase 9: Envío de Comandos al Dispositivo
+\If{tiempo desde último comando mayor o igual a 500 ms}
+    \State~Obtener comando: Exper (iniciar) o Stop (detener)
+    \State~Formatear comando con retorno de carro y salto de línea
+    \State~Enviar bytes codificados a característica UART
+    \State~Registrar hora de comando
+    \State~Mostrar en consola: enviando comando
+\Else%
+    \State~Descartar comando (anticebo)
+\EndIf%
+
+\State~Fase 10: Selección Dinámica de Modelo
+\If{usuario selecciona modelo diferente}
+    \State~Obtener nueva configuración del modelo
+    \State~Actualizar currentConfig
+    \State~Resetear resultadoIA a 0.0
+    \State~Cargar archivo TFLite del nuevo modelo
+\EndIf%
+
+\State~Fase 11: Control de Historial de Consola
+\For{cada nuevo mensaje}
+    \State~Insertar mensaje al inicio de lista
+    \State~Etiquetar como comando o dato recibido
+    \If{tamaño lista mayor a 100}
+        \State~Eliminar mensaje más antiguo
+    \EndIf%
+\EndFor%
+\State~Mostrar historial en orden inverso
+
+\end{algorithmic}
+
+\section{Pantalla de ajustes}
+
+La pantalla de ajustes permite al usuario modificar los parámetros del funcionamiento de la nariz electrónica, sincronizando la configuración con el dispositivo mediante comandos UART\@. Incluye opciones para ajustar ciclos, tiempos de muestreo y preferencias de la aplicación.
+\par
+
+\noindent\textbf{Algoritmo: Flujo de configuración y sincronización de parámetros (Pantalla de Ajustes).}
+
+\begin{algorithmic}[1]
+\State~Entrada: Dispositivo Bluetooth conectado con característica UART activa
+\State~Salida: Configuración sincronizada con el dispositivo y preferencias de usuario
+
+\State~Fase 1: Inicialización de Pantalla de Ajustes
+\State~Mostrar interfaz con campos ajustables
+\State~Inicializar variables: numCiclos, tiempoAdsorcion, tiempoDesorcion, autoStop, vibracionActiva
+\State~Invocar lectura de configuración actual del dispositivo
+
+\State~Fase 2: Lectura de Configuración Actual
+\State~Inicializar buffer para acumular respuesta
+\State~Crear comando: SETTINGS
+\State~Formatear comando: agregar retorno de carro y salto de línea
+\State~Enviar bytes codificados a característica UART
+\State~Mostrar indicador de carga o espera
+
+\State~Fase 3: Recepción de Datos de Configuración
+\State~Escuchar stream de datos desde dispositivo
+\State~Cuando se reciben datos:
+\State~Convertir bytes a string
+\State~Acumular en buffer de configuración
+\If{buffer contiene indicador de completitud}%
+    \State~Procesar respuesta y extraer parámetros
+    \State~Actualizar interfaz con valores leídos
+    \State~Limpiar buffer
+\EndIf%
+
+\State~Fase 4: Extracción de Parámetros desde Respuesta
+\State~Buscar cada parámetro en la cadena de respuesta:
+\State~Extraer tiempo de desorción: buscar Desorption time:
+\State~Extraer tiempo de adsorción: buscar Adsorption time:
+\State~Extraer número de ciclos: buscar Number of cycles in AutoStop Mode:
+\State~Extraer estado de AutoStop: buscar AutoStop Mode:
+\For{cada parámetro encontrado}%
+    \State~Validar que el valor sea un número entero válido
+    \State~Almacenar en variable correspondiente
+\EndFor%
+
+\State~Fase 5: Actualización de Interfaz Gráfica
+\State~Mostrar todos los parámetros con valores actuales:
+\State~Número de ciclos: mostrar campo numérico con controles +/-
+\State~Tiempo de adsorción: mostrar campo numérico con controles +/-
+\State~Tiempo de desorción: mostrar campo numérico con controles +/-
+\State~Swtich de AutoStop inteligente: mostrar toggle activado/desactivado
+\State~Switch de Vibración de Alerta: mostrar toggle activado/desactivado
+
+\State~Fase 6: Modificación de Parámetros por Usuario
+\State~Para cada parámetro numérico:
+\State~Mostrar botón de decremento y incremento
+\If{usuario presiona botón +}%
+    \State~Incrementar valor en paso especificado
+    \State~Validar que no supere límite máximo
+    \State~Actualizar pantalla con nuevo valor
+\EndIf%
+\If{usuario presiona botón -}%
+    \State~Decrementar valor en paso especificado
+    \State~Validar que no sea inferior a límite mínimo
+    \State~Actualizar pantalla con nuevo valor
+\EndIf%
+
+\State~Fase 7: Envío de Comandos de Configuración
+\State~Cuando usuario presiona CONFIRMAR CAMBIOS\:
+\State~Enviar comando número de ciclos: \#NSNC,[valor]
+\State~Aplicar retardo de 150 ms
+\State~Enviar comando tiempo de adsorción: \#NSTA,[valor]
+\State~Aplicar retardo de 150 ms
+\State~Enviar comando tiempo de desorción: \#NSTD,[valor]
+\State~Aplicar retardo de 150 ms
+\State~Enviar comando estado AutoStop: \#NSAS,[0 o 1]
+\State~Aplicar retardo de 150 ms
+
+\State~Fase 8: Notificación de Cambios
+\State~Para cada comando enviado:
+\If{callback onMessageSent está disponible}%
+    \State~Invocar callback con texto del comando y tipo (true = comando)
+    \State~Propagar información a pantalla anterior
+\EndIf%
+
+\State~Fase 9: Confirmación Visual de Aplicación
+\State~Mostrar SnackBar flotante con mensaje: Configuración aplicada
+\State~Configurar color de fondo verde para indicar éxito
+\State~Duración: 2 segundos
+\State~Mostrar en parte superior de pantalla
+
+\State~Fase 10: Retorno a Pantalla Anterior
+\State~Capturar estado de vibración (vibracionActiva)
+\State~Navegar de vuelta a pantalla anterior
+\State~Pasar estado de vibración como valor de retorno
+\State~Pantalla anterior recibe booleano y actualiza su estado
+
+\end{algorithmic}
+
+\section{Barra superior}
+
+La barra superior personalizada (CustomSearchAppBar) es un widget redondeado que se adapta dinámicamente según la pantalla actual. Proporciona navegación mediante botones laterales (ajustes o búsqueda) y muestra el título de la pantalla centrado, manteniendo una interfaz consistente en toda la aplicación.
+\par
+
+\noindent\textbf{Algoritmo: Flujo de construcción y adaptación de barra superior.}
+
+\begin{algorithmic}[1]
+\State~Entrada: Parámetros de título, callbacks opcionales e indicador de pantalla
+\State~Salida: Widget AppBar personalizado redondeado con botones contextuales
+
+\State~Fase 1: Inicialización de Parámetros
+\State~Recibir parámetro: title (texto visible en barra)
+\State~Recibir parámetro opcional: onSettingsPressed (callback botón ajustes) % chktex 36
+\State~Recibir parámetro opcional: onSearchPressed (callback botón búsqueda) % chktex 36
+\State~Recibir parámetro: isSettingsScreen (booleano indicador de contexto) % chktex 36
+\State~Recibir parámetro opcional: onBackAction (callback botón retroceso)
+
+\State~Fase 2: Cálculo de Tamaño Preferido
+\State~Establecer preferredSize altura = 100 píxeles
+\State~Establecer ancho = pantalla completa
+
+\State~Fase 3: Construcción del Contenedor Exterior
+\State~Crear Container con padding superior de 40 píxeles
+\State~Establecer padding lateral de 15 píxeles (izquierda y derecha) % chktex 36
+\State~Crear Container interno con altura de 60 píxeles
+
+\State~Fase 4: Decoración del Contenedor
+\State~Establecer color de fondo: azul oscuro (Colors.blue.shade800)
+\State~Configurar borde redondeado: 30 píxeles de radio
+\State~Añadir sombra:
+\State~Color sombra: negro con 26\% de opacidad
+\State~Desenfoque (blur): 8 píxeles
+\State~Desplazamiento vertical: 4 píxeles hacia abajo
+
+\State~Fase 5: Construcción de Fila de Contenido
+\State~Crear fila (Row) con disposición horizontal
+\State~Distribuir elementos: izquierda, centro, derecha
+
+\State~Fase 6: Botón Izquierdo Contextual
+\If{isSettingsScreen es verdadero}%
+    \State~Mostrar botón flecha retroceso
+    \State~Configurar icono: Icons.arrow\_back % chktex 36
+    \State~Configurar color: blanco
+    \If{onBackAction está disponible}%
+        \State~Conectar callback a onBackAction
+    \Else%
+        \State~Conectar callback a Navigator.pop
+    \EndIf%
+\Else%
+    \If{onSettingsPressed está disponible}%
+        \State~Mostrar botón configuración (settings)
+        \State~Configurar icono: Icons.settings
+        \State~Configurar color: blanco
+        \State~Conectar callback a onSettingsPressed
+    \Else%
+        \State~Reservar espacio vacío de 48 píxeles
+    \EndIf%
+\EndIf%
+
+\State~Fase 7: Título Centrado
+\State~Expandir elemento para ocupar espacio disponible
+\State~Convertir título a mayúsculas
+\State~Aplicar estilo de texto:
+\State~Color: blanco
+\State~Peso de fuente: negrita (FontWeight.bold)
+\State~Tamaño de fuente: 13 píxeles
+\State~Espaciado de letras: 1.1
+
+\State~Fase 8: Botón Derecho de Búsqueda
+\If{onSearchPressed está disponible}%
+    \State~Mostrar botón búsqueda
+    \State~Configurar icono: Icons.search
+    \State~Configurar color: blanco
+    \State~Conectar callback a onSearchPressed
+\Else%
+    \State~Reservar espacio vacío de 48 píxeles
+\EndIf%
+
+\State~Fase 9: Renderización Final
+\State~Compilar estructura completa de widget
+\State~Aplicar restricciones de tamaño preferido
+\State~Mostrar AppBar con diseño visual aplicado
+
+\end{algorithmic}
+
+\section{Navegación}
+
+La clase utilitaria AppNavigation centraliza toda la lógica de transiciones entre pantallas de la aplicación. Proporciona métodos estáticos para navegar hacia la pantalla de ajustes (con retorno de valores booleanos) y hacia la pantalla principal (limpiando el historial de navegación). Esto asegura una navegación consistente y controlada en toda la aplicación.
+\par
+
+\noindent\textbf{Algoritmo: Flujo de gestión y navegación entre pantallas.}
+
+\begin{algorithmic}[1]
+\State~Entrada: Contexto BuildContext y parámetros de navegación específicos según destino
+\State~Salida: Transición a nueva pantalla con parámetros sincronizados
+
+\State~Fase 1: Invocación de Navegación a Ajustes
+\State~Usuario presiona botón de configuración en pantalla actual
+\State~Invocar método: AppNavigation.goToSettings() % chktex 36
+\State~Pasar contexto BuildContext
+\State~Pasar dispositivo BluetoothDevice conectado
+\State~Pasar característica UART\: uartChar (nullable) % chktex 36
+\State~Pasar callback: onMessageSent(String, bool) para recibir mensajes % chktex 36 
+
+\State~Fase 2: Creación de MaterialPageRoute
+\State~Instanciar MaterialPageRoute genérica con tipo bool
+\State~Definir builder con función lambda
+\State~Construir instancia de SettingsScreen dentro de builder
+
+\State~Fase 3: Paso de Parámetros a SettingsScreen
+\State~Pasar device al constructor de SettingsScreen
+\State~Pasar uartChar (puede ser null) al constructor
+\State~Pasar callback onMessageSent al constructor
+\State~Verificar que todos los parámetros requeridos estén disponibles
+
+\State~Fase 4: Ejecución de Navigator.push
+\State~Ejecutar Navigator.push<bool>() con el contexto y ruta % chktex 36
+\State~Especificar tipo genérico <bool> para capturar retorno
+\State~Iniciar transición de pantalla hacia SettingsScreen
+\State~Mantener historial de navegación activo
+
+\State~Fase 5: Espera de Confirmación
+\State~SettingsScreen se muestra en primer plano
+\State~Usuario modifica parámetros de configuración
+\State~Usuario presiona botón CONFIRMAR o ATRÁS
+\State~SettingsScreen retorna valor booleano: vibracionActiva
+
+\State~Fase 6: Retorno de Valor Booleano
+\State~Capturar estado de vibración modificado
+\State~Ejecutar Navigator.pop(context, vibracionActiva) % chktex 36
+\State~Devolver booleano a pantalla anterior mediante Future
+
+\State~Fase 7: Invocación de Navegación a Pantalla Principal
+\State~Usuario cierra sesión o requiere retorno al inicio
+\State~Invocar método: AppNavigation.goToHome() % chktex 36
+\State~Pasar contexto BuildContext
+
+\State~Fase 8: Limpieza de Historial de Navegación
+\State~Ejecutar Navigator.pushAndRemoveUntil() % chktex 36
+\State~Crear MaterialPageRoute hacia MainScreen
+\State~Definir predicado de ruta: (route) => false
+\State~El predicado false elimina TODAS las rutas previas
+
+\State~Fase 9: Construcción de MainScreen
+\State~Instanciar const MainScreen() sin parámetros % chktex 36
+\State~Aplicar transición de pantalla
+\State~Establecer MainScreen como único punto en la pila de navegación
+
+\State~Fase 10: Garantía de Punto de Entrada Único
+\State~Usuario no puede presionar tecla atrás desde MainScreen
+\State~Historial completamente limpio sin rutas pendientes
+\State~Solo MainScreen es accesible tras goToHome() % chktex 36
+\State~Previene navegación accidental a pantallas cerradas
+
+\end{algorithmic}
+
+\section{Inicialización de la aplicación}
+
+El archivo main.dart es el punto de entrada de la aplicación Sniffer. Realiza la inicialización de los bindings de Flutter, configura el tema visual, y establece la pantalla principal como punto de inicio. Utiliza Material Design 3 con una paleta de colores personalizada basada en azul oscuro.
+\par
+
+\noindent\textbf{Algoritmo: Flujo de inicialización y configuración de la aplicación (main).}
+
+\begin{algorithmic}[1]
+\State~Entrada: Comando de ejecución de la aplicación desde el sistema operativo
+\State~Salida: Aplicación Flutter ejecutándose con MyApp como widget raíz
+
+\State~Fase 1: Ejecución de Función main
+\State~Sistema operativo invoca función main() % chktex 36
+\State~Inicio de punto de entrada de la aplicación
+
+\State~Fase 2: Inicialización de Bindings
+\State~Llamar a WidgetsFlutterBinding.ensureInitialized() % chktex 36
+\State~Garantizar que el sistema de binding de Flutter esté preparado
+\State~Permitir operaciones específicas antes de runApp() % chktex 36
+\State~Establecer comunicación entre Flutter y la plataforma nativa
+
+\State~Fase 3: Ejecución de MyApp
+\State~Invocar runApp() con instancia const MyApp() % chktex 36
+\State~Pasar widget raíz a Flutter engine
+\State~Flutter comienza a renderizar la aplicación
+
+\State~Fase 4: Construcción de MaterialApp
+\State~MyApp.build() es invocado con contexto BuildContext % chktex 36
+\State~Retornar MaterialApp con configuración personalizada
+\State~Establecer nombre de la aplicación: \textit{Nariz Electrónica UEx}
+\State~Desactivar banner de depuración: debugShowCheckedModeBanner = false
+
+\State~Fase 5: Configuración del Tema
+\State~Crear instancia de ThemeData
+\State~Generar ColorScheme desde seed color: Colors.blue.shade900
+\State~El seed color azul oscuro proporciona paleta coherente
+\State~Activar Material Design 3: useMaterial3 = true
+\State~Configurar fondo de Scaffold: Colors.grey.shade50 (gris muy claro)
+
+\State~Fase 6: Generación de Paleta de Colores
+\State~ColorScheme.fromSeed() genera colores derivados del seed % chktex 36
+\State~Genera colores primarios, secundarios y terciarios automáticamente
+\State~Crear colores para: background, surface, error, inversión
+\State~Asegurar contraste y accesibilidad según Material Design 3
+
+\State~Fase 7: Establecimiento de Pantalla Inicial
+\State~Asignar home: const MainScreen() % chktex 36
+\State~MainScreen es el widget inicial que se renderiza
+\State~Cuando app inicia, MainScreen aparece en primer plano
+\State~MainScreen es la base de la pila de navegación
+
+\State~Fase 8: Renderización y Ejecución
+\State~Flutter renderiza el árbol de widgets completo
+\State~Aplica tema configurado a toda la aplicación
+\State~MainScreen se muestra en pantalla
+\State~Aplicación está lista para interacción del usuario
+\State~Sistema de eventos y listeners comienza a funcionar
+
+\end{algorithmic}
